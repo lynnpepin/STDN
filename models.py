@@ -21,8 +21,22 @@ class models:
     def __init__(self):
         pass
 
-    def stdn(self, att_lstm_num, att_lstm_seq_len, lstm_seq_len, feature_vec_len, cnn_flat_size = 128, lstm_out_size = 128,\
-    nbhd_size = 3, nbhd_type = 2, map_x_num = 10, map_y_num = 20, flow_type = 4, output_shape = 2, optimizer = 'adagrad', loss = 'mse', metrics=[]):
+    def stdn(self,
+             att_lstm_num,
+             att_lstm_seq_len,
+             lstm_seq_len,
+             feature_vec_len,
+             cnn_flat_size  = 128,
+             lstm_out_size  = 128,
+             nbhd_size      = 3,
+             nbhd_type      = 2,
+             map_x_num      = 10,
+             map_y_num      = 20,
+             flow_type      = 4,
+             output_shape   = 2,
+             optimizer      = 'adagrad',
+             loss           = 'mse',
+             metrics        = []):
         flatten_att_nbhd_inputs = [Input(shape = (nbhd_size, nbhd_size, nbhd_type,), name = "att_nbhd_volume_input_time_{0}_{1}".format(att+1, ts+1)) for ts in range(att_lstm_seq_len) for att in range(att_lstm_num)]
         flatten_att_flow_inputs = [Input(shape = (nbhd_size, nbhd_size, flow_type,), name = "att_flow_volume_input_time_{0}_{1}".format(att+1, ts+1)) for ts in range(att_lstm_seq_len) for att in range(att_lstm_num)]
 
