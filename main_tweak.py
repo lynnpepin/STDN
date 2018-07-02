@@ -1,5 +1,6 @@
 # WIP: Tweak main to work on dataset with less samples, on a smaller training session.
 # (So I can tweak and play around with the model!)
+# Remember to undo the comment-out you placed below
 
 import models
 import file_loader
@@ -119,9 +120,7 @@ def main(
                                                                           long_term_lstm_seq_len  = long_term_lstm_seq_len,
                                                                           short_term_lstm_seq_len = short_term_lstm_seq_len,
                                                                           nbhd_size               = nbhd_size,
-                                                                          cnn_nbhd_size           = cnn_nbhd_size
-                                                                         )
-
+                                                                          cnn_nbhd_size           = cnn_nbhd_size)
         print("Start training {0} with input shape {2} / {1}".format(model_name[2:], x.shape, cnnx[0].shape))
 
         model = modeler.stdn(att_lstm_num = att_lstm_num,
@@ -129,22 +128,25 @@ def main(
                              lstm_seq_len = len(cnnx), feature_vec_len = x.shape[-1],
                              cnn_flat_size = cnn_flat_size,
                              nbhd_size = cnnx[0].shape[1],
-                             nbhd_type = cnnx[0].shape[-1
-                            ])
-
-
-        model.fit(  x=att_cnnx + att_flow + att_x + cnnx + flow + [x,],
-                    y=y,
-                    batch_size          = batch_size,
-                    validation_split    = validation_split,
-                    epochs              = max_epochs,
-                    callbacks           = [early_stop]
+                             nbhd_type = cnnx[0].shape[-1])
+        # TODO: Remove these changes below
+        #print(model.summary())
+        #print("Enter debug!")
+        #from keras.utils import plot_model
+        #plot_model(model, to_file='model_vis_full.png')
+        #quit()
+        
+        model.fit(x                =att_cnnx + att_flow + att_x + cnnx + flow + [x,],
+                  y                =y,
+                  batch_size       = batch_size,
+                  validation_split = validation_split,
+                  epochs           = max_epochs,
+                  callbacks        = [early_stop]
                  )
 
         att_cnnx, att_flow, att_x, cnnx, flow, x, y = sampler.sample_stdn(datatype      = "test",
                                                                           nbhd_size     = nbhd_size,
-                                                                          cnn_nbhd_size = cnn_nbhd_size
-                                                                         )
+                                                                          cnn_nbhd_size = cnn_nbhd_size)
         y_pred = model.predict(x = att_cnnx + att_flow + att_x + cnnx + flow + [x,],)
         threshold = float(sampler.threshold) / sampler.config["volume_train_max"]
         print("Evaluating threshold: {0}.".format(threshold))
@@ -153,6 +155,7 @@ def main(
         
         currTime = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         model.save(model_hdf5_path + model_name[2:] + currTime + ".hdf5")
+
         return
 
     print("Cannot recognize parameter...")

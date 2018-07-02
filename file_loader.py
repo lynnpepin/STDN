@@ -33,8 +33,7 @@ class file_loader:
                     hist_feature_daynum     = 7,
                     last_feature_num        = 48,
                     nbhd_size               = 1,
-                    cnn_nbhd_size           = 3
-                   ):
+                    cnn_nbhd_size           = 3):
         if self.isVolumeLoaded is False:
             self.load_volume()
 
@@ -100,7 +99,8 @@ class file_loader:
                                 if not (0 <= cnn_nbhd_x < data.shape[1] and 0 <= cnn_nbhd_y < data.shape[2]):
                                     continue
                                 #get features
-                                cnn_feature[cnn_nbhd_x - (x - cnn_nbhd_size), cnn_nbhd_y - (y - cnn_nbhd_size), :] = data[real_t, cnn_nbhd_x, cnn_nbhd_y, :]
+                                cnn_feature[cnn_nbhd_x - (x - cnn_nbhd_size),
+                                            cnn_nbhd_y - (y - cnn_nbhd_size), :] = data[real_t, cnn_nbhd_x, cnn_nbhd_y, :]
                         cnn_features[seqn].append(cnn_feature)
                         
                         #flow features, 4 type
