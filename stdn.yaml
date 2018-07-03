@@ -1,0 +1,5959 @@
+backend: tensorflow
+class_name: Model
+config:
+  input_layers:
+  - [att_nbhd_volume_input_time_1_1, 0, 0]
+  - [att_nbhd_volume_input_time_2_1, 0, 0]
+  - [att_nbhd_volume_input_time_3_1, 0, 0]
+  - [att_nbhd_volume_input_time_1_2, 0, 0]
+  - [att_nbhd_volume_input_time_2_2, 0, 0]
+  - [att_nbhd_volume_input_time_3_2, 0, 0]
+  - [att_nbhd_volume_input_time_1_3, 0, 0]
+  - [att_nbhd_volume_input_time_2_3, 0, 0]
+  - [att_nbhd_volume_input_time_3_3, 0, 0]
+  - [att_flow_volume_input_time_1_1, 0, 0]
+  - [att_flow_volume_input_time_2_1, 0, 0]
+  - [att_flow_volume_input_time_3_1, 0, 0]
+  - [att_flow_volume_input_time_1_2, 0, 0]
+  - [att_flow_volume_input_time_2_2, 0, 0]
+  - [att_flow_volume_input_time_3_2, 0, 0]
+  - [att_flow_volume_input_time_1_3, 0, 0]
+  - [att_flow_volume_input_time_2_3, 0, 0]
+  - [att_flow_volume_input_time_3_3, 0, 0]
+  - [att_lstm_input_1, 0, 0]
+  - [att_lstm_input_2, 0, 0]
+  - [att_lstm_input_3, 0, 0]
+  - [nbhd_volume_input_time_1, 0, 0]
+  - [nbhd_volume_input_time_2, 0, 0]
+  - [nbhd_volume_input_time_3, 0, 0]
+  - [nbhd_volume_input_time_4, 0, 0]
+  - [nbhd_volume_input_time_5, 0, 0]
+  - [nbhd_volume_input_time_6, 0, 0]
+  - [nbhd_volume_input_time_7, 0, 0]
+  - [flow_volume_input_time_1, 0, 0]
+  - [flow_volume_input_time_2, 0, 0]
+  - [flow_volume_input_time_3, 0, 0]
+  - [flow_volume_input_time_4, 0, 0]
+  - [flow_volume_input_time_5, 0, 0]
+  - [flow_volume_input_time_6, 0, 0]
+  - [flow_volume_input_time_7, 0, 0]
+  - [lstm_input, 0, 0]
+  layers:
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: att_flow_volume_input_time_1_1
+      sparse: false
+    inbound_nodes: []
+    name: att_flow_volume_input_time_1_1
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: att_flow_volume_input_time_2_1
+      sparse: false
+    inbound_nodes: []
+    name: att_flow_volume_input_time_2_1
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: att_flow_volume_input_time_3_1
+      sparse: false
+    inbound_nodes: []
+    name: att_flow_volume_input_time_3_1
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: flow_volume_input_time_1
+      sparse: false
+    inbound_nodes: []
+    name: flow_volume_input_time_1
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: flow_volume_input_time_2
+      sparse: false
+    inbound_nodes: []
+    name: flow_volume_input_time_2
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: flow_volume_input_time_3
+      sparse: false
+    inbound_nodes: []
+    name: flow_volume_input_time_3
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: flow_volume_input_time_4
+      sparse: false
+    inbound_nodes: []
+    name: flow_volume_input_time_4
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: flow_volume_input_time_5
+      sparse: false
+    inbound_nodes: []
+    name: flow_volume_input_time_5
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: flow_volume_input_time_6
+      sparse: false
+    inbound_nodes: []
+    name: flow_volume_input_time_6
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: flow_volume_input_time_7
+      sparse: false
+    inbound_nodes: []
+    name: flow_volume_input_time_7
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: att_flow_volume_input_time_1_2
+      sparse: false
+    inbound_nodes: []
+    name: att_flow_volume_input_time_1_2
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: att_flow_volume_input_time_2_2
+      sparse: false
+    inbound_nodes: []
+    name: att_flow_volume_input_time_2_2
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: att_flow_volume_input_time_3_2
+      sparse: false
+    inbound_nodes: []
+    name: att_flow_volume_input_time_3_2
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: att_flow_volume_input_time_1_3
+      sparse: false
+    inbound_nodes: []
+    name: att_flow_volume_input_time_1_3
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: att_flow_volume_input_time_2_3
+      sparse: false
+    inbound_nodes: []
+    name: att_flow_volume_input_time_2_3
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 4]
+      dtype: float32
+      name: att_flow_volume_input_time_3_3
+      sparse: false
+    inbound_nodes: []
+    name: att_flow_volume_input_time_3_3
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: att_nbhd_volume_input_time_1_1
+      sparse: false
+    inbound_nodes: []
+    name: att_nbhd_volume_input_time_1_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: &id001 !!python/tuple [1, 1]
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id002 !!python/tuple [3, 3]
+      name: att_flow_convs_time0_1_1
+      padding: same
+      strides: &id003 !!python/tuple [1, 1]
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_volume_input_time_1_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time0_1_1
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: att_nbhd_volume_input_time_2_1
+      sparse: false
+    inbound_nodes: []
+    name: att_nbhd_volume_input_time_2_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id002
+      name: att_flow_convs_time0_1_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_volume_input_time_2_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time0_1_2
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: att_nbhd_volume_input_time_3_1
+      sparse: false
+    inbound_nodes: []
+    name: att_nbhd_volume_input_time_3_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id002
+      name: att_flow_convs_time0_1_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_volume_input_time_3_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time0_1_3
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: nbhd_volume_input_time_1
+      sparse: false
+    inbound_nodes: []
+    name: nbhd_volume_input_time_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id004 !!python/tuple [3, 3]
+      name: flow_convs_time0_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_1
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time0_1
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: nbhd_volume_input_time_2
+      sparse: false
+    inbound_nodes: []
+    name: nbhd_volume_input_time_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id004
+      name: flow_convs_time0_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_2
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time0_2
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: nbhd_volume_input_time_3
+      sparse: false
+    inbound_nodes: []
+    name: nbhd_volume_input_time_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id004
+      name: flow_convs_time0_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_3
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time0_3
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: nbhd_volume_input_time_4
+      sparse: false
+    inbound_nodes: []
+    name: nbhd_volume_input_time_4
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id004
+      name: flow_convs_time0_4
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_4
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time0_4
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: nbhd_volume_input_time_5
+      sparse: false
+    inbound_nodes: []
+    name: nbhd_volume_input_time_5
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id004
+      name: flow_convs_time0_5
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_5
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time0_5
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: nbhd_volume_input_time_6
+      sparse: false
+    inbound_nodes: []
+    name: nbhd_volume_input_time_6
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id004
+      name: flow_convs_time0_6
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_6
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time0_6
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: nbhd_volume_input_time_7
+      sparse: false
+    inbound_nodes: []
+    name: nbhd_volume_input_time_7
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id004
+      name: flow_convs_time0_7
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_7
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time0_7
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: att_nbhd_volume_input_time_1_2
+      sparse: false
+    inbound_nodes: []
+    name: att_nbhd_volume_input_time_1_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id002
+      name: att_flow_convs_time0_2_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_volume_input_time_1_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time0_2_1
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: att_nbhd_volume_input_time_2_2
+      sparse: false
+    inbound_nodes: []
+    name: att_nbhd_volume_input_time_2_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id002
+      name: att_flow_convs_time0_2_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_volume_input_time_2_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time0_2_2
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: att_nbhd_volume_input_time_3_2
+      sparse: false
+    inbound_nodes: []
+    name: att_nbhd_volume_input_time_3_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id002
+      name: att_flow_convs_time0_2_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_volume_input_time_3_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time0_2_3
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: att_nbhd_volume_input_time_1_3
+      sparse: false
+    inbound_nodes: []
+    name: att_nbhd_volume_input_time_1_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id002
+      name: att_flow_convs_time0_3_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_volume_input_time_1_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time0_3_1
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: att_nbhd_volume_input_time_2_3
+      sparse: false
+    inbound_nodes: []
+    name: att_nbhd_volume_input_time_2_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id002
+      name: att_flow_convs_time0_3_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_volume_input_time_2_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time0_3_2
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 7, 2]
+      dtype: float32
+      name: att_nbhd_volume_input_time_3_3
+      sparse: false
+    inbound_nodes: []
+    name: att_nbhd_volume_input_time_3_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id002
+      name: att_flow_convs_time0_3_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_volume_input_time_3_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time0_3_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id005 !!python/tuple [3, 3]
+      name: att_nbhd_convs_time0_1_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_volume_input_time_1_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time0_1_1
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time0_1_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time0_1_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time0_1_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id005
+      name: att_nbhd_convs_time0_1_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_volume_input_time_2_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time0_1_2
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time0_1_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time0_1_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time0_1_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id005
+      name: att_nbhd_convs_time0_1_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_volume_input_time_3_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time0_1_3
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time0_1_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time0_1_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time0_1_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id006 !!python/tuple [3, 3]
+      name: nbhd_convs_time0_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_volume_input_time_1
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time0_1
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time0_1, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time0_1
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time0_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id006
+      name: nbhd_convs_time0_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_volume_input_time_2
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time0_2
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time0_2, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time0_2
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time0_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id006
+      name: nbhd_convs_time0_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_volume_input_time_3
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time0_3
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time0_3, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time0_3
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time0_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id006
+      name: nbhd_convs_time0_4
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_volume_input_time_4
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time0_4
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time0_4, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time0_4
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time0_4
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id006
+      name: nbhd_convs_time0_5
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_volume_input_time_5
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time0_5
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time0_5, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time0_5
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time0_5
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id006
+      name: nbhd_convs_time0_6
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_volume_input_time_6
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time0_6
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time0_6, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time0_6
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time0_6
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id006
+      name: nbhd_convs_time0_7
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_volume_input_time_7
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time0_7
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time0_7, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time0_7
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time0_7
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id005
+      name: att_nbhd_convs_time0_2_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_volume_input_time_1_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time0_2_1
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time0_2_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time0_2_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time0_2_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id005
+      name: att_nbhd_convs_time0_2_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_volume_input_time_2_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time0_2_2
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time0_2_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time0_2_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time0_2_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id005
+      name: att_nbhd_convs_time0_2_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_volume_input_time_3_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time0_2_3
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time0_2_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time0_2_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time0_2_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id005
+      name: att_nbhd_convs_time0_3_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_volume_input_time_1_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time0_3_1
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time0_3_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time0_3_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time0_3_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id005
+      name: att_nbhd_convs_time0_3_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_volume_input_time_2_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time0_3_2
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time0_3_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time0_3_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time0_3_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id005
+      name: att_nbhd_convs_time0_3_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_volume_input_time_3_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time0_3_3
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time0_3_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time0_3_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time0_3_3
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time0_1_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time0_1_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time0_1_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate0_1_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_1_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate0_1_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time0_1_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time0_1_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time0_1_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate0_1_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_1_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate0_1_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time0_1_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time0_1_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time0_1_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate0_1_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_1_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate0_1_3
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time0_1, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time0_1
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time0_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate0_1, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time0_1
+        - 0
+        - 0
+        - {}
+    name: flow_gate0_1
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time0_2, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time0_2
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time0_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate0_2, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time0_2
+        - 0
+        - 0
+        - {}
+    name: flow_gate0_2
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time0_3, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time0_3
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time0_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate0_3, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time0_3
+        - 0
+        - 0
+        - {}
+    name: flow_gate0_3
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time0_4, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time0_4
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time0_4
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate0_4, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time0_4
+        - 0
+        - 0
+        - {}
+    name: flow_gate0_4
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time0_5, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time0_5
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time0_5
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate0_5, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time0_5
+        - 0
+        - 0
+        - {}
+    name: flow_gate0_5
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time0_6, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time0_6
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time0_6
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate0_6, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time0_6
+        - 0
+        - 0
+        - {}
+    name: flow_gate0_6
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time0_7, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time0_7
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time0_7
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate0_7, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time0_7
+        - 0
+        - 0
+        - {}
+    name: flow_gate0_7
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time0_2_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time0_2_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time0_2_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate0_2_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_2_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate0_2_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time0_2_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time0_2_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time0_2_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate0_2_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_2_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate0_2_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time0_2_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time0_2_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time0_2_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate0_2_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_2_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate0_2_3
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time0_3_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time0_3_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time0_3_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate0_3_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_3_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate0_3_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time0_3_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time0_3_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time0_3_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate0_3_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_3_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate0_3_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time0_3_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time0_3_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time0_3_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate0_3_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_3_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate0_3_3
+  - class_name: Multiply
+    config: {name: multiply_22, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time0_1_1
+        - 0
+        - 0
+        - &id007 {}
+      - - att_flow_gate0_1_1
+        - 0
+        - 0
+        - *id007
+    name: multiply_22
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id009 !!python/tuple [3, 3]
+      name: att_flow_convs_time1_1_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_1_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time1_1_1
+  - class_name: Multiply
+    config: {name: multiply_23, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time0_1_2
+        - 0
+        - 0
+        - &id008 {}
+      - - att_flow_gate0_1_2
+        - 0
+        - 0
+        - *id008
+    name: multiply_23
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id009
+      name: att_flow_convs_time1_1_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_1_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time1_1_2
+  - class_name: Multiply
+    config: {name: multiply_24, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time0_1_3
+        - 0
+        - 0
+        - &id010 {}
+      - - att_flow_gate0_1_3
+        - 0
+        - 0
+        - *id010
+    name: multiply_24
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id009
+      name: att_flow_convs_time1_1_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_1_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time1_1_3
+  - class_name: Multiply
+    config: {name: multiply_1, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time0_1
+        - 0
+        - 0
+        - &id011 {}
+      - - flow_gate0_1
+        - 0
+        - 0
+        - *id011
+    name: multiply_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id013 !!python/tuple [3, 3]
+      name: flow_convs_time1_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_1
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time1_1
+  - class_name: Multiply
+    config: {name: multiply_2, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time0_2
+        - 0
+        - 0
+        - &id012 {}
+      - - flow_gate0_2
+        - 0
+        - 0
+        - *id012
+    name: multiply_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id013
+      name: flow_convs_time1_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_2
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time1_2
+  - class_name: Multiply
+    config: {name: multiply_3, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time0_3
+        - 0
+        - 0
+        - &id014 {}
+      - - flow_gate0_3
+        - 0
+        - 0
+        - *id014
+    name: multiply_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id013
+      name: flow_convs_time1_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_3
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time1_3
+  - class_name: Multiply
+    config: {name: multiply_4, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time0_4
+        - 0
+        - 0
+        - &id015 {}
+      - - flow_gate0_4
+        - 0
+        - 0
+        - *id015
+    name: multiply_4
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id013
+      name: flow_convs_time1_4
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_4
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time1_4
+  - class_name: Multiply
+    config: {name: multiply_5, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time0_5
+        - 0
+        - 0
+        - &id016 {}
+      - - flow_gate0_5
+        - 0
+        - 0
+        - *id016
+    name: multiply_5
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id013
+      name: flow_convs_time1_5
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_5
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time1_5
+  - class_name: Multiply
+    config: {name: multiply_6, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time0_6
+        - 0
+        - 0
+        - &id017 {}
+      - - flow_gate0_6
+        - 0
+        - 0
+        - *id017
+    name: multiply_6
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id013
+      name: flow_convs_time1_6
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_6
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time1_6
+  - class_name: Multiply
+    config: {name: multiply_7, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time0_7
+        - 0
+        - 0
+        - &id018 {}
+      - - flow_gate0_7
+        - 0
+        - 0
+        - *id018
+    name: multiply_7
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id013
+      name: flow_convs_time1_7
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_7
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time1_7
+  - class_name: Multiply
+    config: {name: multiply_25, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time0_2_1
+        - 0
+        - 0
+        - &id019 {}
+      - - att_flow_gate0_2_1
+        - 0
+        - 0
+        - *id019
+    name: multiply_25
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id009
+      name: att_flow_convs_time1_2_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_2_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time1_2_1
+  - class_name: Multiply
+    config: {name: multiply_26, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time0_2_2
+        - 0
+        - 0
+        - &id020 {}
+      - - att_flow_gate0_2_2
+        - 0
+        - 0
+        - *id020
+    name: multiply_26
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id009
+      name: att_flow_convs_time1_2_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_2_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time1_2_2
+  - class_name: Multiply
+    config: {name: multiply_27, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time0_2_3
+        - 0
+        - 0
+        - &id021 {}
+      - - att_flow_gate0_2_3
+        - 0
+        - 0
+        - *id021
+    name: multiply_27
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id009
+      name: att_flow_convs_time1_2_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_2_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time1_2_3
+  - class_name: Multiply
+    config: {name: multiply_28, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time0_3_1
+        - 0
+        - 0
+        - &id022 {}
+      - - att_flow_gate0_3_1
+        - 0
+        - 0
+        - *id022
+    name: multiply_28
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id009
+      name: att_flow_convs_time1_3_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_3_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time1_3_1
+  - class_name: Multiply
+    config: {name: multiply_29, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time0_3_2
+        - 0
+        - 0
+        - &id023 {}
+      - - att_flow_gate0_3_2
+        - 0
+        - 0
+        - *id023
+    name: multiply_29
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id009
+      name: att_flow_convs_time1_3_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_3_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time1_3_2
+  - class_name: Multiply
+    config: {name: multiply_30, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time0_3_3
+        - 0
+        - 0
+        - &id024 {}
+      - - att_flow_gate0_3_3
+        - 0
+        - 0
+        - *id024
+    name: multiply_30
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id009
+      name: att_flow_convs_time1_3_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time0_3_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time1_3_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id025 !!python/tuple [3, 3]
+      name: att_nbhd_convs_time1_1_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_22
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time1_1_1
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time1_1_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time1_1_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time1_1_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id025
+      name: att_nbhd_convs_time1_1_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_23
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time1_1_2
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time1_1_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time1_1_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time1_1_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id025
+      name: att_nbhd_convs_time1_1_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_24
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time1_1_3
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time1_1_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time1_1_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time1_1_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id026 !!python/tuple [3, 3]
+      name: nbhd_convs_time1_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_1
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time1_1
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time1_1, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time1_1
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time1_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id026
+      name: nbhd_convs_time1_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_2
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time1_2
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time1_2, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time1_2
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time1_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id026
+      name: nbhd_convs_time1_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_3
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time1_3
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time1_3, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time1_3
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time1_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id026
+      name: nbhd_convs_time1_4
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_4
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time1_4
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time1_4, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time1_4
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time1_4
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id026
+      name: nbhd_convs_time1_5
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_5
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time1_5
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time1_5, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time1_5
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time1_5
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id026
+      name: nbhd_convs_time1_6
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_6
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time1_6
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time1_6, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time1_6
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time1_6
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id026
+      name: nbhd_convs_time1_7
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_7
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time1_7
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time1_7, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time1_7
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time1_7
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id025
+      name: att_nbhd_convs_time1_2_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_25
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time1_2_1
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time1_2_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time1_2_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time1_2_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id025
+      name: att_nbhd_convs_time1_2_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_26
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time1_2_2
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time1_2_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time1_2_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time1_2_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id025
+      name: att_nbhd_convs_time1_2_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_27
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time1_2_3
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time1_2_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time1_2_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time1_2_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id025
+      name: att_nbhd_convs_time1_3_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_28
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time1_3_1
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time1_3_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time1_3_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time1_3_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id025
+      name: att_nbhd_convs_time1_3_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_29
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time1_3_2
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time1_3_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time1_3_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time1_3_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id025
+      name: att_nbhd_convs_time1_3_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_30
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time1_3_3
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time1_3_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time1_3_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time1_3_3
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time1_1_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time1_1_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time1_1_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate1_1_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_1_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate1_1_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time1_1_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time1_1_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time1_1_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate1_1_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_1_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate1_1_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time1_1_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time1_1_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time1_1_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate1_1_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_1_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate1_1_3
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time1_1, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time1_1
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time1_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate1_1, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time1_1
+        - 0
+        - 0
+        - {}
+    name: flow_gate1_1
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time1_2, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time1_2
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time1_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate1_2, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time1_2
+        - 0
+        - 0
+        - {}
+    name: flow_gate1_2
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time1_3, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time1_3
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time1_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate1_3, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time1_3
+        - 0
+        - 0
+        - {}
+    name: flow_gate1_3
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time1_4, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time1_4
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time1_4
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate1_4, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time1_4
+        - 0
+        - 0
+        - {}
+    name: flow_gate1_4
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time1_5, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time1_5
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time1_5
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate1_5, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time1_5
+        - 0
+        - 0
+        - {}
+    name: flow_gate1_5
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time1_6, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time1_6
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time1_6
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate1_6, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time1_6
+        - 0
+        - 0
+        - {}
+    name: flow_gate1_6
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time1_7, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time1_7
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time1_7
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate1_7, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time1_7
+        - 0
+        - 0
+        - {}
+    name: flow_gate1_7
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time1_2_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time1_2_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time1_2_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate1_2_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_2_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate1_2_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time1_2_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time1_2_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time1_2_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate1_2_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_2_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate1_2_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time1_2_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time1_2_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time1_2_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate1_2_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_2_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate1_2_3
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time1_3_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time1_3_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time1_3_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate1_3_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_3_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate1_3_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time1_3_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time1_3_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time1_3_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate1_3_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_3_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate1_3_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time1_3_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time1_3_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time1_3_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate1_3_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_3_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate1_3_3
+  - class_name: Multiply
+    config: {name: multiply_31, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time1_1_1
+        - 0
+        - 0
+        - &id027 {}
+      - - att_flow_gate1_1_1
+        - 0
+        - 0
+        - *id027
+    name: multiply_31
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id029 !!python/tuple [3, 3]
+      name: att_flow_convs_time2_1_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_1_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time2_1_1
+  - class_name: Multiply
+    config: {name: multiply_32, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time1_1_2
+        - 0
+        - 0
+        - &id028 {}
+      - - att_flow_gate1_1_2
+        - 0
+        - 0
+        - *id028
+    name: multiply_32
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id029
+      name: att_flow_convs_time2_1_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_1_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time2_1_2
+  - class_name: Multiply
+    config: {name: multiply_33, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time1_1_3
+        - 0
+        - 0
+        - &id030 {}
+      - - att_flow_gate1_1_3
+        - 0
+        - 0
+        - *id030
+    name: multiply_33
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id029
+      name: att_flow_convs_time2_1_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_1_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time2_1_3
+  - class_name: Multiply
+    config: {name: multiply_8, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time1_1
+        - 0
+        - 0
+        - &id031 {}
+      - - flow_gate1_1
+        - 0
+        - 0
+        - *id031
+    name: multiply_8
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id033 !!python/tuple [3, 3]
+      name: flow_convs_time2_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_1
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time2_1
+  - class_name: Multiply
+    config: {name: multiply_9, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time1_2
+        - 0
+        - 0
+        - &id032 {}
+      - - flow_gate1_2
+        - 0
+        - 0
+        - *id032
+    name: multiply_9
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id033
+      name: flow_convs_time2_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_2
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time2_2
+  - class_name: Multiply
+    config: {name: multiply_10, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time1_3
+        - 0
+        - 0
+        - &id034 {}
+      - - flow_gate1_3
+        - 0
+        - 0
+        - *id034
+    name: multiply_10
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id033
+      name: flow_convs_time2_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_3
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time2_3
+  - class_name: Multiply
+    config: {name: multiply_11, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time1_4
+        - 0
+        - 0
+        - &id035 {}
+      - - flow_gate1_4
+        - 0
+        - 0
+        - *id035
+    name: multiply_11
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id033
+      name: flow_convs_time2_4
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_4
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time2_4
+  - class_name: Multiply
+    config: {name: multiply_12, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time1_5
+        - 0
+        - 0
+        - &id036 {}
+      - - flow_gate1_5
+        - 0
+        - 0
+        - *id036
+    name: multiply_12
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id033
+      name: flow_convs_time2_5
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_5
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time2_5
+  - class_name: Multiply
+    config: {name: multiply_13, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time1_6
+        - 0
+        - 0
+        - &id037 {}
+      - - flow_gate1_6
+        - 0
+        - 0
+        - *id037
+    name: multiply_13
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id033
+      name: flow_convs_time2_6
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_6
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time2_6
+  - class_name: Multiply
+    config: {name: multiply_14, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time1_7
+        - 0
+        - 0
+        - &id038 {}
+      - - flow_gate1_7
+        - 0
+        - 0
+        - *id038
+    name: multiply_14
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id033
+      name: flow_convs_time2_7
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - flow_volume_input_time_7
+        - 0
+        - 0
+        - {}
+    name: flow_convs_time2_7
+  - class_name: Multiply
+    config: {name: multiply_34, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time1_2_1
+        - 0
+        - 0
+        - &id039 {}
+      - - att_flow_gate1_2_1
+        - 0
+        - 0
+        - *id039
+    name: multiply_34
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id029
+      name: att_flow_convs_time2_2_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_2_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time2_2_1
+  - class_name: Multiply
+    config: {name: multiply_35, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time1_2_2
+        - 0
+        - 0
+        - &id040 {}
+      - - att_flow_gate1_2_2
+        - 0
+        - 0
+        - *id040
+    name: multiply_35
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id029
+      name: att_flow_convs_time2_2_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_2_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time2_2_2
+  - class_name: Multiply
+    config: {name: multiply_36, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time1_2_3
+        - 0
+        - 0
+        - &id041 {}
+      - - att_flow_gate1_2_3
+        - 0
+        - 0
+        - *id041
+    name: multiply_36
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id029
+      name: att_flow_convs_time2_2_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_2_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time2_2_3
+  - class_name: Multiply
+    config: {name: multiply_37, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time1_3_1
+        - 0
+        - 0
+        - &id042 {}
+      - - att_flow_gate1_3_1
+        - 0
+        - 0
+        - *id042
+    name: multiply_37
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id029
+      name: att_flow_convs_time2_3_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_3_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time2_3_1
+  - class_name: Multiply
+    config: {name: multiply_38, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time1_3_2
+        - 0
+        - 0
+        - &id043 {}
+      - - att_flow_gate1_3_2
+        - 0
+        - 0
+        - *id043
+    name: multiply_38
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id029
+      name: att_flow_convs_time2_3_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_3_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time2_3_2
+  - class_name: Multiply
+    config: {name: multiply_39, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time1_3_3
+        - 0
+        - 0
+        - &id044 {}
+      - - att_flow_gate1_3_3
+        - 0
+        - 0
+        - *id044
+    name: multiply_39
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id029
+      name: att_flow_convs_time2_3_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - att_flow_convs_activation_time1_3_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_time2_3_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id045 !!python/tuple [3, 3]
+      name: att_nbhd_convs_time2_1_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_31
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time2_1_1
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time2_1_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time2_1_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time2_1_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id045
+      name: att_nbhd_convs_time2_1_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_32
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time2_1_2
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time2_1_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time2_1_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time2_1_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id045
+      name: att_nbhd_convs_time2_1_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_33
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time2_1_3
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time2_1_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time2_1_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time2_1_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: &id046 !!python/tuple [3, 3]
+      name: nbhd_convs_time2_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_8
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time2_1
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time2_1, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time2_1
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time2_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id046
+      name: nbhd_convs_time2_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_9
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time2_2
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time2_2, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time2_2
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time2_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id046
+      name: nbhd_convs_time2_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_10
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time2_3
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time2_3, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time2_3
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time2_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id046
+      name: nbhd_convs_time2_4
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_11
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time2_4
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time2_4, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time2_4
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time2_4
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id046
+      name: nbhd_convs_time2_5
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_12
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time2_5
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time2_5, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time2_5
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time2_5
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id046
+      name: nbhd_convs_time2_6
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_13
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time2_6
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time2_6, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time2_6
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time2_6
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id046
+      name: nbhd_convs_time2_7
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_14
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_time2_7
+  - class_name: Activation
+    config: {activation: relu, name: flow_convs_activation_time2_7, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_time2_7
+        - 0
+        - 0
+        - {}
+    name: flow_convs_activation_time2_7
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id045
+      name: att_nbhd_convs_time2_2_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_34
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time2_2_1
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time2_2_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time2_2_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time2_2_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id045
+      name: att_nbhd_convs_time2_2_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_35
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time2_2_2
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time2_2_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time2_2_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time2_2_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id045
+      name: att_nbhd_convs_time2_2_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_36
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time2_2_3
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time2_2_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time2_2_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time2_2_3
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id045
+      name: att_nbhd_convs_time2_3_1
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_37
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time2_3_1
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time2_3_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time2_3_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time2_3_1
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id045
+      name: att_nbhd_convs_time2_3_2
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_38
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time2_3_2
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time2_3_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time2_3_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time2_3_2
+  - class_name: Conv2D
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      data_format: channels_last
+      dilation_rate: *id001
+      filters: 64
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      kernel_size: *id045
+      name: att_nbhd_convs_time2_3_3
+      padding: same
+      strides: *id003
+      trainable: true
+      use_bias: true
+    inbound_nodes:
+    - - - multiply_39
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_time2_3_3
+  - class_name: Activation
+    config: {activation: relu, name: att_flow_convs_activation_time2_3_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_time2_3_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_convs_activation_time2_3_3
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time2_1_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time2_1_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time2_1_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate2_1_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time2_1_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate2_1_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time2_1_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time2_1_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time2_1_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate2_1_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time2_1_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate2_1_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time2_1_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time2_1_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time2_1_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate2_1_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time2_1_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate2_1_3
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time2_1, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time2_1
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time2_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate2_1, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time2_1
+        - 0
+        - 0
+        - {}
+    name: flow_gate2_1
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time2_2, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time2_2
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time2_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate2_2, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time2_2
+        - 0
+        - 0
+        - {}
+    name: flow_gate2_2
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time2_3, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time2_3
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time2_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate2_3, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time2_3
+        - 0
+        - 0
+        - {}
+    name: flow_gate2_3
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time2_4, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time2_4
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time2_4
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate2_4, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time2_4
+        - 0
+        - 0
+        - {}
+    name: flow_gate2_4
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time2_5, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time2_5
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time2_5
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate2_5, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time2_5
+        - 0
+        - 0
+        - {}
+    name: flow_gate2_5
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time2_6, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time2_6
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time2_6
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate2_6, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time2_6
+        - 0
+        - 0
+        - {}
+    name: flow_gate2_6
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_convs_activation_time2_7, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_time2_7
+        - 0
+        - 0
+        - {}
+    name: nbhd_convs_activation_time2_7
+  - class_name: Activation
+    config: {activation: sigmoid, name: flow_gate2_7, trainable: true}
+    inbound_nodes:
+    - - - flow_convs_activation_time2_7
+        - 0
+        - 0
+        - {}
+    name: flow_gate2_7
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time2_2_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time2_2_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time2_2_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate2_2_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time2_2_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate2_2_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time2_2_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time2_2_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time2_2_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate2_2_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time2_2_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate2_2_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time2_2_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time2_2_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time2_2_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate2_2_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time2_2_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate2_2_3
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time2_3_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time2_3_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time2_3_1
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate2_3_1, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time2_3_1
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate2_3_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time2_3_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time2_3_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time2_3_2
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate2_3_2, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time2_3_2
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate2_3_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_convs_activation_time2_3_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_time2_3_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_convs_activation_time2_3_3
+  - class_name: Activation
+    config: {activation: sigmoid, name: att_flow_gate2_3_3, trainable: true}
+    inbound_nodes:
+    - - - att_flow_convs_activation_time2_3_3
+        - 0
+        - 0
+        - {}
+    name: att_flow_gate2_3_3
+  - class_name: Multiply
+    config: {name: multiply_40, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time2_1_1
+        - 0
+        - 0
+        - &id047 {}
+      - - att_flow_gate2_1_1
+        - 0
+        - 0
+        - *id047
+    name: multiply_40
+  - class_name: Multiply
+    config: {name: multiply_41, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time2_1_2
+        - 0
+        - 0
+        - &id048 {}
+      - - att_flow_gate2_1_2
+        - 0
+        - 0
+        - *id048
+    name: multiply_41
+  - class_name: Multiply
+    config: {name: multiply_42, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time2_1_3
+        - 0
+        - 0
+        - &id049 {}
+      - - att_flow_gate2_1_3
+        - 0
+        - 0
+        - *id049
+    name: multiply_42
+  - class_name: Multiply
+    config: {name: multiply_15, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time2_1
+        - 0
+        - 0
+        - &id050 {}
+      - - flow_gate2_1
+        - 0
+        - 0
+        - *id050
+    name: multiply_15
+  - class_name: Multiply
+    config: {name: multiply_16, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time2_2
+        - 0
+        - 0
+        - &id051 {}
+      - - flow_gate2_2
+        - 0
+        - 0
+        - *id051
+    name: multiply_16
+  - class_name: Multiply
+    config: {name: multiply_17, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time2_3
+        - 0
+        - 0
+        - &id052 {}
+      - - flow_gate2_3
+        - 0
+        - 0
+        - *id052
+    name: multiply_17
+  - class_name: Multiply
+    config: {name: multiply_18, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time2_4
+        - 0
+        - 0
+        - &id053 {}
+      - - flow_gate2_4
+        - 0
+        - 0
+        - *id053
+    name: multiply_18
+  - class_name: Multiply
+    config: {name: multiply_19, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time2_5
+        - 0
+        - 0
+        - &id054 {}
+      - - flow_gate2_5
+        - 0
+        - 0
+        - *id054
+    name: multiply_19
+  - class_name: Multiply
+    config: {name: multiply_20, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time2_6
+        - 0
+        - 0
+        - &id055 {}
+      - - flow_gate2_6
+        - 0
+        - 0
+        - *id055
+    name: multiply_20
+  - class_name: Multiply
+    config: {name: multiply_21, trainable: true}
+    inbound_nodes:
+    - - - nbhd_convs_activation_time2_7
+        - 0
+        - 0
+        - &id056 {}
+      - - flow_gate2_7
+        - 0
+        - 0
+        - *id056
+    name: multiply_21
+  - class_name: Multiply
+    config: {name: multiply_43, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time2_2_1
+        - 0
+        - 0
+        - &id057 {}
+      - - att_flow_gate2_2_1
+        - 0
+        - 0
+        - *id057
+    name: multiply_43
+  - class_name: Multiply
+    config: {name: multiply_44, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time2_2_2
+        - 0
+        - 0
+        - &id058 {}
+      - - att_flow_gate2_2_2
+        - 0
+        - 0
+        - *id058
+    name: multiply_44
+  - class_name: Multiply
+    config: {name: multiply_45, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time2_2_3
+        - 0
+        - 0
+        - &id059 {}
+      - - att_flow_gate2_2_3
+        - 0
+        - 0
+        - *id059
+    name: multiply_45
+  - class_name: Multiply
+    config: {name: multiply_46, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time2_3_1
+        - 0
+        - 0
+        - &id060 {}
+      - - att_flow_gate2_3_1
+        - 0
+        - 0
+        - *id060
+    name: multiply_46
+  - class_name: Multiply
+    config: {name: multiply_47, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time2_3_2
+        - 0
+        - 0
+        - &id061 {}
+      - - att_flow_gate2_3_2
+        - 0
+        - 0
+        - *id061
+    name: multiply_47
+  - class_name: Multiply
+    config: {name: multiply_48, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_convs_activation_time2_3_3
+        - 0
+        - 0
+        - &id062 {}
+      - - att_flow_gate2_3_3
+        - 0
+        - 0
+        - *id062
+    name: multiply_48
+  - class_name: Flatten
+    config: {name: att_nbhd_flatten_time_1_1, trainable: true}
+    inbound_nodes:
+    - - - multiply_40
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_flatten_time_1_1
+  - class_name: Flatten
+    config: {name: att_nbhd_flatten_time_1_2, trainable: true}
+    inbound_nodes:
+    - - - multiply_41
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_flatten_time_1_2
+  - class_name: Flatten
+    config: {name: att_nbhd_flatten_time_1_3, trainable: true}
+    inbound_nodes:
+    - - - multiply_42
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_flatten_time_1_3
+  - class_name: Flatten
+    config: {name: nbhd_flatten_time_1, trainable: true}
+    inbound_nodes:
+    - - - multiply_15
+        - 0
+        - 0
+        - {}
+    name: nbhd_flatten_time_1
+  - class_name: Flatten
+    config: {name: nbhd_flatten_time_2, trainable: true}
+    inbound_nodes:
+    - - - multiply_16
+        - 0
+        - 0
+        - {}
+    name: nbhd_flatten_time_2
+  - class_name: Flatten
+    config: {name: nbhd_flatten_time_3, trainable: true}
+    inbound_nodes:
+    - - - multiply_17
+        - 0
+        - 0
+        - {}
+    name: nbhd_flatten_time_3
+  - class_name: Flatten
+    config: {name: nbhd_flatten_time_4, trainable: true}
+    inbound_nodes:
+    - - - multiply_18
+        - 0
+        - 0
+        - {}
+    name: nbhd_flatten_time_4
+  - class_name: Flatten
+    config: {name: nbhd_flatten_time_5, trainable: true}
+    inbound_nodes:
+    - - - multiply_19
+        - 0
+        - 0
+        - {}
+    name: nbhd_flatten_time_5
+  - class_name: Flatten
+    config: {name: nbhd_flatten_time_6, trainable: true}
+    inbound_nodes:
+    - - - multiply_20
+        - 0
+        - 0
+        - {}
+    name: nbhd_flatten_time_6
+  - class_name: Flatten
+    config: {name: nbhd_flatten_time_7, trainable: true}
+    inbound_nodes:
+    - - - multiply_21
+        - 0
+        - 0
+        - {}
+    name: nbhd_flatten_time_7
+  - class_name: Flatten
+    config: {name: att_nbhd_flatten_time_2_1, trainable: true}
+    inbound_nodes:
+    - - - multiply_43
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_flatten_time_2_1
+  - class_name: Flatten
+    config: {name: att_nbhd_flatten_time_2_2, trainable: true}
+    inbound_nodes:
+    - - - multiply_44
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_flatten_time_2_2
+  - class_name: Flatten
+    config: {name: att_nbhd_flatten_time_2_3, trainable: true}
+    inbound_nodes:
+    - - - multiply_45
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_flatten_time_2_3
+  - class_name: Flatten
+    config: {name: att_nbhd_flatten_time_3_1, trainable: true}
+    inbound_nodes:
+    - - - multiply_46
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_flatten_time_3_1
+  - class_name: Flatten
+    config: {name: att_nbhd_flatten_time_3_2, trainable: true}
+    inbound_nodes:
+    - - - multiply_47
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_flatten_time_3_2
+  - class_name: Flatten
+    config: {name: att_nbhd_flatten_time_3_3, trainable: true}
+    inbound_nodes:
+    - - - multiply_48
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_flatten_time_3_3
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_nbhd_dense_time_1_1
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_flatten_time_1_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_time_1_1
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_nbhd_dense_time_1_2
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_flatten_time_1_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_time_1_2
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_nbhd_dense_time_1_3
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_flatten_time_1_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_time_1_3
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: nbhd_dense_time_1
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_flatten_time_1
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_time_1
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: nbhd_dense_time_2
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_flatten_time_2
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_time_2
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: nbhd_dense_time_3
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_flatten_time_3
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_time_3
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: nbhd_dense_time_4
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_flatten_time_4
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_time_4
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: nbhd_dense_time_5
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_flatten_time_5
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_time_5
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: nbhd_dense_time_6
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_flatten_time_6
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_time_6
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: nbhd_dense_time_7
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - nbhd_flatten_time_7
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_time_7
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_nbhd_dense_time_2_1
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_flatten_time_2_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_time_2_1
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_nbhd_dense_time_2_2
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_flatten_time_2_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_time_2_2
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_nbhd_dense_time_2_3
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_flatten_time_2_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_time_2_3
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_nbhd_dense_time_3_1
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_flatten_time_3_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_time_3_1
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_nbhd_dense_time_3_2
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_flatten_time_3_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_time_3_2
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_nbhd_dense_time_3_3
+      trainable: true
+      units: 128
+      use_bias: true
+    inbound_nodes:
+    - - - att_nbhd_flatten_time_3_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_time_3_3
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_dense_activation_time_1_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_time_1_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_activation_time_1_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_dense_activation_time_1_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_time_1_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_activation_time_1_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_dense_activation_time_1_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_time_1_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_activation_time_1_3
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_dense_activation_time_1, trainable: true}
+    inbound_nodes:
+    - - - nbhd_dense_time_1
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_activation_time_1
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_dense_activation_time_2, trainable: true}
+    inbound_nodes:
+    - - - nbhd_dense_time_2
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_activation_time_2
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_dense_activation_time_3, trainable: true}
+    inbound_nodes:
+    - - - nbhd_dense_time_3
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_activation_time_3
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_dense_activation_time_4, trainable: true}
+    inbound_nodes:
+    - - - nbhd_dense_time_4
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_activation_time_4
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_dense_activation_time_5, trainable: true}
+    inbound_nodes:
+    - - - nbhd_dense_time_5
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_activation_time_5
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_dense_activation_time_6, trainable: true}
+    inbound_nodes:
+    - - - nbhd_dense_time_6
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_activation_time_6
+  - class_name: Activation
+    config: {activation: relu, name: nbhd_dense_activation_time_7, trainable: true}
+    inbound_nodes:
+    - - - nbhd_dense_time_7
+        - 0
+        - 0
+        - {}
+    name: nbhd_dense_activation_time_7
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_dense_activation_time_2_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_time_2_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_activation_time_2_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_dense_activation_time_2_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_time_2_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_activation_time_2_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_dense_activation_time_2_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_time_2_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_activation_time_2_3
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_dense_activation_time_3_1, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_time_3_1
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_activation_time_3_1
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_dense_activation_time_3_2, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_time_3_2
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_activation_time_3_2
+  - class_name: Activation
+    config: {activation: relu, name: att_nbhd_dense_activation_time_3_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_time_3_3
+        - 0
+        - 0
+        - {}
+    name: att_nbhd_dense_activation_time_3_3
+  - class_name: Concatenate
+    config: {axis: -1, name: concatenate_3, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_activation_time_1_1
+        - 0
+        - 0
+        - &id063 {}
+      - - att_nbhd_dense_activation_time_1_2
+        - 0
+        - 0
+        - *id063
+      - - att_nbhd_dense_activation_time_1_3
+        - 0
+        - 0
+        - *id063
+    name: concatenate_3
+  - class_name: Concatenate
+    config: {axis: -1, name: concatenate_1, trainable: true}
+    inbound_nodes:
+    - - - nbhd_dense_activation_time_1
+        - 0
+        - 0
+        - &id064 {}
+      - - nbhd_dense_activation_time_2
+        - 0
+        - 0
+        - *id064
+      - - nbhd_dense_activation_time_3
+        - 0
+        - 0
+        - *id064
+      - - nbhd_dense_activation_time_4
+        - 0
+        - 0
+        - *id064
+      - - nbhd_dense_activation_time_5
+        - 0
+        - 0
+        - *id064
+      - - nbhd_dense_activation_time_6
+        - 0
+        - 0
+        - *id064
+      - - nbhd_dense_activation_time_7
+        - 0
+        - 0
+        - *id064
+    name: concatenate_1
+  - class_name: Concatenate
+    config: {axis: -1, name: concatenate_4, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_activation_time_2_1
+        - 0
+        - 0
+        - &id065 {}
+      - - att_nbhd_dense_activation_time_2_2
+        - 0
+        - 0
+        - *id065
+      - - att_nbhd_dense_activation_time_2_3
+        - 0
+        - 0
+        - *id065
+    name: concatenate_4
+  - class_name: Concatenate
+    config: {axis: -1, name: concatenate_5, trainable: true}
+    inbound_nodes:
+    - - - att_nbhd_dense_activation_time_3_1
+        - 0
+        - 0
+        - &id066 {}
+      - - att_nbhd_dense_activation_time_3_2
+        - 0
+        - 0
+        - *id066
+      - - att_nbhd_dense_activation_time_3_3
+        - 0
+        - 0
+        - *id066
+    name: concatenate_5
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 3, 160]
+      dtype: float32
+      name: att_lstm_input_1
+      sparse: false
+    inbound_nodes: []
+    name: att_lstm_input_1
+  - class_name: Reshape
+    config:
+      name: reshape_2
+      target_shape: !!python/tuple [3, 128]
+      trainable: true
+    inbound_nodes:
+    - - - concatenate_3
+        - 0
+        - 0
+        - {}
+    name: reshape_2
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 7, 160]
+      dtype: float32
+      name: lstm_input
+      sparse: false
+    inbound_nodes: []
+    name: lstm_input
+  - class_name: Reshape
+    config:
+      name: reshape_1
+      target_shape: !!python/tuple [7, 128]
+      trainable: true
+    inbound_nodes:
+    - - - concatenate_1
+        - 0
+        - 0
+        - {}
+    name: reshape_1
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 3, 160]
+      dtype: float32
+      name: att_lstm_input_2
+      sparse: false
+    inbound_nodes: []
+    name: att_lstm_input_2
+  - class_name: Reshape
+    config:
+      name: reshape_3
+      target_shape: !!python/tuple [3, 128]
+      trainable: true
+    inbound_nodes:
+    - - - concatenate_4
+        - 0
+        - 0
+        - {}
+    name: reshape_3
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 3, 160]
+      dtype: float32
+      name: att_lstm_input_3
+      sparse: false
+    inbound_nodes: []
+    name: att_lstm_input_3
+  - class_name: Reshape
+    config:
+      name: reshape_4
+      target_shape: !!python/tuple [3, 128]
+      trainable: true
+    inbound_nodes:
+    - - - concatenate_5
+        - 0
+        - 0
+        - {}
+    name: reshape_4
+  - class_name: Concatenate
+    config: {axis: -1, name: concatenate_6, trainable: true}
+    inbound_nodes:
+    - - - att_lstm_input_1
+        - 0
+        - 0
+        - &id067 {}
+      - - reshape_2
+        - 0
+        - 0
+        - *id067
+    name: concatenate_6
+  - class_name: Concatenate
+    config: {axis: -1, name: concatenate_2, trainable: true}
+    inbound_nodes:
+    - - - lstm_input
+        - 0
+        - 0
+        - &id068 {}
+      - - reshape_1
+        - 0
+        - 0
+        - *id068
+    name: concatenate_2
+  - class_name: Concatenate
+    config: {axis: -1, name: concatenate_7, trainable: true}
+    inbound_nodes:
+    - - - att_lstm_input_2
+        - 0
+        - 0
+        - &id069 {}
+      - - reshape_3
+        - 0
+        - 0
+        - *id069
+    name: concatenate_7
+  - class_name: Concatenate
+    config: {axis: -1, name: concatenate_8, trainable: true}
+    inbound_nodes:
+    - - - att_lstm_input_3
+        - 0
+        - 0
+        - &id070 {}
+      - - reshape_4
+        - 0
+        - 0
+        - *id070
+    name: concatenate_8
+  - class_name: LSTM
+    config:
+      activation: tanh
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      dropout: 0.1
+      go_backwards: false
+      implementation: 0
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_lstm_1
+      recurrent_activation: hard_sigmoid
+      recurrent_constraint: null
+      recurrent_dropout: 0.1
+      recurrent_initializer:
+        class_name: Orthogonal
+        config: {gain: 1.0, seed: null}
+      recurrent_regularizer: null
+      return_sequences: true
+      return_state: false
+      stateful: false
+      trainable: true
+      unit_forget_bias: true
+      units: 128
+      unroll: false
+      use_bias: true
+    inbound_nodes:
+    - - - concatenate_6
+        - 0
+        - 0
+        - {}
+    name: att_lstm_1
+  - class_name: LSTM
+    config:
+      activation: tanh
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      dropout: 0.1
+      go_backwards: false
+      implementation: 0
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: lstm_1
+      recurrent_activation: hard_sigmoid
+      recurrent_constraint: null
+      recurrent_dropout: 0.1
+      recurrent_initializer:
+        class_name: Orthogonal
+        config: {gain: 1.0, seed: null}
+      recurrent_regularizer: null
+      return_sequences: false
+      return_state: false
+      stateful: false
+      trainable: true
+      unit_forget_bias: true
+      units: 128
+      unroll: false
+      use_bias: true
+    inbound_nodes:
+    - - - concatenate_2
+        - 0
+        - 0
+        - {}
+    name: lstm_1
+  - class_name: LSTM
+    config:
+      activation: tanh
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      dropout: 0.1
+      go_backwards: false
+      implementation: 0
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_lstm_2
+      recurrent_activation: hard_sigmoid
+      recurrent_constraint: null
+      recurrent_dropout: 0.1
+      recurrent_initializer:
+        class_name: Orthogonal
+        config: {gain: 1.0, seed: null}
+      recurrent_regularizer: null
+      return_sequences: true
+      return_state: false
+      stateful: false
+      trainable: true
+      unit_forget_bias: true
+      units: 128
+      unroll: false
+      use_bias: true
+    inbound_nodes:
+    - - - concatenate_7
+        - 0
+        - 0
+        - {}
+    name: att_lstm_2
+  - class_name: LSTM
+    config:
+      activation: tanh
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      dropout: 0.1
+      go_backwards: false
+      implementation: 0
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: att_lstm_3
+      recurrent_activation: hard_sigmoid
+      recurrent_constraint: null
+      recurrent_dropout: 0.1
+      recurrent_initializer:
+        class_name: Orthogonal
+        config: {gain: 1.0, seed: null}
+      recurrent_regularizer: null
+      return_sequences: true
+      return_state: false
+      stateful: false
+      trainable: true
+      unit_forget_bias: true
+      units: 128
+      unroll: false
+      use_bias: true
+    inbound_nodes:
+    - - - concatenate_8
+        - 0
+        - 0
+        - {}
+    name: att_lstm_3
+  - class_name: Attention
+    config: {name: attention_1, trainable: true}
+    inbound_nodes:
+    - - - att_lstm_1
+        - 0
+        - 0
+        - &id071 {}
+      - - lstm_1
+        - 0
+        - 0
+        - *id071
+    name: attention_1
+  - class_name: Attention
+    config: {name: attention_2, trainable: true}
+    inbound_nodes:
+    - - - att_lstm_2
+        - 0
+        - 0
+        - &id072 {}
+      - - lstm_1
+        - 0
+        - 0
+        - *id072
+    name: attention_2
+  - class_name: Attention
+    config: {name: attention_3, trainable: true}
+    inbound_nodes:
+    - - - att_lstm_3
+        - 0
+        - 0
+        - &id073 {}
+      - - lstm_1
+        - 0
+        - 0
+        - *id073
+    name: attention_3
+  - class_name: Concatenate
+    config: {axis: -1, name: concatenate_9, trainable: true}
+    inbound_nodes:
+    - - - attention_1
+        - 0
+        - 0
+        - &id074 {}
+      - - attention_2
+        - 0
+        - 0
+        - *id074
+      - - attention_3
+        - 0
+        - 0
+        - *id074
+    name: concatenate_9
+  - class_name: Reshape
+    config:
+      name: reshape_5
+      target_shape: !!python/tuple [3, 128]
+      trainable: true
+    inbound_nodes:
+    - - - concatenate_9
+        - 0
+        - 0
+        - {}
+    name: reshape_5
+  - class_name: LSTM
+    config:
+      activation: tanh
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      dropout: 0.1
+      go_backwards: false
+      implementation: 0
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: lstm_2
+      recurrent_activation: hard_sigmoid
+      recurrent_constraint: null
+      recurrent_dropout: 0.1
+      recurrent_initializer:
+        class_name: Orthogonal
+        config: {gain: 1.0, seed: null}
+      recurrent_regularizer: null
+      return_sequences: false
+      return_state: false
+      stateful: false
+      trainable: true
+      unit_forget_bias: true
+      units: 128
+      unroll: false
+      use_bias: true
+    inbound_nodes:
+    - - - reshape_5
+        - 0
+        - 0
+        - {}
+    name: lstm_2
+  - class_name: Concatenate
+    config: {axis: -1, name: concatenate_10, trainable: true}
+    inbound_nodes:
+    - - - lstm_2
+        - 0
+        - 0
+        - &id075 {}
+      - - lstm_1
+        - 0
+        - 0
+        - *id075
+    name: concatenate_10
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_1
+      trainable: true
+      units: 2
+      use_bias: true
+    inbound_nodes:
+    - - - concatenate_10
+        - 0
+        - 0
+        - {}
+    name: dense_1
+  - class_name: Activation
+    config: {activation: tanh, name: activation_1, trainable: true}
+    inbound_nodes:
+    - - - dense_1
+        - 0
+        - 0
+        - {}
+    name: activation_1
+  name: model_1
+  output_layers:
+  - [activation_1, 0, 0]
+keras_version: 2.0.8
