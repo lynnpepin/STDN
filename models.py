@@ -36,10 +36,17 @@ class models:
              optimizer      = 'adagrad',
              loss           = 'mse',
              metrics        = []):
-        
+        """
+        Returns a Keras model (STDN).
+        Usage:
+            >>> import models
+            >>> modeler = models.models()
+            >>> my_model = modeler.stdn(...)
+        """
         DEBUG = True
         if DEBUG:
-            print("Creating STDN with parameters:",att_lstm_num,
+            print("  Model: Creating STDN with parameters:",
+                      att_lstm_num,
                       att_lstm_seq_len,
                       lstm_seq_len,
                       feature_vec_len,
@@ -53,7 +60,8 @@ class models:
                       output_shape,
                       optimizer,
                       loss,
-                      metrics)
+                      metrics,"\n")
+        
         flatten_att_nbhd_inputs = [Input(shape = (nbhd_size, nbhd_size, nbhd_type,), name = "att_nbhd_volume_input_time_{0}_{1}".format(att+1, ts+1))
                                    for ts in range(att_lstm_seq_len)
                                    for att in range(att_lstm_num)]

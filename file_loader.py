@@ -46,6 +46,12 @@ class file_loader:
             self.isFlowLoaded   = True
             self.isVolumeLoaded = True
 
+        elif datatype == "tiny2":
+            data = self.volume_tiny = np.load("data/volume_tiny2.npz")['arr_0'] / 1289.0 # np.max(), as the above
+            flow_data = np.load("data/flow_tiny2.npz")['arr_0']/173.0 # np.max(), as the above
+            self.isFlowLoaded   = True
+            self.isVolumeLoaded = True
+
         else:
             print("Please select **train** or **test**")
             print("Or, the cool and new test subset, **tiny**")
@@ -77,8 +83,8 @@ class file_loader:
         volume_type = data.shape[-1]
 
         for t in range(time_start, time_end):
-            if t%100 == 0:
-                print("Now sampling at {0} timeslots.".format(t))
+            if t%10 == 0:
+                print("  Now sampling at {0} timeslots.".format(t))
             for x in range(data.shape[1]):
                 for y in range(data.shape[2]):
                     #sample common (short-term) lstm
@@ -249,5 +255,5 @@ class file_loader:
             flow_features[i] = np.array(flow_features[i])
         short_term_lstm_features = np.array(short_term_lstm_features)
         labels = np.array(labels)
-
+        print("  Finished sampling from data.")
         return output_cnn_att_features, output_flow_att_features, lstm_att_features, cnn_features, flow_features, short_term_lstm_features, labels
