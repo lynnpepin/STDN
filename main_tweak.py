@@ -26,10 +26,14 @@ if len(sys.argv) == 3:
         gpu_num = "0"
     import os
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+    ## Issue #152? Is that Keras or Tensorflow? I think it's Tensorflow
+    # https://github.com/tensorflow/tensorflow/issues/152
+    # https://github.com/keras-team/keras/issues/152
     os.environ["CUDA_VISIBLE_DEVICES"] = gpu_num
     print("\n***** Selecting gpu {0}".format(gpu_num))
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
+# allow_growth - see https://www.tensorflow.org/programmers_guide/using_gpu
 set_session(tf.Session(config=config))
 
 from keras import backend as K
