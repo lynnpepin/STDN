@@ -3,6 +3,8 @@
 # Remember to undo the comment-out you placed below
 
 DEBUG = False
+VERBOSE = True
+V = VERBOSE
 
 import models
 import file_loader
@@ -91,7 +93,7 @@ def eval_lstm(y, pred_y, threshold):
     return (avg_pickup_rmse, avg_pickup_mape), (avg_dropoff_rmse, avg_dropoff_mape)
 
 def print_time():
-    print("Timestamp:", datetime.datetime.now().strftime("%Y/%m/%d, %H:%M:%S"))
+    if V: print("Timestamp:", datetime.datetime.now().strftime("%Y/%m/%d, %H:%M:%S"))
 
 def main(
         att_lstm_num            = 3,
@@ -126,7 +128,7 @@ def main(
     if model_name[2:] == "stdn":    #e.g. 'python3 main_tweak.py --stdn';
         #training
         # Step 1. Create training dataset from raw data
-        print("Sampling data.")
+        if V: print("Sampling data.")
         att_cnnx, att_flow, att_x, cnnx, flow, x, y = \
                 sampler.sample_stdn(datatype                = "tiny", # tiny, test, train; See file_loader.py, file_loader.sample_stdn() 
                                     att_lstm_num            = att_lstm_num,
@@ -137,7 +139,7 @@ def main(
         print_time()
         
         # Step 2. Compile model architecture
-        print("Creating model {0} with input shape {2} / {1}".format(model_name[2:], x.shape, cnnx[0].shape))
+        if V: print("Creating model {0} with input shape {2} / {1}".format(model_name[2:], x.shape, cnnx[0].shape))
 
         model = modeler.stdn(att_lstm_num     = att_lstm_num,           #3
                              att_lstm_seq_len = long_term_lstm_seq_len, #3
@@ -147,9 +149,9 @@ def main(
                              nbhd_size        = cnnx[0].shape[1],       #7
                              nbhd_type        = cnnx[0].shape[-1])      #2
         
-        print("\nModel created.")
+        if V: print("\nModel created.")
         print_time()
-        print("Start training {0} with input shape {2} / {1}\n".format(model_name[2:], x.shape, cnnx[0].shape))
+        if V: print("Start training {0} with input shape {2} / {1}\n".format(model_name[2:], x.shape, cnnx[0].shape))
         if DEBUG:
             print("\nEnter debug!\nIf you don't want this, set DEBUG=False in main_tweak.py.")
             import code
@@ -167,7 +169,7 @@ def main(
                   epochs           = 1,
                   callbacks        = [early_stop]
                  )
-        print("\nModel fit complete. Starting sampling of test data for evaluation.")
+        if V: print("\nModel fit complete. Starting sampling of test data for evaluation.")
         print_time()
 
         if DEBUG:
@@ -192,22 +194,22 @@ def main(
                                                                           nbhd_size     = nbhd_size,
                                                                           cnn_nbhd_size = cnn_nbhd_size)
         print_time()
-        print("Starting evaluation.")
+        if V: print("Starting evaluation.")
         y_pred = model.predict(x = att_cnnx + att_flow + att_x + cnnx + flow + [x,],)
         threshold = float(sampler.threshold) / sampler.config["volume_train_max"]
         print("  Evaluating threshold: {0}.".format(threshold))
         (prmse, pmape), (drmse, dmape) = eval_lstm(y, y_pred, threshold)
         print("  Test on model {0}:\npickup rmse = {1}, pickup mape = {2}%\n  dropoff rmse = {3}, dropoff mape = {4}%".format(model_name[2:], prmse, pmape*100, drmse, dmape*100))
-        print("\nScore:", model.evaluate(att_cnnx + att_flow + att_x + cnnx + flow + [x,], y))
+        if V: print("\nScore:", model.evaluate(att_cnnx + att_flow + att_x + cnnx + flow + [x,], y))
         
-        print("\nEvaluation finished. Saving model.")
+        if V: print("\nEvaluation finished. Saving model.")
         print_time()
         # Step 5: Save model
         # This method replaces the .save()]
         currTime = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         model_filename = model_hdf5_path + model_name[2:] + currTime + "_weights"
         model.save_weights(model_filename + ".hdf5")
-        print("Model saved to " + model_filename + ".hdf5", sep='')
+        if V: print("Model saved to " + model_filename + ".hdf5", sep='')
         # To load model, reinitialize using models.models().stdn(), and then use load_weights('model_filename.hdf5')
         return
 
@@ -224,16 +226,15 @@ batch_size = 64
 max_epochs = 1000
 
 if __name__ == "__main__":
-    print("\n\n####################")
+    if V: print("\n\n####################")
     print("Starting main_tweak.py")
     print_time()
-    print("####################\n")
-    print_time()
+    if V: print("####################\n")
     main(batch_size= batch_size,
          max_epochs= max_epochs,
          early_stop= stop
         )
-    print("\n####################")
-    print("All done!")
+    if V: print("\n####################")
+    if V: print("All done!")
     print_time()
-    print("####################\n\n")
+    if V: print("####################\n\n")
