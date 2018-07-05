@@ -38,3 +38,9 @@ flow = flow_data['flow'][:,:500,:,:,:,:]
 np.savez("data/volume_tiny.npz", volume)
 np.savez("data/flow_tiny.npz", flow)
 
+exit()
+
+# Quick copy-paste for loading data, flow_data in interpreter
+import numpy as np; from sys import getsizeof as sz
+data = np.load("data/volume_tiny.npz")['arr_0']
+flow_data = np.load("data/flow_tiny.npz")['arr_0']

@@ -21,10 +21,10 @@ class models:
         pass
     
     def stdn(self,
-             att_lstm_num,
-             att_lstm_seq_len,
-             lstm_seq_len,
-             feature_vec_len,
+             att_lstm_num, #3
+             att_lstm_seq_len, #3
+             lstm_seq_len, #7
+             feature_vec_len, #160
              cnn_flat_size  = 128,
              lstm_out_size  = 128,
              nbhd_size      = 3,

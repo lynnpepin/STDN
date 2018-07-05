@@ -137,9 +137,9 @@ def main(
         # It is unnecessary to 
         
         # TODO: Remove these changes below
-        #print("Enter debug!")
-        #import code
-        #code.interact(local=locals())
+        print("Enter debug!")
+        import code
+        code.interact(local=locals())
         #from keras.utils import plot_model
         #plot_model(model, to_file='model_vis_full.png')
         #quit()

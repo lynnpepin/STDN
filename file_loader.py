@@ -15,7 +15,7 @@ class file_loader:
 
     def load_flow(self):
         # TODO: Commented out these np.load lines when using the smaller dataset.
-        # TODO: Why are they both even loaded?
+        # TODO: Why are they both even loaded? Modify the code below.
         #self.flow_train     = np.load(open(self.config["flow_train"], "rb"))["flow"] / self.config["flow_train_max"]
         #self.flow_test      = np.load(open(self.config["flow_test"], "rb"))["flow"] / self.config["flow_train_max"]
         # Tiny dataset generated in data_subset_script.py
@@ -113,10 +113,10 @@ class file_loader:
                                             cnn_nbhd_y - (y - cnn_nbhd_size), :] = data[real_t, cnn_nbhd_x, cnn_nbhd_y, :]
                         cnn_features[seqn].append(cnn_feature)
                         
-                        #flow features, 4 type
-                        flow_feature_curr_out = flow_data[0, real_t, x, y, :, :]
-                        flow_feature_curr_in = flow_data[0, real_t, :, :, x, y]
-                        flow_feature_last_out_to_curr = flow_data[1, real_t - 1, x, y, :, :]
+                        #flow features, 4 types
+                        flow_feature_curr_out          = flow_data[0, real_t,     x, y, :, :]
+                        flow_feature_curr_in           = flow_data[0, real_t,     :, :, x, y]
+                        flow_feature_last_out_to_curr  = flow_data[1, real_t - 1, x, y, :, :]
                         #real_t - 1 is the time for in flow in longflow1
                         flow_feature_curr_in_from_last = flow_data[1, real_t - 1, :, :, x, y]
                         
