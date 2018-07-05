@@ -2,6 +2,8 @@
 # (So I can tweak and play around with the model!)
 # Remember to undo the comment-out you placed below
 
+DEBUG = True
+
 import models
 import file_loader
 import pickle
@@ -126,27 +128,24 @@ def main(
         
         print("Creating model {0} with input shape {2} / {1}".format(model_name[2:], x.shape, cnnx[0].shape))
 
-        model = modeler.stdn(att_lstm_num = att_lstm_num, #3
+        model = modeler.stdn(att_lstm_num     = att_lstm_num,           #3
                              att_lstm_seq_len = long_term_lstm_seq_len, #3
-                             lstm_seq_len = len(cnnx), #7
-                             feature_vec_len = x.shape[-1], #160
-                             cnn_flat_size = cnn_flat_size, #128
-                             nbhd_size = cnnx[0].shape[1], #7
-                             nbhd_type = cnnx[0].shape[-1]) #2
-        # The above numbers in comments derived from the dataset;
-        # It is unnecessary to 
-        
-        # TODO: Remove these changes below
-        print("Enter debug!")
-        import code
-        code.interact(local=locals())
-        #from keras.utils import plot_model
-        #plot_model(model, to_file='model_vis_full.png')
-        #quit()
+                             lstm_seq_len     = len(cnnx),              #7
+                             feature_vec_len  = x.shape[-1],            #160
+                             cnn_flat_size    = cnn_flat_size,          #128
+                             nbhd_size        = cnnx[0].shape[1],       #7
+                             nbhd_type        = cnnx[0].shape[-1])      #2
+        # The above numbers are the values of the parameters that end up getting passed,
+        # as derived from the dataset
         
         print("Start training {0} with input shape {2} / {1}".format(model_name[2:], x.shape, cnnx[0].shape))
-
-        '''
+        
+        if DEBUG:
+            print("Enter debug!\nAre you *sure* you want to do training?\n")
+            import code
+            code.interact(local=locals())
+        
+        
         model.fit(x                =att_cnnx + att_flow + att_x + cnnx + flow + [x,],
                   y                =y,
                   batch_size       = batch_size,
@@ -163,7 +162,7 @@ def main(
         print("Evaluating threshold: {0}.".format(threshold))
         (prmse, pmape), (drmse, dmape) = eval_lstm(y, y_pred, threshold)
         print("Test on model {0}:\npickup rmse = {1}, pickup mape = {2}%\ndropoff rmse = {3}, dropoff mape = {4}%".format(model_name[2:], prmse, pmape*100, drmse, dmape*100))
-        '''
+        
         
         currTime = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         model.save(model_hdf5_path + model_name[2:] + currTime + ".hdf5")

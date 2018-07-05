@@ -13,23 +13,6 @@ class file_loader:
         self.isFlowLoaded       = False
 
 
-    def load_flow(self):
-        # TODO: Commented out these np.load lines when using the smaller dataset.
-        # TODO: Why are they both even loaded? Modify the code below.
-        #self.flow_train     = np.load(open(self.config["flow_train"], "rb"))["flow"] / self.config["flow_train_max"]
-        #self.flow_test      = np.load(open(self.config["flow_test"], "rb"))["flow"] / self.config["flow_train_max"]
-        # Tiny dataset generated in data_subset_script.py
-        self.flow_tiny = np.load("data/flow_tiny.npz")['arr_0']/173.0 # np.max(), as the above
-        self.isFlowLoaded   = True
-
-    def load_volume(self):
-        # shape (timeslot_num, x_num, y_num, type=2)
-        #self.volume_train   = np.load(open(self.config["volume_train"], "rb"))["volume"] / self.config["volume_train_max"]
-        #self.volume_test    = np.load(open(self.config["volume_test"], "rb"))["volume"] / self.config["volume_train_max"]
-        # Tiny dataset generated in data_subset_script.py
-        self.volume_tiny = np.load("data/volume_tiny.npz")['arr_0'] / 1289.0 # np.max(), as the above
-        self.isVolumeLoaded = True
-
     #this function nbhd for cnn, and features for lstm, based on attention model
     def sample_stdn(self,
                     datatype,
@@ -40,25 +23,29 @@ class file_loader:
                     last_feature_num        = 48,
                     nbhd_size               = 1,
                     cnn_nbhd_size           = 3):
-        if self.isVolumeLoaded is False:
-            self.load_volume()
-
-        if self.isFlowLoaded is False:
-            self.load_flow()
 
         if long_term_lstm_seq_len % 2 != 1:
             print("Att-lstm seq_len must be odd!")
             raise Exception
 
         if datatype == "train":
-            data = self.volume_train
-            flow_data = self.flow_train
+            data = np.load(open(self.config["volume_train"], "rb"))["volume"] / self.config["volume_train_max"]
+            flow_data = np.load(open(self.config["flow_train"], "rb"))["flow"] / self.config["flow_train_max"]
+            self.isFlowLoaded   = True
+            self.isVolumeLoaded = True
+
         elif datatype == "test":
-            data = self.volume_test
-            flow_data = self.flow_test
+            data = np.load(open(self.config["volume_test"], "rb"))["volume"] / self.config["volume_train_max"]
+            flow_data = np.load(open(self.config["flow_test"], "rb"))["flow"] / self.config["flow_train_max"]
+            self.isFlowLoaded   = True
+            self.isVolumeLoaded = True
+
         elif datatype == "tiny":
-            data = self.volume_tiny
-            flow_data = self.flow_tiny
+            data = self.volume_tiny = np.load("data/volume_tiny.npz")['arr_0'] / 1289.0 # np.max(), as the above
+            flow_data = np.load("data/flow_tiny.npz")['arr_0']/173.0 # np.max(), as the above
+            self.isFlowLoaded   = True
+            self.isVolumeLoaded = True
+
         else:
             print("Please select **train** or **test**")
             print("Or, the cool and new test subset, **tiny**")
