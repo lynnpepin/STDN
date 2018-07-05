@@ -36,6 +36,24 @@ class models:
              optimizer      = 'adagrad',
              loss           = 'mse',
              metrics        = []):
+        
+        DEBUG = True
+        if DEBUG:
+            print("Creating STDN with parameters:",att_lstm_num,
+                      att_lstm_seq_len,
+                      lstm_seq_len,
+                      feature_vec_len,
+                      cnn_flat_size,
+                      lstm_out_size,
+                      nbhd_size,
+                      nbhd_type,
+                      map_x_num,
+                      map_y_num,
+                      flow_type,
+                      output_shape,
+                      optimizer,
+                      loss,
+                      metrics)
         flatten_att_nbhd_inputs = [Input(shape = (nbhd_size, nbhd_size, nbhd_type,), name = "att_nbhd_volume_input_time_{0}_{1}".format(att+1, ts+1))
                                    for ts in range(att_lstm_seq_len)
                                    for att in range(att_lstm_num)]

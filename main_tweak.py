@@ -119,7 +119,6 @@ def main(
         #training
         att_cnnx, att_flow, att_x, cnnx, flow, x, y = \
                 sampler.sample_stdn(datatype                = "tiny",
-                #sampler.sample_stdn(datatype                = "train", #TODO: Put back to 'train'
                                     att_lstm_num            = att_lstm_num,
                                     long_term_lstm_seq_len  = long_term_lstm_seq_len,
                                     short_term_lstm_seq_len = short_term_lstm_seq_len,
