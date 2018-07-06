@@ -18,6 +18,7 @@ Running Steps
   - Create "data" folder in the same folder (stdn/data/)
   - Create "hdf5s" folder for logs (if not exist) (stdn/hdf5s/)
   - Download and extract all data files (*.npz) from data.zip and put them in "data" folder (stdn/data/*.npz)
+  - *New step*: Run data_subset_scripy.py to create the tiny.npz and tiny2.npz subsets for rapid experimentation (if desired.)
   - Open terminal in the same folder (stdn/)
   - Run with "python main.py --stdn" for NYC taxi dataset, or "python main_bike.py --stdn" for NYC bike dataset
   - Check the output results (RMSE and MAPE). Models are saved to "hdf5s" folder for further use.
