@@ -38,6 +38,15 @@ flow = flow_data['flow'][:,:500,:,:,:,:]
 np.savez("data/volume_tiny.npz", volume)
 np.savez("data/flow_tiny.npz", flow)
 
+data = np.load("data/volume_train.npz")
+flow_data = np.load("data/flow_train.npz")
+
+volume = data['volume'][:500,:,:,:]
+flow = flow_data['flow'][:,:500,:,:,:,:]
+
+np.savez("data/volume_tiny2.npz", volume)
+np.savez("data/flow_tiny2.npz", flow)
+
 exit()
 
 # Quick copy-paste for loading data, flow_data in interpreter

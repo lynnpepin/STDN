@@ -1,0 +1,4 @@
+data/*
+hdf5s/*
+.idea*
+__pycache__*
