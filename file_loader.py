@@ -47,8 +47,8 @@ class file_loader:
             self.isVolumeLoaded = True
 
         elif datatype == "tiny2":
-            data = self.volume_tiny = np.load("data/volume_tiny2.npz")['arr_0'] / 1289.0 # np.max(), as the above
-            flow_data = np.load("data/flow_tiny2.npz")['arr_0']/173.0 # np.max(), as the above
+            data = self.volume_tiny = np.load("data/volume_tiny2.npz")['arr_0'] / 1283.0 # np.max(), as the above
+            flow_data = np.load("data/flow_tiny2.npz")['arr_0']/110.0 # np.max(), as the above
             self.isFlowLoaded   = True
             self.isVolumeLoaded = True
 
