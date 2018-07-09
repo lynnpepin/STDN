@@ -12,7 +12,6 @@ import gc
 import tensorflow as tf
 import keras
 from keras.backend.tensorflow_backend import set_session
-
 from keras import backend as K
 from keras.models import Model, Sequential, load_model
 from keras.layers import Dense, Activation, concatenate, Input, Conv2D, Reshape, Flatten, Dropout, BatchNormalization, Concatenate
@@ -46,6 +45,16 @@ class CustomStopper(keras.callbacks.EarlyStopping):
         if epoch > self.start_epoch:
             super().on_epoch_end(epoch, logs)
 
+
+stop = CustomStopper(monitor    = 'val_loss',
+                     min_delta  = 0,
+                     patience   = 5,
+                     verbose    = 0,
+                     mode       = 'min',
+                     start_epoch= 1)
+                     #start_epoch= 40)
+
+
 def eval_together(y, pred_y, threshold):
     mask = y > threshold
     if np.sum(mask)==0:
@@ -54,6 +63,7 @@ def eval_together(y, pred_y, threshold):
     rmse = np.sqrt(np.mean(np.square(y[mask]-pred_y[mask])))
 
     return rmse, mape
+
 
 def eval_lstm(y, pred_y, threshold):
     pickup_y        = y[:, 0]
@@ -73,8 +83,10 @@ def eval_lstm(y, pred_y, threshold):
 
     return (avg_pickup_rmse, avg_pickup_mape), (avg_dropoff_rmse, avg_dropoff_mape)
 
+
 def print_time():
     print("Timestamp:", datetime.datetime.now().strftime("%Y/%m/%d, %H:%M:%S"))
+
 
 def main(
         att_lstm_num            = 3,
@@ -94,15 +106,13 @@ def main(
     ):
     """
     Samples raw data (from /data/*.npz files) to create training data for model,
-    defines and compiles model,
-    trains model,
-    then saves it.
+    defines and compiles model, loads weights from model_filename if present,
+    trains model with batch_size for max_epochs, then saves it to save_filename.
     """
     model_hdf5_path = "./hdf5s/"
     sampler = file_loader.file_loader()
     modeler = models.models()
 
-    #training
     # Step 1. Create training dataset from raw data
     if V: print("Sampling data.")
     att_cnnx, att_flow, att_x, cnnx, flow, x, y = \
@@ -112,11 +122,11 @@ def main(
                                 short_term_lstm_seq_len = short_term_lstm_seq_len,
                                 nbhd_size               = nbhd_size,
                                 cnn_nbhd_size           = cnn_nbhd_size)
-    print_time()
+    if V: print_time()
     
     
     # Step 2. Compile model architecture
-    if V: print("Creating model with input shape {1} / {0}".format(x.shape, cnnx[0].shape))
+    if V: print("Creating model with input shape", x.shape"/" cnnx[0].shape))
 
     model = modeler.stdn(att_lstm_num     = att_lstm_num,           #3
                          att_lstm_seq_len = long_term_lstm_seq_len, #3
@@ -126,19 +136,17 @@ def main(
                          nbhd_size        = cnnx[0].shape[1],       #7
                          nbhd_type        = cnnx[0].shape[-1])      #2
     
-    if V: print("\nModel created.")
-    if V: print_time()
+    if V:
+        print("\nModel created.")
+        print_time()
     if model_filename:
         if V: print("  Loading model weights from", model_filename)
         model.load_weights(model_hdf5_path + model_filename)
         if V: print_time()
     
     if V: print("Start training with input shape {1} / {0}\n".format( x.shape, cnnx[0].shape))
+    
     # Step 3. Train model
-    # Note for 'x=...' below:
-    # 1.'+' is concat operator for list,
-    # 2. Input() layers each take a section of this list; the format is implicit!
-    # (See model architecture - there are multiple, different input layers.)
     model.fit(x                = att_cnnx + att_flow + att_x + cnnx + flow + [x,],
               y                = y,
               batch_size       = batch_size,
@@ -146,43 +154,40 @@ def main(
               epochs           = max_epochs,
               callbacks        = [early_stop]
              )
-    if V: print("\nModel fit complete. Starting sampling of test data for evaluation.")
-    if V: print_time()
+    if V:
+        print("\nModel fit complete. Starting sampling of test data for evaluation.")
+        print_time()
     
     # Step 4. Test model against 'test' dataset.
     att_cnnx, att_flow, att_x, cnnx, flow, x, y = sampler.sample_stdn(datatype      = test_dataset,
                                                                       nbhd_size     = nbhd_size,
                                                                       cnn_nbhd_size = cnn_nbhd_size)
-    if V: print_time()
-    if V: print("Starting evaluation.")
+    if V:
+        print_time()
+        print("Starting evaluation.")
     y_pred = model.predict(x = att_cnnx + att_flow + att_x + cnnx + flow + [x,],)
     threshold = float(sampler.threshold) / sampler.config["volume_train_max"]
-    print("  Evaluating threshold: {0}.".format(threshold))
+    print("  Evaluating threshold:",threshold)
     (prmse, pmape), (drmse, dmape) = eval_lstm(y, y_pred, threshold)
-    print("  Test on model:\npickup rmse = {0}, pickup mape = {1}%\n  dropoff rmse = {2}, dropoff mape = {3}%".format(prmse, pmape*100, drmse, dmape*100))
-    if V: print("\nScore:", model.evaluate(att_cnnx + att_flow + att_x + cnnx + flow + [x,], y))
+    print("  Test on model:")
+    print("  pick-up rmse =",prmse,", pickup mape =",pmape*100,"%")
+    print("  dropoff rmse =",drmse," dropoff mape =",dmape*100,"%")
+    if V:
+        print("\nScore:", model.evaluate(att_cnnx + att_flow + att_x + cnnx + flow + [x,], y))
+        print("\nEvaluation finished. Saving model weights.")
+        print_time()
     
-    if V: print("\nEvaluation finished. Saving model weights.")
-    if V: print_time()
     # Step 5: Save model
-    # This method replaces the .save()]
     if save_filename is None:
         currTime = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         save_filename = currTime + "_weights.hdf5"
     
     model.save_weights(model_hdf5_path + save_filename)
     if V: print("Model weights saved to " + model_hdf5_path + save_filename , sep='')
-    return
 
-stop = CustomStopper(monitor    = 'val_loss',
-                     min_delta  = 0,
-                     patience   = 5,
-                     verbose    = 0,
-                     mode       = 'min',
-                     start_epoch= 1)
-                     #start_epoch= 40)
 
 if __name__ == "__main__":
+    # Set up argument parser
     parser = argparse.ArgumentParser(description="STDN with CLI")
     parser.add_argument("--model", "-m",
                         help="Load model weights from file under hdf5s/",
@@ -213,25 +218,29 @@ if __name__ == "__main__":
     
     V = args.verbose
     
+    # Extract arguments
     model_filename = None if args.model is None else args.model[0]
-    if V: print("  Model name:",model_filename)
     
     max_epochs = 1 if args.epochs is None else args.epochs[0]
-    if V: print("  Max epochs:", max_epochs)
     
     batch_size = 64 if args.batch is None else args.batch[0]
-    if V: print("  Batch size:", batch_size)
     
     train_data = "train" if args.train is None else args.train[0]
     test_data = "test" if args.test is None else args.test[0]
-    if V: print("  Training on",train_data,"and testing on", test_data)
     
     save_filename = None if args.save is None else args.save[0]
-    if V: print("  Save name:", save_filename)
     
     gpu_num = None if args.gpunum is None else args.gpunum[0]
-    if V: print("  GPU number:", gpu_num)
     
+    if V:
+        print("  Model name:",model_filename)
+        print("  Max epochs:", max_epochs)
+        print("  Batch size:", batch_size)
+        print("  Training on",train_data,"and testing on", test_data)
+        print("  Save name:", save_filename)
+        print("  GPU number:", gpu_num)
+    
+    # Get GPU number
     if gpu_num is not None:
         if gpu_num != "0" and gpu_num != "1":
             print("\nError gpu code {0}, use default.".format(gpu_num))
@@ -248,11 +257,13 @@ if __name__ == "__main__":
     # allow_growth - see https://www.tensorflow.org/programmers_guide/using_gpu
     set_session(tf.Session(config=config))
 
+    # Start program
+    if V:
+        print("\n\n####################")
+        print("Starting main.py main()")
+        print_time()
+        print("####################\n")
     
-    if V: print("\n\n####################")
-    if V: print("Starting main.py main()")
-    if V: print_time()
-    if V: print("####################\n")
     main(batch_size= batch_size,
          max_epochs= max_epochs,
          early_stop= stop,
@@ -261,7 +272,9 @@ if __name__ == "__main__":
          test_dataset            = test_data,
          save_filename           = save_filename
         )
-    if V: print("\n####################")
-    if V: print("All done!")
-    if V: print_time()
-    if V: print("####################\n\n")
+    
+    if V:
+        print("\n####################")
+        print("All done!")
+        print_time()
+        print("####################\n\n")
