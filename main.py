@@ -123,7 +123,7 @@ def main(
     
     
     # Step 2. Compile model architecture
-    if V: print("Creating model with input shape", x.shape"/" cnnx[0].shape))
+    if V: print("Creating model with input shape", x.shape, "/", cnnx[0].shape)
 
     model = modeler.stdn(att_lstm_num     = att_lstm_num,           #3
                          att_lstm_seq_len = long_term_lstm_seq_len, #3
