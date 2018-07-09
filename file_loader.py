@@ -53,8 +53,7 @@ class file_loader:
             self.isVolumeLoaded = True
 
         else:
-            print("Please select **train** or **test**")
-            print("Or, the cool and new test subset, **tiny**")
+            print("Please select **train** or **test** (or tiny or tiny2)")
             raise Exception
 
 
