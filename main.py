@@ -46,10 +46,10 @@ class CustomStopper(keras.callbacks.EarlyStopping):
 
 stop = CustomStopper(monitor    = 'val_loss',
                      min_delta  = 0,
-                     patience   = 5, # up from 5
+                     patience   = 25, # up from 5
                      verbose    = 0,
                      mode       = 'min',
-                     start_epoch= 40)
+                     start_epoch= 51) # up from 40
 
 
 def eval_together(y, pred_y, threshold):
