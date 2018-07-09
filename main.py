@@ -1,12 +1,10 @@
 import argparse
-
 import models
 import file_loader
 import pickle
 import numpy as np
 from sklearn.metrics import mean_squared_error
 import sys
-# import xgboost as xgb
 import json
 import gc
 import tensorflow as tf
@@ -48,11 +46,10 @@ class CustomStopper(keras.callbacks.EarlyStopping):
 
 stop = CustomStopper(monitor    = 'val_loss',
                      min_delta  = 0,
-                     patience   = 5,
+                     patience   = 5, # up from 5
                      verbose    = 0,
                      mode       = 'min',
-                     start_epoch= 1)
-                     #start_epoch= 40)
+                     start_epoch= 40)
 
 
 def eval_together(y, pred_y, threshold):
