@@ -236,7 +236,7 @@ if __name__ == "__main__":
     if V: print("  Batch size:", batch_size)
     
     train_data = "train" if args.train is None else args.train[0]
-    test_data = "train" if args.test is None else args.test[0]
+    test_data = "test" if args.test is None else args.test[0]
     if V: print("  Training on",train_data,"and testing on", test_data)
     
     save_filename = None if args.save is None else args.save[0]
