@@ -134,10 +134,6 @@ def main(
         if V: print_time()
     
     if V: print("Start training with input shape {1} / {0}\n".format( x.shape, cnnx[0].shape))
-    if DEBUG:
-        print("\nEnter debug!\nIf you don't want this, set DEBUG=False in main_tweak.py.")
-        import code
-        code.interact(local=locals())
     # Step 3. Train model
     # Note for 'x=...' below:
     # 1.'+' is concat operator for list,
@@ -152,11 +148,6 @@ def main(
              )
     if V: print("\nModel fit complete. Starting sampling of test data for evaluation.")
     if V: print_time()
-
-    if DEBUG:
-        print("Enter debug!\nIf you continue, several more GB of RAM will be taken to load 'test' dataset.\n")
-        import code
-        code.interact(local=locals())
     
     # Step 4. Test model against 'test' dataset.
     att_cnnx, att_flow, att_x, cnnx, flow, x, y = sampler.sample_stdn(datatype      = test_dataset,
@@ -202,9 +193,6 @@ if __name__ == "__main__":
     parser.add_argument("--batch", "-b",
                         help="Batch size (default 64).",
                         type=int, nargs=1)
-    parser.add_argument("--debug", "-d",
-                        help="Enter debug prompts at certain points in the code",
-                        action="store_true")
     parser.add_argument("--verbose", "-v",
                         help="",
                         action="store_true")
@@ -224,7 +212,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     V = args.verbose
-    DEBUG = args.debug
     
     model_filename = None if args.model is None else args.model[0]
     if V: print("  Model name:",model_filename)
