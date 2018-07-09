@@ -28,7 +28,7 @@ Inspecting the data to determine what axis samples ar econtained on:
 
 '''
 
-import numpy as np; from sys import getsizeof as sz
+import numpy as np
 data = np.load("data/volume_test.npz")
 flow_data = np.load("data/flow_test.npz")
 
@@ -47,9 +47,6 @@ flow = flow_data['flow'][:,:500,:,:,:,:]
 np.savez("data/volume_tiny2.npz", volume)
 np.savez("data/flow_tiny2.npz", flow)
 
-exit()
-
-# Quick copy-paste for loading data, flow_data in interpreter
-import numpy as np; from sys import getsizeof as sz
-data = np.load("data/volume_tiny.npz")['arr_0']
-flow_data = np.load("data/flow_tiny.npz")['arr_0']
+# Data loaded as follows:
+#data = np.load("data/volume_tiny.npz")['arr_0']
+#flow_data = np.load("data/flow_tiny.npz")['arr_0']
