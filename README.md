@@ -1,16 +1,17 @@
 # STDN
 
 
-Code & Data for our Spatiotemporal Dynamic Network
+Code & Data for the Spatiotemporal Dynamic Network described in [H. Yao, X. Tang, et al 2018 "Modeling Spatial-Temporal Dynamics for Traffic Prediction"](https://arxiv.org/abs/1803.01254)
 
 
-## This code was tested working with the following:
+**This code was tested working with the following:**
 
   - Python 3.6
   - Ubuntu 16.04.3 LTS or RHEL 6.7
   - Keras = 2.0.5 or 2.0.8
   - tensorflow-gpu (or tensorflow) == 1.2.0 or 1.3.0 ([install guide](https://www.tensorflow.org/versions/r1.0/install/install_linux))
 
+Python >= 3.5, Keras >= 2.0.5, and tensorflow >= 1.0.0 should work, but have not been tested.
 
 ## Running Steps
 
