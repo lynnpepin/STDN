@@ -4,7 +4,7 @@
 Code & Data for our Spatiotemporal Dynamic Network
 
 
-##This code was tested working with the following:
+## This code was tested working with the following:
 
   - Python 3.6
   - Ubuntu 16.04.3 LTS or RHEL 6.7
@@ -12,7 +12,7 @@ Code & Data for our Spatiotemporal Dynamic Network
   - tensorflow-gpu (or tensorflow) == 1.2.0 or 1.3.0 ([install guide](https://www.tensorflow.org/versions/r1.0/install/install_linux))
 
 
-##Running Steps
+## Running Steps
 
   - Clone this repository (./STDN)
   - Create "data" folder in the same folder (STDN/data/)
@@ -23,9 +23,9 @@ Code & Data for our Spatiotemporal Dynamic Network
   - Run using the command line options
   - Check the output results (RMSE and MAPE). Model weightss are saved to "hdf5s" folder for further use.
 
-##Command line:
+## Command line:
 
-###Arguments
+### Arguments
 
 * **-v verbose**: Print more information while running, such as timestamps.
 * **-m model_filename**: Load a model from ./hdf5s/model_filename. If -m not specified, instantiate a new model
@@ -36,7 +36,7 @@ Code & Data for our Spatiotemporal Dynamic Network
 * **--test test\_dataset: Test against this dataset. Defaults to 'test'. Choices are same as train\_dataset.
 * **-s save_filename**: Saves the model to ./hdf5s/save\_filename, overwriting any file that's there. Defaults to stdn(timestamp)\_weights.hdf5s.
 
-###Examples:
+### Examples:
 
 *Instantiate a new model, train for 1 epoch (default), and save to ./hdf5s/stdn_weights.hdf5; verbose*
 
