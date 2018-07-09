@@ -13,18 +13,18 @@ Code & Data for the Spatiotemporal Dynamic Network described in [H. Yao, X. Tang
 
 Python >= 3.5, Keras >= 2.0.5, and tensorflow >= 1.0.0 should work, but have not been tested.
 
-## Running Steps
+## Set up steps (Linux)
 
   - Clone this repository (./STDN)
-  - Create "data" folder in the same folder (STDN/data/)
-  - Create "hdf5s" folder for logs (if not exist) (STDN/hdf5s/)
-  - Download and extract all data files (*.npz) from data.zip and put them in "data" folder (STDN/data/*.npz)
-  - Run data_subset_scripy.py to create the tiny.npz and tiny2.npz subsets for rapid experimentation (if desired.)
-  - Open terminal (in STDN)
-  - Run using the command line options
-  - Check the output results (RMSE and MAPE). Model weightss are saved to "hdf5s" folder for further use.
+  - Open STDN directory in terminal
+  - Make init.sh executable (chmod +x init.sh)
+  - Run init.sh (./init.sh)
 
-## Command line:
+## Running via Command line
+
+  - Run using the command line options
+  - Check the output results (RMSE and MAPE).
+  - Model weightss are saved to "hdf5s" folder for further use.
 
 ### Arguments
 
