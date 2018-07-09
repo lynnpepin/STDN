@@ -32,8 +32,8 @@ Code & Data for our Spatiotemporal Dynamic Network
 * **-e number-of-epochs**: Train for this many epochs, at most. Defaults to 1.
 * **-b batch-size**: Train on this batch size. Defaults to 64.
 * **--train train_dataset**: Train on this dataset. Defaults to 'train'.
-... Choices are 'train', 'test', 'tiny', and 'tiny2'. (tiny is a small subset of test, tiny2 is a small subset of train.) 
-* **--test test\_dataset: Test against this dataset. Defaults to 'test'. Choices are same as train\_dataset.
+//* *Choices are 'train', 'test', 'tiny', and 'tiny2'. (tiny is a small subset of test, tiny2 is a small subset of train.)*
+* **--test test\_dataset:** Test against this dataset. Defaults to 'test'. Choices are same as train\_dataset.
 * **-s save_filename**: Saves the model to ./hdf5s/save\_filename, overwriting any file that's there. Defaults to stdn(timestamp)\_weights.hdf5s.
 
 ### Examples:
