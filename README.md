@@ -38,19 +38,21 @@ Code & Data for our Spatiotemporal Dynamic Network
 
 ### Examples:
 
-*Instantiate a new model, train for 1 epoch (default), and save to ./hdf5s/stdn_weights.hdf5; verbose*
+Instantiate a new model, train for 1 epoch (default), and save to ./hdf5s/stdn_weights.hdf5; verbose
 
 ```
-python3.6 main.py -s stdn_weights.hdf5
+python3.6 main.py -s stdn_weights.hdf5 -v
 ```
 
-*Load model weights from ./hdf5s/stdn_weights.hdf5, train for 50 epochs, and save to ./hdf5s/model.hdf5; verbose*
+
+Load model weights from ./hdf5s/stdn_weights.hdf5, train for 50 epochs, and save to ./hdf5s/model.hdf5; verbose
 
 ```
 python3.6 main.py -m stdn_weights.hdf5 -e 50 -s model.hdf5 -v
 ```
 
-*Load a model from ./hdf5s/model.hdf5, train for 10 epochs on the "tiny" dataset with a batch size of 128, test on the "tiny2" dataset, and save to "./hdf5s/model.hdf5"*
+
+Load a model from ./hdf5s/model.hdf5, train for 10 epochs on the "tiny" dataset with a batch size of 128, test on the "tiny2" dataset, and save to "./hdf5s/model.hdf5"
 
 ```
 python3.6 main.py -m model.hdf5 -e 10 --train tiny -b 128 -test tiny2 -s model.hdf5
