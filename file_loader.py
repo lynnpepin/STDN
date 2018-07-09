@@ -80,9 +80,10 @@ class file_loader:
         time_start = (hist_feature_daynum + att_lstm_num) * self.timeslot_daynum + long_term_lstm_seq_len
         time_end = data.shape[0]
         volume_type = data.shape[-1]
-
+        
+        print("  Sampling starting at timeslot",time_start)
         for t in range(time_start, time_end):
-            if t%10 == 0:
+            if t%100 == 0:
                 print("  Now sampling at {0} timeslots.".format(t))
             for x in range(data.shape[1]):
                 for y in range(data.shape[2]):
