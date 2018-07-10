@@ -36,6 +36,7 @@ Python >= 3.5, Keras >= 2.0.5, and tensorflow >= 1.0.0 should work, but have not
 //* *Choices are 'train', 'test', 'tiny', and 'tiny2'. (tiny is a small subset of test, tiny2 is a small subset of train.)*
 * **--test test\_dataset:** Test against this dataset. Defaults to 'test'. Choices are same as train\_dataset.
 * **-s save_filename**: Saves the model to ./hdf5s/save\_filename, overwriting any file that's there. Defaults to stdn(timestamp)\_weights.hdf5s.
+* **--initialepoch:** The epoch we start training from, useful for Early Stopping callbacks. Defaults to 0.
 
 ### Examples:
 
@@ -53,8 +54,8 @@ python3.6 main.py -m stdn_weights.hdf5 -e 50 -s model.hdf5 -v
 ```
 
 
-Load a model from ./hdf5s/model.hdf5, train for 10 epochs on the "tiny" dataset with a batch size of 128, test on the "tiny2" dataset, and save to "./hdf5s/model.hdf5"
+Load a model from ./hdf5s/model.hdf5, start from epoch 100, train for 10 epochs on the "tiny" dataset with a batch size of 128, test on the "tiny2" dataset, and save to "./hdf5s/model.hdf5".
 
 ```
-python3.6 main.py -m model.hdf5 -e 10 --train tiny -b 128 -test tiny2 -s model.hdf5
+python3.6 main.py -m model.hdf5 --initialepoch 100 -e 10 --train tiny -b 128 -test tiny2 -s model.hdf5
 ```

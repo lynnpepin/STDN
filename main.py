@@ -99,7 +99,8 @@ def main(
         model_filename          = None,
         train_dataset           = "train",
         test_dataset            = "test",
-        save_filename           = None
+        save_filename           = None,
+        initial_epoch           = 0,
     ):
     """
     Samples raw data (from /data/*.npz files) to create training data for model,
@@ -149,7 +150,8 @@ def main(
               batch_size       = batch_size,
               validation_split = validation_split,
               epochs           = max_epochs,
-              callbacks        = [early_stop]
+              callbacks        = [early_stop],
+              initial_epoch    = initial_epoch
              )
     if V:
         print("\nModel fit complete. Starting sampling of test data for evaluation.")
@@ -207,6 +209,9 @@ if __name__ == "__main__":
     parser.add_argument("--save", "-s",
                         help="Location to save model weights to in hdf5s/",
                         type=str, nargs=1)
+    parser.add_argument("--initialepoch",
+                        help="The epoch we start training from, useful for Early Stopping callbacks. Defaults to 0.",
+                        type=int, nargs=1)
     parser.add_argument("--gpunum", "-g",
                         help="GPU number. (Legacy(?))",
                         type=int, nargs=1)
@@ -227,15 +232,17 @@ if __name__ == "__main__":
     
     save_filename = None if args.save is None else args.save[0]
     
+    initial_epoch = 0 if args.initialepoch is None else args.initialepoch[0]
     gpu_num = None if args.gpunum is None else args.gpunum[0]
     
     if V:
         print("  Model name:",model_filename)
-        print("  Max epochs:", max_epochs)
-        print("  Batch size:", batch_size)
+        print("  Max epochs:",max_epochs)
+        print("  Batch size:",batch_size)
         print("  Training on",train_data,"and testing on", test_data)
-        print("  Save name:", save_filename)
-        print("  GPU number:", gpu_num)
+        print("  Save name: ",save_filename)
+        print("  Init epoch:",initial_epoch)
+        print("  GPU number:",gpu_num)
     
     # Get GPU number
     if gpu_num is not None:
@@ -267,7 +274,8 @@ if __name__ == "__main__":
          model_filename          = model_filename,
          train_dataset           = train_data,
          test_dataset            = test_data,
-         save_filename           = save_filename
+         save_filename           = save_filename,
+         initial_epoch           = initial_epoch,
         )
     
     if V:
