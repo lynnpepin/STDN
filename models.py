@@ -35,7 +35,8 @@ class models:
              output_shape   = 2,
              optimizer      = 'adagrad',
              loss           = 'mse',
-             metrics        = []):
+             metrics        = [],
+             verbose        = True):
         """
         Returns a Keras model (STDN).
         Usage:
@@ -43,8 +44,7 @@ class models:
             >>> modeler = models.models()
             >>> my_model = modeler.stdn(...)
         """
-        DEBUG = True
-        if DEBUG:
+        if verbose:
             print("  Model: Creating STDN with parameters:",
                       att_lstm_num,
                       att_lstm_seq_len,

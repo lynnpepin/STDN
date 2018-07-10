@@ -132,7 +132,8 @@ def main(
                          feature_vec_len  = x.shape[-1],            #160
                          cnn_flat_size    = cnn_flat_size,          #128
                          nbhd_size        = cnnx[0].shape[1],       #7
-                         nbhd_type        = cnnx[0].shape[-1])      #2
+                         nbhd_type        = cnnx[0].shape[-1],      #2
+                         verbose          = V)
     
     if V:
         print("\nModel created.")
