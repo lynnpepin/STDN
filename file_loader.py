@@ -27,32 +27,50 @@ class file_loader:
         if long_term_lstm_seq_len % 2 != 1:
             print("Att-lstm seq_len must be odd!")
             raise Exception
+            
+            
+        self.isFlowLoaded   = True
+        self.isVolumeLoaded = True
 
+        # TODO: Is it not unwise to divicde train and test by different numbers?
         if datatype == "train":
             data = np.load(open(self.config["volume_train"], "rb"))["volume"] / self.config["volume_train_max"]
             flow_data = np.load(open(self.config["flow_train"], "rb"))["flow"] / self.config["flow_train_max"]
-            self.isFlowLoaded   = True
-            self.isVolumeLoaded = True
 
         elif datatype == "test":
             data = np.load(open(self.config["volume_test"], "rb"))["volume"] / self.config["volume_train_max"]
             flow_data = np.load(open(self.config["flow_test"], "rb"))["flow"] / self.config["flow_train_max"]
-            self.isFlowLoaded   = True
-            self.isVolumeLoaded = True
 
         elif datatype == "tiny":
-            data = self.volume_tiny = np.load("data/volume_tiny.npz")['arr_0'] / 1289.0 # np.max(), as the above
+            data = np.load("data/volume_tiny.npz")['arr_0'] / 1289.0 # np.max(), as the above
             flow_data = np.load("data/flow_tiny.npz")['arr_0']/173.0 # np.max(), as the above
-            self.isFlowLoaded   = True
-            self.isVolumeLoaded = True
 
         elif datatype == "tiny2":
-            data = self.volume_tiny = np.load("data/volume_tiny2.npz")['arr_0'] / 1283.0 # np.max(), as the above
+            data = np.load("data/volume_tiny2.npz")['arr_0'] / 1283.0 # np.max(), as the above
             flow_data = np.load("data/flow_tiny2.npz")['arr_0']/110.0 # np.max(), as the above
-            self.isFlowLoaded   = True
-            self.isVolumeLoaded = True
-
+        
+        # TODO: Store as float, divide by number!
+        # vdata 1331, fdata 218 
+        # Manhattan
+        elif datatype == "man_train":
+            data = np.load("data/man_volume_train.npz")['arr_0']    / 1331
+            flow_data = np.load("data/man_flow_train.npz")['arr_0'] / 218
+        
+        elif datatype == "man_test":
+            data = np.load("data/man_volume_test.npz")['arr_0']     / 1331
+            flow_data = np.load("data/man_flow_test.npz")['arr_0']  / 218
+        
+        elif datatype == "man_tiny":
+            data = np.load("data/man_volume_tiny.npz")['arr_0']     / 1331
+            flow_data = np.load("data/man_flow_tiny.npz")['arr_0']  / 218
+        
+        elif datatype == "man_tiny2":
+            data = np.load("data/man_volume_tiny2.npz")['arr_0']    / 1331
+            flow_data = np.load("data/man_flow_tiny2.npz")['arr_0'] / 218
+            
         else:
+            self.isFlowLoaded = False
+            self.isVolumeLoaded = False
             print("Please select **train** or **test** (or tiny or tiny2)")
             raise Exception
 
