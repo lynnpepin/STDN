@@ -34,6 +34,7 @@ Python >= 3.5, Keras >= 2.0.5, and tensorflow >= 1.0.0 should work, but have not
 * **-b batch-size**: Train on this batch size. Defaults to 64.
 * **--train train_dataset**: Train on this dataset. Defaults to 'train'.
 //* *Choices are 'train', 'test', 'tiny', and 'tiny2'. (tiny is a small subset of test, tiny2 is a small subset of train.)*
+//* You can choose to use the Manhattan dataset by appending man_ to the start. (E.g. man\_train, man\_test.)
 * **--test test\_dataset:** Test against this dataset. Defaults to 'test'. Choices are same as train\_dataset.
 * **-s save_filename**: Saves the model to ./hdf5s/save\_filename, overwriting any file that's there. Defaults to stdn(timestamp)\_weights.hdf5s.
 * **--initialepoch:** The epoch we start training from, useful for Early Stopping callbacks. Defaults to 0.
