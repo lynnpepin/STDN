@@ -20,7 +20,7 @@ import ipdb
 import gc
 import attention
 from attention import Attention
-
+from math import floor
 
 class CustomStopper(keras.callbacks.EarlyStopping):
     def __init__(self,
@@ -86,9 +86,9 @@ def print_time():
 
 
 def main(
-        att_lstm_num            = 3,
-        long_term_lstm_seq_len  = 3,
-        short_term_lstm_seq_len = 7,
+        att_lstm_num            = 3, # Should be dependent on n implicitly in fileloader
+        long_term_lstm_seq_len  = 3, # Should be passed dependent on n
+        short_term_lstm_seq_len = 7, # Should be passed dependent on n
         cnn_nbhd_size           = 3,
         nbhd_size               = 2,
         cnn_flat_size           = 128,
@@ -101,6 +101,7 @@ def main(
         test_dataset            = "test",
         save_filename           = None,
         initial_epoch           = 0,
+        n                       = 2
     ):
     """
     Samples raw data (from /data/*.npz files) to create training data for model,
@@ -108,7 +109,7 @@ def main(
     trains model with batch_size for max_epochs, then saves it to save_filename.
     """
     model_hdf5_path = "./hdf5s/"
-    sampler = file_loader.file_loader()
+    sampler = file_loader.file_loader(n=n)
     modeler = models.models()
 
     # Step 1. Create training dataset from raw data
@@ -118,6 +119,7 @@ def main(
                                 att_lstm_num            = att_lstm_num,
                                 long_term_lstm_seq_len  = long_term_lstm_seq_len,
                                 short_term_lstm_seq_len = short_term_lstm_seq_len,
+                                last_feature_num        = n*24,
                                 nbhd_size               = nbhd_size,
                                 cnn_nbhd_size           = cnn_nbhd_size)
     if V: print_time()
@@ -125,7 +127,10 @@ def main(
     
     # Step 2. Compile model architecture
     if V: print("Creating model with input shape", x.shape, "/", cnnx[0].shape)
-
+    
+    #import code
+    #code.interact(local=locals())
+    
     model = modeler.stdn(att_lstm_num     = att_lstm_num,           #3
                          att_lstm_seq_len = long_term_lstm_seq_len, #3
                          lstm_seq_len     = len(cnnx),              #7
@@ -154,17 +159,25 @@ def main(
               callbacks        = [early_stop],
               initial_epoch    = initial_epoch
              )
+    
     if V:
         print("\nModel fit complete. Starting sampling of test data for evaluation.")
         print_time()
     
     # Step 4. Test model against 'test' dataset.
-    att_cnnx, att_flow, att_x, cnnx, flow, x, y = sampler.sample_stdn(datatype      = test_dataset,
-                                                                      nbhd_size     = nbhd_size,
-                                                                      cnn_nbhd_size = cnn_nbhd_size)
+    att_cnnx, att_flow, att_x, cnnx, flow, x, y = \
+            sampler.sample_stdn(datatype                = test_dataset,
+                                att_lstm_num            = att_lstm_num,
+                                long_term_lstm_seq_len  = long_term_lstm_seq_len,
+                                short_term_lstm_seq_len = short_term_lstm_seq_len,
+                                last_feature_num        = n*24,
+                                nbhd_size               = nbhd_size,
+                                cnn_nbhd_size           = cnn_nbhd_size)
+    
     if V:
         print_time()
         print("Starting evaluation.")
+    
     y_pred = model.predict(x = att_cnnx + att_flow + att_x + cnnx + flow + [x,],)
     threshold = float(sampler.threshold) / sampler.config["volume_train_max"]
     print("  Evaluating threshold:",threshold)
@@ -202,10 +215,10 @@ if __name__ == "__main__":
                         help="",
                         action="store_true")
     parser.add_argument("--train",
-                        help="Name of training dataset to use. ('train', 'test', 'tiny', or 'tiny2')",
+                        help="Name of training dataset to use. (See README)",
                         type=str, nargs=1)
     parser.add_argument("--test",
-                        help="Name of testing dataset to use. ('train', 'test', 'tiny', or 'tiny2')",
+                        help="Name of testing dataset to use. (See README)",
                         type=str, nargs=1)
     parser.add_argument("--save", "-s",
                         help="Location to save model weights to in hdf5s/",
@@ -215,6 +228,9 @@ if __name__ == "__main__":
                         type=int, nargs=1)
     parser.add_argument("--gpunum", "-g",
                         help="GPU number. (Legacy(?))",
+                        type=int, nargs=1)
+    parser.add_argument("--n", "-n",
+                        help="Number of samples per hour. Default 2. Don't change unless you know you need to!",
                         type=int, nargs=1)
     
     args = parser.parse_args()
@@ -235,6 +251,7 @@ if __name__ == "__main__":
     
     initial_epoch = 0 if args.initialepoch is None else args.initialepoch[0]
     gpu_num = None if args.gpunum is None else args.gpunum[0]
+    n_samples_per_hour = 2 if args.n is None else args.n[0]
     
     if V:
         print("  Model name:",model_filename)
@@ -244,6 +261,7 @@ if __name__ == "__main__":
         print("  Save name: ",save_filename)
         print("  Init epoch:",initial_epoch)
         print("  GPU number:",gpu_num)
+        print("           n:", n_samples_per_hour)
     
     # Get GPU number
     if gpu_num is not None:
@@ -269,14 +287,19 @@ if __name__ == "__main__":
         print_time()
         print("####################\n")
     
-    main(batch_size= batch_size,
-         max_epochs= max_epochs,
-         early_stop= stop,
+    main(
+         att_lstm_num            = 3,
+         long_term_lstm_seq_len  = max(3, 1+n_samples_per_hour),
+         short_term_lstm_seq_len = floor(3.5*n_samples_per_hour),
+         batch_size              = batch_size,
+         max_epochs              = max_epochs,
+         early_stop              = stop,
          model_filename          = model_filename,
          train_dataset           = train_data,
          test_dataset            = test_data,
          save_filename           = save_filename,
          initial_epoch           = initial_epoch,
+         n                       = n_samples_per_hour
         )
     
     if V:

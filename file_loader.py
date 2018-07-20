@@ -4,11 +4,14 @@ import json
 
 
 class file_loader:
-    def __init__(self, config_path = "data.json"):
+    def __init__(self, n = 2, config_path = "data.json"):
         self.config             = json.load(open(config_path, "r"))
-        # how many timeslots per day (48 here)
-        self.timeslot_daynum    = int(86400 / self.config["timeslot_sec"])
-        self.threshold          = int(self.config["threshold"])
+        # timeslot_sec = 1800; that is the amount of seconds in 30 minutes;
+        # TODO: Add arg n, replace timeslot_sec with 3600/n
+        #self.timeslot_daynum    = int(86400 / self.config["timeslot_sec"]) # = number of time slots per day (24*n); #TODO: Add arg n, replace with n*24
+        self.timeslot_daynum    = 24*n
+        # Note: I'm using 'n' to mean the number of time slots per hour, and assuming it is 1 or an even integer
+        self.threshold          = int(self.config["threshold"]) # Threshhold for filtering, but this is not actually used!
         self.isVolumeLoaded     = False
         self.isFlowLoaded       = False
 
@@ -16,13 +19,15 @@ class file_loader:
     #this function nbhd for cnn, and features for lstm, based on attention model
     def sample_stdn(self,
                     datatype,
-                    att_lstm_num            = 3,
-                    long_term_lstm_seq_len  = 3,
-                    short_term_lstm_seq_len = 7,
-                    hist_feature_daynum     = 7,
-                    last_feature_num        = 48,
-                    nbhd_size               = 1,
-                    cnn_nbhd_size           = 3):
+                    att_lstm_num            = 3,  # In terms of days; leave unchanged
+                    long_term_lstm_seq_len  = 3,  # In terms of number of time slots
+                    short_term_lstm_seq_len = 7,  # In terms of number of time slots
+                    hist_feature_daynum     = 7,  # In terms of days; leave unchanged
+                    last_feature_num        = 48, # In terms of timeslots, should be the number of timeslots in a day (24*n)
+                    nbhd_size               = 1,  # I'm guessing this is 3x3? 
+                    cnn_nbhd_size           = 3): # e.g. convolutions are 7x7
+                    # nbhd_size and cnn_nbhd_size might have to do with local-conv-net, implemented using Conv2D in the model.
+                    # I'm not entirely sure, but (presumably) these are spatial.
 
         if long_term_lstm_seq_len % 2 != 1:
             print("Att-lstm seq_len must be odd!")
@@ -42,6 +47,7 @@ class file_loader:
             flow_data = np.load(open(self.config["flow_test"], "rb"))["flow"] / self.config["flow_train_max"]
 
         elif datatype == "tiny":
+            # TODO: Rework tiny/tiny2 to draw from the already-existing train and test datasets
             data = np.load("data/volume_tiny.npz")['arr_0'] / 1289.0 # np.max(), as the above
             flow_data = np.load("data/flow_tiny.npz")['arr_0']/173.0 # np.max(), as the above
 
@@ -49,31 +55,58 @@ class file_loader:
             data = np.load("data/volume_tiny2.npz")['arr_0'] / 1283.0 # np.max(), as the above
             flow_data = np.load("data/flow_tiny2.npz")['arr_0']/110.0 # np.max(), as the above
         
-        # TODO: Store as float, divide by number!
-        # vdata 1331, fdata 218 
-        # Manhattan
-        elif datatype == "man_train":
-            data = np.load("data/man_volume_train.npz")['arr_0']    / 1331
-            flow_data = np.load("data/man_flow_train.npz")['arr_0'] / 218
-        
-        elif datatype == "man_test":
-            data = np.load("data/man_volume_test.npz")['arr_0']     / 1331
-            flow_data = np.load("data/man_flow_test.npz")['arr_0']  / 218
-        
-        elif datatype == "man_tiny":
-            data = np.load("data/man_volume_tiny.npz")['arr_0']     / 1331
-            flow_data = np.load("data/man_flow_tiny.npz")['arr_0']  / 218
-        
-        elif datatype == "man_tiny2":
-            data = np.load("data/man_volume_tiny2.npz")['arr_0']    / 1331
-            flow_data = np.load("data/man_flow_tiny2.npz")['arr_0'] / 218
+        elif datatype[0:3] == 'man':
+            # e.g. man-train-1, man-tiny-4, etc.
+            data = np.load("data/man_volume.npz")['arr_0']
+            flow_data = np.load("data/man_flow.npz")['arr_0'] 
+            
+            # Reshape from 4 slots per hour, if n == 2
+            n = int(datatype[-1]) # 4, 2, or 1
+            
+            assert(n in (4, 2, 1))
+            
+            if n == 2 or n == 1:
+                setsize = data.shape[0]
+                newsetsize = int(setsize/n)
+                
+                data = data.reshape(newsetsize, n, 10, 20, 2).sum(axis=1)
+                flow_data = flow_data.reshape(2, newsetsize, n, 10, 20, 10, 20).sum(axis=2)
+            
+            
+            # Cut our dataset up depending on what set we're using
+            dataset = datatype[4:-2] #train, test, tiny, or tiny2
+            setsize = data.shape[0] # should be same as flow_data.shape[1]
+            
+            assert(dataset in ("train", "test", "tiny", "tiny2"))
+            
+            if dataset == 'train':
+                subsetsize = int(setsize*2/3)
+            elif dataset == 'test':
+                subsetsize = int(setsize*2/3)
+            elif dataset == 'tiny' or dataset == 'tiny2':
+                subsetsize = 250*n
+            
+            if dataset == 'train' or dataset == 'tiny':
+                data = data[:subsetsize, :, :, :]
+                flow_data = flow_data[:,:subsetsize,:,:,:,:]
+            if dataset == 'test':
+                data = data[subsetsize:, :, :, :]
+                flow_data = flow_data[:,subsetsize:,:,:,:,:]
+            elif dataset == 'test' or dataset == 'tiny2':
+                data = data[-subsetsize:, :, :, :]
+                flow_data = flow_data[:,-subsetsize:,:,:,:,:]
+            
+            # TODO: Normalize properly across all datasets
+            data = data / np.max(data)
+            flow_data = flow_data / np.max(flow_data)
+                
             
         else:
             self.isFlowLoaded = False
             self.isVolumeLoaded = False
-            print("Please select **train** or **test** (or tiny or tiny2)")
+            print("Please select valid data!")
             raise Exception
-
+        
 
         cnn_att_features  = []
         lstm_att_features = []
@@ -98,6 +131,9 @@ class file_loader:
         time_start = (hist_feature_daynum + att_lstm_num) * self.timeslot_daynum + long_term_lstm_seq_len
         time_end = data.shape[0]
         volume_type = data.shape[-1]
+        
+        #import code
+        #code.interact(local=locals())
         
         print("  Sampling starting at timeslot",time_start)
         for t in range(time_start, time_end):
