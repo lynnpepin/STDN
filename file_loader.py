@@ -66,11 +66,13 @@ class file_loader:
             assert(n in (4, 2, 1))
             
             if n == 2 or n == 1:
+                divisor = int(4 / n)
+                # The original dataset has 4.
                 setsize = data.shape[0]
-                newsetsize = int(setsize/n)
+                newsetsize = int(setsize/divisor)
                 
-                data = data.reshape(newsetsize, n, 10, 20, 2).sum(axis=1)
-                flow_data = flow_data.reshape(2, newsetsize, n, 10, 20, 10, 20).sum(axis=2)
+                data = data.reshape(newsetsize, divisor, 10, 20, 2).sum(axis=1)
+                flow_data = flow_data.reshape(2, newsetsize, divisor, 10, 20, 10, 20).sum(axis=2)
             
             
             # Cut our dataset up depending on what set we're using
@@ -97,6 +99,7 @@ class file_loader:
                 flow_data = flow_data[:,-subsetsize:,:,:,:,:]
             
             # TODO: Normalize properly across all datasets
+            # After, don't forget to denormalize!
             data = data / np.max(data)
             flow_data = flow_data / np.max(flow_data)
                 
