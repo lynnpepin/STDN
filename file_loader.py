@@ -39,21 +39,34 @@ class file_loader:
 
         # TODO: Is it not unwise to divicde train and test by different numbers?
         if datatype == "train":
-            data = np.load(open(self.config["volume_train"], "rb"))["volume"] / self.config["volume_train_max"]
-            flow_data = np.load(open(self.config["flow_train"], "rb"))["flow"] / self.config["flow_train_max"]
+            self.volume_max = self.config["volume_train_max"]
+            self.flow_max = self.config["flow_train_max"]
+            
+            data = np.load(open(self.config["volume_train"], "rb"))["volume"] / self.volume_max
+            flow_data = np.load(open(self.config["flow_train"], "rb"))["flow"] / self.flow_max
+            
 
         elif datatype == "test":
-            data = np.load(open(self.config["volume_test"], "rb"))["volume"] / self.config["volume_train_max"]
-            flow_data = np.load(open(self.config["flow_test"], "rb"))["flow"] / self.config["flow_train_max"]
+            self.volume_max = self.config["volume_train_max"]
+            self.flow_max = self.config["flow_train_max"]
+            
+            data = np.load(open(self.config["volume_test"], "rb"))["volume"] / self.volume_max
+            flow_data = np.load(open(self.config["flow_test"], "rb"))["flow"] / self.flow_max
 
         elif datatype == "tiny":
             # TODO: Rework tiny/tiny2 to draw from the already-existing train and test datasets
-            data = np.load("data/volume_tiny.npz")['arr_0'] / 1289.0 # np.max(), as the above
-            flow_data = np.load("data/flow_tiny.npz")['arr_0']/173.0 # np.max(), as the above
+            self.volume_max = 1289.0
+            self.flow_max = 173.0
+            
+            data = np.load("data/volume_tiny.npz")['arr_0'] / self.volume_max# np.max(), as the above
+            flow_data = np.load("data/flow_tiny.npz")['arr_0'] / self.flow_max # np.max(), as the above
 
         elif datatype == "tiny2":
-            data = np.load("data/volume_tiny2.npz")['arr_0'] / 1283.0 # np.max(), as the above
-            flow_data = np.load("data/flow_tiny2.npz")['arr_0']/110.0 # np.max(), as the above
+            self.volume_max = 1283.0
+            self.flow_max = 110.0
+            
+            data = np.load("data/volume_tiny2.npz")['arr_0'] / self.volume_max # np.max(), as the above
+            flow_data = np.load("data/flow_tiny2.npz")['arr_0'] / self.flow_max # np.max(), as the above
         
         elif datatype[0:3] == 'man':
             # e.g. man-train-1, man-tiny-4, etc.
@@ -105,18 +118,17 @@ class file_loader:
             # n = 1:    2604    166/433
             
             if datasetn == 4:
-                vdata_train_max = 693
-                fdata_train_max = 117
+                self.volume_max = 693
+                self.flow_max = 117
             elif datasetn == 2:
-                vdata_train_max = 1331
-                fdata_train_max = 218
+                self.volume_max = 1331
+                self.flow_max = 218
             elif datasetn == 1:
-                vdata_train_max = 2604
-                fdata_train_max = 433
-                 
+                self.volume_max = 2604
+                self.flow_max = 433
             
-            data = data / vdata_train_max
-            flow_data = flow_data / fdata_train_max
+            data = data / self.volume_max
+            flow_data = flow_data / self.flow_max
                 
             
         else:
