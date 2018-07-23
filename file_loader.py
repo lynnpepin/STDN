@@ -61,12 +61,12 @@ class file_loader:
             flow_data = np.load("data/man_flow.npz")['arr_0'] 
             
             # Reshape from 4 slots per hour, if n == 2
-            n = int(datatype[-1]) # 4, 2, or 1
+            datasetn = int(datatype[-1]) # 4, 2, or 1
             
-            assert(n in (4, 2, 1))
+            assert(datasetn in (4, 2, 1))
             
-            if n == 2 or n == 1:
-                divisor = int(4 / n)
+            if datasetn == 2 or datasetn == 1:
+                divisor = int(4 / datasetn)
                 # The original dataset has 4.
                 setsize = data.shape[0]
                 newsetsize = int(setsize/divisor)
@@ -86,7 +86,7 @@ class file_loader:
             elif dataset == 'test':
                 subsetsize = int(setsize*2/3)
             elif dataset == 'tiny' or dataset == 'tiny2':
-                subsetsize = 250*n
+                subsetsize = 250*datasetn
             
             if dataset == 'train' or dataset == 'tiny':
                 data = data[:subsetsize, :, :, :]
@@ -98,10 +98,25 @@ class file_loader:
                 data = data[-subsetsize:, :, :, :]
                 flow_data = flow_data[:,-subsetsize:,:,:,:,:]
             
-            # TODO: Normalize properly across all datasets
-            # After, don't forget to denormalize!
-            data = data / np.max(data)
-            flow_data = flow_data / np.max(flow_data)
+            # Train dataset values:
+            #           vdata   fdata
+            # n = 4:    693     59/117
+            # n = 2:    1331    98/218
+            # n = 1:    2604    166/433
+            
+            if datasetn == 4:
+                vdata_train_max = 693
+                fdata_train_max = 117
+            elif datasetn == 2:
+                vdata_train_max = 1331
+                fdata_train_max = 218
+            elif datasetn == 1:
+                vdata_train_max = 2604
+                fdata_train_max = 433
+                 
+            
+            data = data / vdata_train_max
+            flow_data = flow_data / fdata_train_max
                 
             
         else:
