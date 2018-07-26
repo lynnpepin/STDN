@@ -179,7 +179,6 @@ def main(
         print("Starting evaluation.")
     
     y_pred = model.predict(x = att_cnnx + att_flow + att_x + cnnx + flow + [x,],)
-    # TODO: This part needs to be fixed! The "volume train max" is different each time!
     threshold = float(sampler.threshold) / sampler.volume_max
     print("  Evaluating threshold:",threshold)
     (prmse, pmape), (drmse, dmape) = eval_lstm(y, y_pred, threshold)
