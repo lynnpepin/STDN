@@ -8,12 +8,13 @@ class file_loader:
         self.config             = json.load(open(config_path, "r"))
         # timeslot_sec = 1800; that is the amount of seconds in 30 minutes;
         # TODO: Add arg n, replace timeslot_sec with 3600/n
-        #self.timeslot_daynum    = int(86400 / self.config["timeslot_sec"]) # = number of time slots per day (24*n); #TODO: Add arg n, replace with n*24
+        #self.timeslot_daynum    = int(86400 / self.config["timeslot_sec"]) # = number of time slots per day (24*n);
         self.timeslot_daynum    = 24*n
         # Note: I'm using 'n' to mean the number of time slots per hour, and assuming it is 1 or an even integer
-        self.threshold          = int(self.config["threshold"]) # Threshhold for filtering, but this is not actually used!
+        self.threshold          = int(self.config["threshold"]) # Threshhold for filtering, used in main.py as sampler.threshhold
         self.isVolumeLoaded     = False
         self.isFlowLoaded       = False
+        # self.volume_max and self.flow_max are normalizing constants, and are set during the first phase of sample_stdn()
 
 
     #this function nbhd for cnn, and features for lstm, based on attention model

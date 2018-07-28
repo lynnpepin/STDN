@@ -53,6 +53,7 @@ stop = CustomStopper(monitor    = 'val_loss',
 
 
 def eval_together(y, pred_y, threshold):
+    # Not used
     mask = y > threshold
     if np.sum(mask)==0:
         return -1
@@ -63,18 +64,22 @@ def eval_together(y, pred_y, threshold):
 
 
 def eval_lstm(y, pred_y, threshold):
-    pickup_y        = y[:, 0]
-    dropoff_y       = y[:, 1]
+    pickup_y        = y[:, 0]       # y, pred_y of shape (no of samples, 2)
+    dropoff_y       = y[:, 1]       # These elements to the left are of shape(no of samples)
     pickup_pred_y   = pred_y[:, 0]
     dropoff_pred_y  = pred_y[:, 1]
-    pickup_mask     = pickup_y > threshold
-    dropoff_mask    = dropoff_y > threshold
+    pickup_mask     = pickup_y > threshold      # Any element less than the threshhold gets set to 0
+    dropoff_mask    = dropoff_y > threshold     # e.g. a = np.array([3,1,2,7]); mask = a > 2; a[mask] == array([3,7])
+    # TODO: Drop into debug here, look at the size of each thing
     #pickup part
     if np.sum(pickup_mask)!=0:
+        # mean( |pickup_y - pickup_pred_y| /pickup_y); masked by the same mask
         avg_pickup_mape = np.mean(np.abs(pickup_y[pickup_mask]-pickup_pred_y[pickup_mask])/pickup_y[pickup_mask])
+        # sqrt(mean(square(pickup_y - pickup_pred_y)))
         avg_pickup_rmse = np.sqrt(np.mean(np.square(pickup_y[pickup_mask]-pickup_pred_y[pickup_mask])))
     #dropoff part
     if np.sum(dropoff_mask)!=0:
+        # Same sort of deal
         avg_dropoff_mape = np.mean(np.abs(dropoff_y[dropoff_mask]-dropoff_pred_y[dropoff_mask])/dropoff_y[dropoff_mask])
         avg_dropoff_rmse = np.sqrt(np.mean(np.square(dropoff_y[dropoff_mask]-dropoff_pred_y[dropoff_mask])))
 
@@ -178,15 +183,18 @@ def main(
         print_time()
         print("Starting evaluation.")
     
+    # Step 5. Evaluation
     y_pred = model.predict(x = att_cnnx + att_flow + att_x + cnnx + flow + [x,],)
-    threshold = float(sampler.threshold) / sampler.volume_max
-    print("  Evaluating threshold:",threshold)
+    threshold = float(sampler.threshold) / sampler.volume_max   # 10 passengers, adjusted for the [0,1] normalization
+    
+    print("  Evaluation threshold:", sampler.threshold, " (normalized to",threshold,")")
+    print("  Normalizing constant:", sampler.volume_max)
     (prmse, pmape), (drmse, dmape) = eval_lstm(y, y_pred, threshold)
     print("  Test on model:")
-    print("  pick-up rmse =",prmse,", pickup mape =",pmape*100,"%")
-    print("  dropoff rmse =",drmse," dropoff mape =",dmape*100,"%")
+    print("  pick-up rmse =",prmse*sampler.volume_max,", pickup mape =",pmape*100,"%")
+    print("  dropoff rmse =",drmse*sampler.volume_max," dropoff mape =",dmape*100,"%")
+    print("\nScore:", model.evaluate(att_cnnx + att_flow + att_x + cnnx + flow + [x,], y))
     if V:
-        print("\nScore:", model.evaluate(att_cnnx + att_flow + att_x + cnnx + flow + [x,], y))
         print("\nEvaluation finished. Saving model weights.")
         print_time()
     
@@ -197,6 +205,7 @@ def main(
     
     model.save_weights(model_hdf5_path + save_filename)
     if V: print("Model weights saved to " + model_hdf5_path + save_filename , sep='')
+
 
 
 if __name__ == "__main__":
@@ -232,23 +241,16 @@ if __name__ == "__main__":
     parser.add_argument("--n", "-n",
                         help="Number of samples per hour. Default 2. Don't change unless you know you need to!",
                         type=int, nargs=1)
-    
     args = parser.parse_args()
     
-    V = args.verbose
-    
     # Extract arguments
+    V = args.verbose
     model_filename = None if args.model is None else args.model[0]
-    
     max_epochs = 1 if args.epochs is None else args.epochs[0]
-    
     batch_size = 64 if args.batch is None else args.batch[0]
-    
     train_data = "train" if args.train is None else args.train[0]
     test_data = "test" if args.test is None else args.test[0]
-    
     save_filename = None if args.save is None else args.save[0]
-    
     initial_epoch = 0 if args.initialepoch is None else args.initialepoch[0]
     gpu_num = None if args.gpunum is None else args.gpunum[0]
     n_samples_per_hour = 2 if args.n is None else args.n[0]
