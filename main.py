@@ -193,7 +193,7 @@ def main(
     print("  Test on model:")
     print("  pick-up rmse =",prmse*sampler.volume_max,", pickup mape =",pmape*100,"%")
     print("  dropoff rmse =",drmse*sampler.volume_max," dropoff mape =",dmape*100,"%")
-    print("\nScore:", model.evaluate(att_cnnx + att_flow + att_x + cnnx + flow + [x,], y))
+    print("\nMSE:", model.evaluate(att_cnnx + att_flow + att_x + cnnx + flow + [x,], y))
     if V:
         print("\nEvaluation finished. Saving model weights.")
         print_time()
