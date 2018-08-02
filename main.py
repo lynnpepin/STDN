@@ -90,7 +90,7 @@ def print_time():
     print("Timestamp:", datetime.datetime.now().strftime("%Y/%m/%d, %H:%M:%S"))
 
 
-def main(
+def stdn_main(
         att_lstm_num            = 3, # Should be dependent on n implicitly in fileloader
         long_term_lstm_seq_len  = 3, # Should be passed dependent on n
         short_term_lstm_seq_len = 7, # Should be passed dependent on n
@@ -129,13 +129,10 @@ def main(
                                 cnn_nbhd_size           = cnn_nbhd_size)
     if V: print_time()
     
-    
     # Step 2. Compile model architecture
     if V: print("Creating model with input shape", x.shape, "/", cnnx[0].shape)
-    
     #import code
     #code.interact(local=locals())
-    
     model = modeler.stdn(att_lstm_num     = att_lstm_num,           #3
                          att_lstm_seq_len = long_term_lstm_seq_len, #3
                          lstm_seq_len     = len(cnnx),              #7
@@ -144,15 +141,13 @@ def main(
                          nbhd_size        = cnnx[0].shape[1],       #7
                          nbhd_type        = cnnx[0].shape[-1],      #2
                          verbose          = V)
-    
     if V:
-        print("\nModel created.")
+        print("\nSTDN model created.")
         print_time()
     if model_filename:
         if V: print("  Loading model weights from", model_filename)
         model.load_weights(model_hdf5_path + model_filename)
         if V: print_time()
-    
     if V: print("Start training with input shape {1} / {0}\n".format( x.shape, cnnx[0].shape))
     
     # Step 3. Train model
@@ -164,7 +159,6 @@ def main(
               callbacks        = [early_stop],
               initial_epoch    = initial_epoch
              )
-    
     if V:
         print("\nModel fit complete. Starting sampling of test data for evaluation.")
         print_time()
@@ -178,7 +172,6 @@ def main(
                                 last_feature_num        = n*24,
                                 nbhd_size               = nbhd_size,
                                 cnn_nbhd_size           = cnn_nbhd_size)
-    
     if V:
         print_time()
         print("Starting evaluation.")
@@ -189,20 +182,21 @@ def main(
     
     print("  Evaluation threshold:", sampler.threshold, " (normalized to",threshold,")")
     print("  Normalizing constant:", sampler.volume_max)
+    print("  Testing on model.")
     (prmse, pmape), (drmse, dmape) = eval_lstm(y, y_pred, threshold)
-    print("  Test on model:")
     print("  pick-up rmse =",prmse*sampler.volume_max,", pickup mape =",pmape*100,"%")
     print("  dropoff rmse =",drmse*sampler.volume_max," dropoff mape =",dmape*100,"%")
-    print("\nMSE:", model.evaluate(att_cnnx + att_flow + att_x + cnnx + flow + [x,], y))
+    MSE = model.evaluate(att_cnnx + att_flow + att_x + cnnx + flow + [x,], y)
+    print("MSE:", MSE)
+    print("  (Normalized MSE:", (MSE)*sampler.volume_max**2, ")")
+        
+    # Step 5: Save model
     if V:
         print("\nEvaluation finished. Saving model weights.")
         print_time()
-    
-    # Step 5: Save model
     if save_filename is None:
         currTime = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         save_filename = currTime + "_weights.hdf5"
-    
     model.save_weights(model_hdf5_path + save_filename)
     if V: print("Model weights saved to " + model_hdf5_path + save_filename , sep='')
 
@@ -241,19 +235,25 @@ if __name__ == "__main__":
     parser.add_argument("--n", "-n",
                         help="Number of samples per hour. Default 2. Don't change unless you know you need to!",
                         type=int, nargs=1)
+    parser.add_argument("--arch", help="Architecture. (Default STDN)")
+    # TODO; we can add a threshhold argument
+    #parser.add_argument("--threshold", "-t",
+    #                    help="Population threshhold. Defaults to 10",
+    #                    type=int, nargs=1)
     args = parser.parse_args()
     
     # Extract arguments
     V = args.verbose
-    model_filename = None if args.model is None else args.model[0]
-    max_epochs = 1 if args.epochs is None else args.epochs[0]
-    batch_size = 64 if args.batch is None else args.batch[0]
-    train_data = "train" if args.train is None else args.train[0]
-    test_data = "test" if args.test is None else args.test[0]
-    save_filename = None if args.save is None else args.save[0]
-    initial_epoch = 0 if args.initialepoch is None else args.initialepoch[0]
-    gpu_num = None if args.gpunum is None else args.gpunum[0]
-    n_samples_per_hour = 2 if args.n is None else args.n[0]
+    model_filename  = None  if args.model   is None else args.model[0]
+    max_epochs      = 1     if args.epochs  is None else args.epochs[0]
+    batch_size      = 64    if args.batch   is None else args.batch[0]
+    train_data      = "train" if args.train is None else args.train[0]
+    test_data       = "test"  if args.test  is None else args.test[0]
+    save_filename   = None  if args.save    is None else args.save[0]
+    initial_epoch   = 0     if args.initialepoch is None else args.initialepoch[0]
+    gpu_num         = None  if args.gpunum  is None else args.gpunum[0]
+    n_samples_per_hour = 2  if args.n       is None else args.n[0]
+    arch            = "stdn"  if args.arch  is None else args.arch.lower()
     
     if V:
         print("  Model name:",model_filename)
@@ -264,6 +264,7 @@ if __name__ == "__main__":
         print("  Init epoch:",initial_epoch)
         print("  GPU number:",gpu_num)
         print("           n:", n_samples_per_hour)
+        print("  Model arch:", arch)
     
     # Get GPU number
     if gpu_num is not None:
@@ -283,26 +284,30 @@ if __name__ == "__main__":
     set_session(tf.Session(config=config))
 
     # Start program
-    if V:
-        print("\n\n####################")
-        print("Starting main.py main()")
-        print_time()
-        print("####################\n")
     
-    main(
-         att_lstm_num            = 3,
-         long_term_lstm_seq_len  = max(3, 1+n_samples_per_hour),
-         short_term_lstm_seq_len = floor(3.5*n_samples_per_hour),
-         batch_size              = batch_size,
-         max_epochs              = max_epochs,
-         early_stop              = stop,
-         model_filename          = model_filename,
-         train_dataset           = train_data,
-         test_dataset            = test_data,
-         save_filename           = save_filename,
-         initial_epoch           = initial_epoch,
-         n                       = n_samples_per_hour
-        )
+    if arch == 'stdn':
+        if V:
+            print("\n\n####################")
+            print("Starting main.py stdn_main()")
+            print_time()
+            print("####################\n")
+        stdn_main(
+             att_lstm_num            = 3,
+             long_term_lstm_seq_len  = max(3, 1+n_samples_per_hour),
+             short_term_lstm_seq_len = floor(3.5*n_samples_per_hour),
+             batch_size              = batch_size,
+             max_epochs              = max_epochs,
+             early_stop              = stop,
+             model_filename          = model_filename,
+             train_dataset           = train_data,
+             test_dataset            = test_data,
+             save_filename           = save_filename,
+             initial_epoch           = initial_epoch,
+             n                       = n_samples_per_hour
+            )
+    else:
+        print("Please define a valid architecture.")
+        exit()
     
     if V:
         print("\n####################")

@@ -16,34 +16,21 @@ class file_loader:
         self.isFlowLoaded       = False
         # self.volume_max and self.flow_max are normalizing constants, and are set during the first phase of sample_stdn()
 
+    def base_sample(self, datatype):
+        # Base level sampler
+        # Returns data and flow_data,
+        # sets self.isFlowLoaded, self.isVolumeLoader, self.volume_max, selfflow_max
 
-    #this function nbhd for cnn, and features for lstm, based on attention model
-    def sample_stdn(self,
-                    datatype,
-                    att_lstm_num            = 3,  # In terms of days; leave unchanged
-                    long_term_lstm_seq_len  = 3,  # In terms of number of time slots
-                    short_term_lstm_seq_len = 7,  # In terms of number of time slots
-                    hist_feature_daynum     = 7,  # In terms of days; leave unchanged
-                    last_feature_num        = 48, # In terms of timeslots, should be the number of timeslots in a day (24*n)
-                    nbhd_size               = 1,  # I'm guessing this is 3x3? 
-                    cnn_nbhd_size           = 3): # e.g. convolutions are 7x7
-                    # nbhd_size and cnn_nbhd_size might have to do with local-conv-net, implemented using Conv2D in the model.
-                    # I'm not entirely sure, but (presumably) these are spatial.
-
-        if long_term_lstm_seq_len % 2 != 1:
-            print("Att-lstm seq_len must be odd!")
-            raise Exception
-            
-            
+        ## Loading the preprocessed datasets
         self.isFlowLoaded   = True
         self.isVolumeLoaded = True
-
-        # TODO: Is it not unwise to divicde train and test by different numbers?
+        
         if datatype == "train":
             self.volume_max = self.config["volume_train_max"]
             self.flow_max = self.config["flow_train_max"]
             
             data = np.load(open(self.config["volume_train"], "rb"))["volume"] / self.volume_max
+
             flow_data = np.load(open(self.config["flow_train"], "rb"))["flow"] / self.flow_max
             
 
@@ -101,12 +88,19 @@ class file_loader:
                 subsetsize = int(setsize*2/3)
             elif dataset == 'tiny' or dataset == 'tiny2':
                 subsetsize = 250*datasetn
+                # Inspection: It seems the number of samples increases by 200
+                # each time this number increases, for n=1.
+                # e.g. 250 --> 1400 samples
+                #      251 --> 1600 samples
+                #      252 --> 1800 samples
+                # Presumably, at 243 (where training starts) there is 0 samples.
             
             if dataset == 'train' or dataset == 'tiny':
                 data = data[:subsetsize, :, :, :]
                 flow_data = flow_data[:,:subsetsize,:,:,:,:]
             if dataset == 'test':
                 data = data[subsetsize:, :, :, :]
+
                 flow_data = flow_data[:,subsetsize:,:,:,:,:]
             elif dataset == 'test' or dataset == 'tiny2':
                 data = data[-subsetsize:, :, :, :]
@@ -131,14 +125,36 @@ class file_loader:
             data = data / self.volume_max
             flow_data = flow_data / self.flow_max
                 
-            
         else:
             self.isFlowLoaded = False
             self.isVolumeLoaded = False
             print("Please select valid data!")
             raise Exception
         
+        return data, flow_data
 
+
+    #this function nbhd for cnn, and features for lstm, based on attention model
+    def sample_stdn(self,
+                    datatype,
+                    att_lstm_num            = 3,  # In terms of days; leave unchanged
+                    long_term_lstm_seq_len  = 3,  # In terms of number of time slots
+                    short_term_lstm_seq_len = 7,  # In terms of number of time slots
+                    hist_feature_daynum     = 7,  # In terms of days; leave unchanged
+                    last_feature_num        = 48, # In terms of timeslots, should be the number of timeslots in a day (24*n)
+                    nbhd_size               = 1,  # I'm guessing this is 3x3? 
+                    cnn_nbhd_size           = 3): # e.g. convolutions are 7x7
+                    # nbhd_size and cnn_nbhd_size might have to do with local-conv-net, implemented using Conv2D in the model.
+                    # I'm not entirely sure, but (presumably) these are spatial.
+        # TODO: Probably better to do this as a generator
+        
+        if long_term_lstm_seq_len % 2 != 1:
+            print("Att-lstm seq_len must be odd!")
+            raise Exception
+
+        data, flow_data = self.base_sample(datatype)
+
+        # Sampling begins here
         cnn_att_features  = []
         lstm_att_features = []
         flow_att_features = []
@@ -341,4 +357,24 @@ class file_loader:
         short_term_lstm_features = np.array(short_term_lstm_features)
         labels = np.array(labels)
         print("  Finished sampling from data.")
-        return output_cnn_att_features, output_flow_att_features, lstm_att_features, cnn_features, flow_features, short_term_lstm_features, labels
+        
+        # for n = 1 on the tiny dataset (243 to 250)
+        # output_cnn_att_features:  List of Numpy array, length 9
+        #     Each element is a (1400, 7, 7, 2) float64 array
+        # output_cnn_att_features:  List of Numpy array, length 9
+        #     Each element is a (1400, 7, 7, 4) float64 array
+        # lstm_att_features:        List of Numpy array, length 3
+        #     Each element is a (1400, 3, 112) float64 array
+        # cnn_features:             List of Numpy array, length 3
+        #     Each element is a (1400, 7, 7, 2) float64 array
+        # flow_features:            List of Numpy array, length 3
+        #     Each element is a (1400, 7, 7, 4) float64 array
+        # short_term_lstm_features: A float64 array, shape (1400, 3, 12)
+        # labels:                   A float64 array, shape (1400, 2)
+        return output_cnn_att_features, output_flow_att_features, lstm_att_features, cnn_features, \
+               flow_features, short_term_lstm_features, labels
+        
+        # in main.py, these are passed to the models as inputs by list concatenation.
+        
+        
+        
