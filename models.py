@@ -5,11 +5,12 @@ import tensorflow as tf
 import keras
 from keras import backend as K
 from keras.models import Model, Sequential, load_model
-from keras.layers import Dense, Activation, concatenate, Input, Conv2D, Reshape, Flatten, Dropout, BatchNormalization, Concatenate, LSTM
+from keras.layers import Dense, Activation, concatenate, Input, Conv2D, Reshape, Flatten, Dropout, BatchNormalization, Concatenate, LSTM, Conv3D
 from keras.optimizers import Adam, RMSprop
 from keras.callbacks import EarlyStopping, Callback, ModelCheckpoint
 import ipdb
 import attention
+from capsule_3D_layers import CapsuleLayer, PrimaryCap
 
 class baselines:
     def __init__(self):
@@ -19,6 +20,66 @@ class baselines:
 class models:
     def __init__(self):
         pass
+
+    # TODO: Test this, make sure it runs on one epoch, make a non-vanilla version
+    # Non-vanilla version should intelligently change kernel_size, strides
+    def vanilla_capsnet(self,
+                input_shape = (14, 10, 20, 2), # 14 = Window Size; must be small enough!
+                routings    = 3,
+                optimizer   = 'adagrad',
+                loss        = 'mse',
+                metrics     = [],
+                verbose     = True):
+        
+        # Input layer
+        x = Input(shape=input_shape)
+        # Layer 1: Just a conventional Conv2D layer
+        conv1 = Conv3D(filters = 256,
+                       kernel_size = 5,
+                       strides = 1,
+                       padding = 'valid',
+                       activation = 'relu', name = 'conv1' )(x)
+
+        # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
+        primarycaps = PrimaryCap(conv1,
+                                 dim_capsule = 8,
+                                 n_channels  = 32,
+                                 kernel_size = 5,
+                                 strides = 2,
+                                 padding = 'valid')
+
+        # Layer 3: Capsule layer. Routing algorithm works here.
+        #   num_capsule and dim_capsule are a choice you need to make, by intuition.
+        digitcaps1 = CapsuleLayer(num_capsule = 16, dim_capsule = 16, routings = routings,
+                                  name = 'dcaps1')(primarycaps)
+        
+        ''' # Caps layer removed to reduce network params
+        # Layer 4: Another capsule layer! 
+        digitcaps2 = CapsuleLayer(num_capsule = 16, dim_capsule = 16, routings = routings, name = 'dcaps2')(digitcaps1)
+        '''
+        
+        # Prediction layers: TODO
+        # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
+        # Final layers: Fully connected layers, similar to the "decoder" network
+        #flatten = layers.Flatten()(digitcaps2)
+        flatten = Flatten()(digitcaps1)
+        dense1 = Dense(1024, activation='relu', name='dense1')(flatten)
+        dense2 = Dense(2048, activation='relu', name='dense2')(dense1)
+        dense3 = Dense(512,  activation='relu', name='dense3')(dense2)
+        d_out  = Dense(np.prod(input_shape[1:]), activation='relu', name='dout')(dense3)
+        y_out  = Reshape(target_shape = input_shape[1:])(d_out)
+        
+        model = Model(x, y_out)
+        model.compile(optimizer = optimizer, loss = loss, metrics=metrics)
+        return model
+        # 13,052,816 params.
+        # ~8.2m in primarycap_conv3d
+        # ~1.2m in dcaps1
+        # ~2.1m in dense2
+        # ~1.0m in dense3
+        # Compare to the 4,203,394 of stdn() below.
+        # Consider lowering the width, and compensating by adding model depth?
+        
     
     def stdn(self,
              att_lstm_num, #3
