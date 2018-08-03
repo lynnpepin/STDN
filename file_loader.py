@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 import json
-
+from math import ceil
 
 class file_loader:
     def __init__(self, n = 2, config_path = "data.json"):
@@ -132,8 +132,46 @@ class file_loader:
             raise Exception
         
         return data, flow_data
+    
+    
+    def sample_3DConv(self,
+                      datatype,
+                      window_size = 7,
+                      batch_size = 128):
+        # TODO: Test
+        # Usage:
+        # >>> sampler = file_loader.file_loader(n=n)
+        # >>> steps_per_epoch, data_generator = sampler.sample_3DConv(window_size = 7, batch_size = 64)
+        # A simple sampler for 3DConv based architectures. Works over vdata.
+        # Returns int number_of_batches and generator that yields of format (inputs, targets)
+        
+        data, flow_data = self.base_sample(datatype)
+        
+        def input_batch(AA, wsize, bsize, start):
+            # Generates one batch of inputs
+            end = min(len(AA), wsize+bsize+start)
+            for ii in range(start+wsize, end):
+                yield AA[ii-wsize:ii]
 
+        def target_batch(AA, wsize, bsize, start):
+            # Generates one batch of targets
+            end = min(len(AA), wsize+bsize+start)
+            return tuple(AA[wsize+start: end])
 
+        def data_generator(AA, wsize, bsize):
+            # Generates batches
+            for start in range(0, len(AA), bsize): # Iterate from 0..len(AA) with steps of bsize
+                inputs  = tuple(input_batch (AA, wsize, bsize, start))
+                targets =       target_batch(AA, wsize, bsize, start)
+                yield inputs, targets
+
+        total_number_of_samples = len(data) - window_size
+        number_of_batches = ceil(total_number_of_samples/batch_size)
+        return number_of_batches, data_generator(AA = data, wsize = window_size, bsize = batch_size)
+        # e.g:
+        # d = [x for x in data_generator], wsize = 3, bsize = 128
+        # d[ batch_number ][ target/input ][ number_in_batch ]
+    
     #this function nbhd for cnn, and features for lstm, based on attention model
     def sample_stdn(self,
                     datatype,
