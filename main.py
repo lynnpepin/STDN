@@ -59,11 +59,30 @@ def eval_together(y, pred_y, threshold):
         return -1
     mape = np.mean(np.abs(y[mask]-pred_y[mask])/y[mask])
     rmse = np.sqrt(np.mean(np.square(y[mask]-pred_y[mask])))
-
     return rmse, mape
 
-
+def eval_caps(y, pred_y, threshold):
+    # TODO: This should be able to replace the eval_lstm
+    # in a general manner by using this syntax:
+    # pickup_y      = y[:, ..., 0]
+    pickup_y        = y[:,:,:,0]
+    dropoff_y       = y[:,:,:,1]
+    pickup_pred_y   = pred_y[:,:,:,0]
+    dropoff_pred_y  = pred_y[:,:,:,1]
+    pickup_mask     = pickup_y > threshold
+    dropoff_mask    = dropoff_y > threshold
+    # pickup_y[pickup_mask] is a 1D array of length np.sum(pickup_mask)
+    # TODO: Make sure this actually works correctly, too
+    if np.sum(pickup_mask) != 0:
+        avg_pickup_mape = np.mean(np.abs(pickup_y[pickup_mask]-pickup_pred_y[pickup_mask])/pickup_y[pickup_mask])
+        avg_pickup_rmse = np.sqrt(np.mean(np.square(pickup_y[pickup_mask]-pickup_pred_y[pickup_mask])))
+    if np.sum(dropoff_mask)!=0:
+        avg_dropoff_mape = np.mean(np.abs(dropoff_y[dropoff_mask]-dropoff_pred_y[dropoff_mask])/dropoff_y[dropoff_mask])
+        avg_dropoff_rmse = np.sqrt(np.mean(np.square(dropoff_y[dropoff_mask]-dropoff_pred_y[dropoff_mask])))
+    return (avg_pickup_rmse, avg_pickup_mape), (avg_dropoff_rmse, avg_dropoff_mape)
+        
 def eval_lstm(y, pred_y, threshold):
+    # For the STDN
     pickup_y        = y[:, 0]       # y, pred_y of shape (no of samples, 2)
     dropoff_y       = y[:, 1]       # These elements to the left are of shape(no of samples)
     pickup_pred_y   = pred_y[:, 0]
@@ -81,9 +100,7 @@ def eval_lstm(y, pred_y, threshold):
         # Same sort of deal
         avg_dropoff_mape = np.mean(np.abs(dropoff_y[dropoff_mask]-dropoff_pred_y[dropoff_mask])/dropoff_y[dropoff_mask])
         avg_dropoff_rmse = np.sqrt(np.mean(np.square(dropoff_y[dropoff_mask]-dropoff_pred_y[dropoff_mask])))
-
     return (avg_pickup_rmse, avg_pickup_mape), (avg_dropoff_rmse, avg_dropoff_mape)
-
 
 def print_time():
     print("Timestamp:", datetime.datetime.now().strftime("%Y/%m/%d, %H:%M:%S"))
@@ -145,13 +162,13 @@ def caps_main(
     
     # Step 5. Evaluation
     y_pred = model.predict(x = test_X)
-    threshold = float(sampler.threshold) / sampler.volume_max
+    threshold = sampler.threshold / sampler.volume_max
     
     print("  Evaluation threshold:", sampler.threshold, " (normalized to",threshold,")")
     print("  Normalizing constant:", sampler.volume_max)
     print("  Testing on model.")
     # TODO: Continue from here!
-    (prmse, pmape), (drmse, dmape) = eval_lstm(test_y, y_pred, threshold)
+    (prmse, pmape), (drmse, dmape) = eval_caps(test_y, y_pred, threshold)
     print("  pick-up rmse =",prmse*sampler.volume_max,", pickup mape =",pmape*100,"%")
     print("  dropoff rmse =",drmse*sampler.volume_max," dropoff mape =",dmape*100,"%")
     MSE = model.evaluate(test_X, test_y)
@@ -255,7 +272,7 @@ def stdn_main(
     
     # Step 5. Evaluation
     y_pred = model.predict(x = att_cnnx + att_flow + att_x + cnnx + flow + [x,],)
-    threshold = float(sampler.threshold) / sampler.volume_max   
+    threshold = sampler.threshold / sampler.volume_max   
     
     print("  Evaluation threshold:", sampler.threshold, " (normalized to",threshold,")")
     print("  Normalizing constant:", sampler.volume_max)
