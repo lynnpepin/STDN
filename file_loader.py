@@ -133,8 +133,32 @@ class file_loader:
         
         return data, flow_data
     
-    
+    # TODO: sample_3DConv that produces a full list, X and y.
     def sample_3DConv(self,
+                      datatype,
+                      window_size = 7):
+        # TODO: Test
+        # Usage: Returns ((X tuple), (y tuple))
+        # A simple sampler for 3DConv based architectures. Works over vdata.]
+        
+        data, flow_data = self.base_sample(datatype)
+        
+        def slider(AA, wsize):
+            # Generates one batch of inputs
+            end = len(AA)
+            for ii in range(wsize,end):
+                yield AA[ii-wsize:ii]
+
+        def targets(AA, wsize):
+            end = len(AA)
+            return AA[wsize:end]
+        
+        X_in = tuple([x for x in slider(data, window_size)])
+        y_out = tuple([x for x in targets(data, window_size)])
+
+        return X_in, y_out 
+    
+    def sample_3DConv_generator(self,
                       datatype,
                       window_size = 7,
                       batch_size = 128):
