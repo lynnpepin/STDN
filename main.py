@@ -103,14 +103,16 @@ def caps_main(
     sampler = file_loader.file_loader(n=n)
     modeler = models.models()
     
+    window_size = n*24*2 # Past 2 days
+    
     # Step 1. Create training dataset from raw data
     if V: print("Sampling data.")
     X, y = sampler.sample_3DConv(datatype = train_dataset,
-                                 window_size = n*15)
+                                 window_size = window_size)
     if V: print_time()
     
     # Step 2. Compile model architecture
-    input_shape = X[0].shape # E.g. (n*15, 10, 20, 2)
+    input_shape = X[0].shape # E.g. (window_size, 10, 20, 2)
     if V: print("Creating model with input shape",input_shape)
     model = modeler.vanilla_capsnet(
                 input_shape = input_shape,
@@ -136,7 +138,7 @@ def caps_main(
     
     # Step 4. Test model against 'test' dataset.
     test_X, test_y =  sampler.sample_3DConv(datatype = test_dataset,
-                                            window_size = n*15)
+                                            window_size = window_size)
     if V:
         print_time()
         print("Starting evaluation.")
