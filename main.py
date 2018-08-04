@@ -70,7 +70,6 @@ def eval_lstm(y, pred_y, threshold):
     dropoff_pred_y  = pred_y[:, 1]
     pickup_mask     = pickup_y > threshold      # Any element less than the threshhold gets set to 0
     dropoff_mask    = dropoff_y > threshold     # e.g. a = np.array([3,1,2,7]); mask = a > 2; a[mask] == array([3,7])
-    # TODO: Drop into debug here, look at the size of each thing
     #pickup part
     if np.sum(pickup_mask)!=0:
         # mean( |pickup_y - pickup_pred_y| /pickup_y); masked by the same mask
@@ -88,6 +87,84 @@ def eval_lstm(y, pred_y, threshold):
 
 def print_time():
     print("Timestamp:", datetime.datetime.now().strftime("%Y/%m/%d, %H:%M:%S"))
+
+
+def caps_main(
+        batch_size              = 64,
+        max_epochs              = 100,
+        validation_split        = 0.2,
+        model_filename          = None,
+        train_dataset           = "train",
+        test_dataset            = "test",
+        save_filename           = None,
+        initial_epoch           = 0,
+        n                       = 2 ):
+    model_hdf5_path = "./hdf5s/"
+    sampler = file_loader.file_loader(n=n)
+    modeler = models.models()
+    
+    # Step 1. Create training dataset from raw data
+    if V: print("Sampling data.")
+    X, y = sampler.sample_3DConv(datatype = train_dataset,
+                                 window_size = n*15)
+    if V: print_time()
+    
+    # Step 2. Compile model architecture
+    input_shape = X[0].shape # E.g. (n*15, 10, 20, 2)
+    if V: print("Creating model with input shape",input_shape)
+    model = modeler.vanilla_capsnet(
+                input_shape = input_shape,
+                routings = 3)
+    if V:
+        print("\nCapsule model created.")
+        print_time()
+    if model_filename:
+        if V: print("  Loading model weights from", model_filename)
+        model.load_weights(model_hdf5_path + model_filename)
+        if V: print_time()
+    
+    # Step 3. Train model
+    if V: print("Start training")
+    model.fit(x = X, y = y,
+              batch_size = batch_size,
+              validation_split = validation_split,
+              epochs = max_epochs,
+              initial_epoch = initial_epoch)
+    if V:
+        print("\nModel fit complete. Starting sampling of test data for evaluation.")
+        print_time()
+    
+    # Step 4. Test model against 'test' dataset.
+    test_X, test_y =  sampler.sample_3DConv(datatype = test_dataset,
+                                            window_size = n*15)
+    if V:
+        print_time()
+        print("Starting evaluation.")
+    
+    # Step 5. Evaluation
+    y_pred = model.predict(x = test_X)
+    threshold = float(sampler.threshold) / sampler.volume_max
+    
+    print("  Evaluation threshold:", sampler.threshold, " (normalized to",threshold,")")
+    print("  Normalizing constant:", sampler.volume_max)
+    print("  Testing on model.")
+    # TODO: Continue from here!
+    (prmse, pmape), (drmse, dmape) = eval_lstm(test_y, y_pred, threshold)
+    print("  pick-up rmse =",prmse*sampler.volume_max,", pickup mape =",pmape*100,"%")
+    print("  dropoff rmse =",drmse*sampler.volume_max," dropoff mape =",dmape*100,"%")
+    MSE = model.evaluate(test_X, test_y)
+    print("MSE:", MSE)
+    print("  (Normalized MSE:", (MSE)*sampler.volume_max**2, ")")
+        
+    # Step 6: Save model
+    if V:
+        print("\nEvaluation finished. Saving model weights.")
+        print_time()
+    if save_filename is None:
+        currTime = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        save_filename = currTime + "_weights.hdf5"
+    model.save_weights(model_hdf5_path + save_filename)
+    if V: print("Model weights saved to " + model_hdf5_path + save_filename , sep='')
 
 
 def stdn_main(
@@ -131,8 +208,6 @@ def stdn_main(
     
     # Step 2. Compile model architecture
     if V: print("Creating model with input shape", x.shape, "/", cnnx[0].shape)
-    #import code
-    #code.interact(local=locals())
     model = modeler.stdn(att_lstm_num     = att_lstm_num,           #3
                          att_lstm_seq_len = long_term_lstm_seq_len, #3
                          lstm_seq_len     = len(cnnx),              #7
@@ -178,7 +253,7 @@ def stdn_main(
     
     # Step 5. Evaluation
     y_pred = model.predict(x = att_cnnx + att_flow + att_x + cnnx + flow + [x,],)
-    threshold = float(sampler.threshold) / sampler.volume_max   # 10 passengers, adjusted for the [0,1] normalization
+    threshold = float(sampler.threshold) / sampler.volume_max   
     
     print("  Evaluation threshold:", sampler.threshold, " (normalized to",threshold,")")
     print("  Normalizing constant:", sampler.volume_max)
@@ -190,7 +265,7 @@ def stdn_main(
     print("MSE:", MSE)
     print("  (Normalized MSE:", (MSE)*sampler.volume_max**2, ")")
         
-    # Step 5: Save model
+    # Step 6: Save model
     if V:
         print("\nEvaluation finished. Saving model weights.")
         print_time()
@@ -292,19 +367,34 @@ if __name__ == "__main__":
             print_time()
             print("####################\n")
         stdn_main(
-             att_lstm_num            = 3,
-             long_term_lstm_seq_len  = max(3, 1+n_samples_per_hour),
-             short_term_lstm_seq_len = floor(3.5*n_samples_per_hour),
-             batch_size              = batch_size,
-             max_epochs              = max_epochs,
-             early_stop              = stop,
-             model_filename          = model_filename,
-             train_dataset           = train_data,
-             test_dataset            = test_data,
-             save_filename           = save_filename,
-             initial_epoch           = initial_epoch,
-             n                       = n_samples_per_hour
-            )
+            att_lstm_num            = 3,
+            long_term_lstm_seq_len  = max(3, 1+n_samples_per_hour),
+            short_term_lstm_seq_len = floor(3.5*n_samples_per_hour),
+            batch_size              = batch_size,
+            max_epochs              = max_epochs,
+            early_stop              = stop,
+            model_filename          = model_filename,
+            train_dataset           = train_data,
+            test_dataset            = test_data,
+            save_filename           = save_filename,
+            initial_epoch           = initial_epoch,
+            n                       = n_samples_per_hour)
+    
+    elif arch == 'caps' or archs == 'capsule':
+        if V:
+            print("\n\n####################")
+            print("Starting main.py caps_main()")
+            print_time()
+            print("####################\n")
+        caps_main(
+            batch_size      = batch_size,
+            max_epochs      = max_epochs,
+            model_filename  = model_filename,
+            train_dataset   = train_data,
+            test_dataset    = test_data,
+            save_filename   = save_filename,
+            initial_epoch   = initial_epoch,
+            n = n_samples_per_hour)
     else:
         print("Please define a valid architecture.")
         exit()
