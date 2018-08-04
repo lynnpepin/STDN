@@ -34,7 +34,7 @@ class models:
         # Input layer
         x = Input(shape=input_shape)
         # Layer 1: Just a conventional Conv2D layer
-        conv1 = Conv3D(filters = 256,
+        conv1 = Conv3D(filters = 128,
                        kernel_size = 5,
                        strides = 1,
                        padding = 'valid',
@@ -42,43 +42,40 @@ class models:
 
         # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
         primarycaps = PrimaryCap(conv1,
-                                 dim_capsule = 8,
-                                 n_channels  = 32,
-                                 kernel_size = 5,
-                                 strides = 2,
+                                 dim_capsule = 4,
+                                 n_channels  = 8,
+                                 kernel_size = 3,
+                                 strides = 1,
                                  padding = 'valid')
 
         # Layer 3: Capsule layer. Routing algorithm works here.
         #   num_capsule and dim_capsule are a choice you need to make, by intuition.
-        digitcaps1 = CapsuleLayer(num_capsule = 16, dim_capsule = 16, routings = routings,
+        digitcaps1 = CapsuleLayer(num_capsule = 8,
+                                  dim_capsule = 16,
+                                  routings    = routings,
                                   name = 'dcaps1')(primarycaps)
-        
-        ''' # Caps layer removed to reduce network params
-        # Layer 4: Another capsule layer! 
-        digitcaps2 = CapsuleLayer(num_capsule = 16, dim_capsule = 16, routings = routings, name = 'dcaps2')(digitcaps1)
+        '''
+        # Adding extra dcaps layers doesn't greatly increase the size
+        digitcaps2 = CapsuleLayer(num_capsule = 16,
+                                  dim_capsule = 32,
+                                  routings    = routings,
+                                  name = 'dcaps2')(digitcaps1)
         '''
         
-        # Prediction layers: TODO
+        # Prediction layers:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
-        # Final layers: Fully connected layers, similar to the "decoder" network
-        #flatten = layers.Flatten()(digitcaps2)
         flatten = Flatten()(digitcaps1)
-        dense1 = Dense(1024, activation='relu', name='dense1')(flatten)
-        dense2 = Dense(2048, activation='relu', name='dense2')(dense1)
+        dense1 = Dense(512, activation='relu', name='dense1')(flatten)
+        dense2 = Dense(1024, activation='relu', name='dense2')(dense1)
         dense3 = Dense(512,  activation='relu', name='dense3')(dense2)
-        d_out  = Dense(np.prod(input_shape[1:]), activation='relu', name='dout')(dense3)
+        dense4 = Dense(512,  activation='relu', name='dense4')(dense3)
+        d_out  = Dense(np.prod(input_shape[1:]), activation='relu', name='dout')(dense4)
         y_out  = Reshape(target_shape = input_shape[1:])(d_out)
         
         model = Model(x, y_out)
         model.compile(optimizer = optimizer, loss = loss, metrics=metrics)
         return model
-        # 13,052,816 params.
-        # ~8.2m in primarycap_conv3d
-        # ~1.2m in dcaps1
-        # ~2.1m in dense2
-        # ~1.0m in dense3
-        # Compare to the 4,203,394 of stdn() below.
-        # Consider lowering the width, and compensating by adding model depth?
+        # 3.6m params on input_shape = (14, 10, 20, 2)
         
     
     def stdn(self,
