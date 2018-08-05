@@ -54,16 +54,17 @@ class models:
                                   dim_capsule = 16,
                                   routings    = routings,
                                   name = 'dcaps1')(primarycaps)
+        '''
         # Layer 4
-        # Adding extra dcaps layers doesn't greatly increase the size
         digitcaps2 = CapsuleLayer(num_capsule = 16,
                                   dim_capsule = 64,
                                   routings    = routings,
                                   name = 'dcaps2')(digitcaps1)
+        '''
         
         # Prediction layers:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
-        flatten = Flatten()(digitcaps2)
+        flatten = Flatten()(digitcaps1)
         dense1 = Dense(512, activation='relu', name='dense1')(flatten)
         dense2 = Dense(1024, activation='relu', name='dense2')(dense1)
         dense3 = Dense(512,  activation='relu', name='dense3')(dense2)
