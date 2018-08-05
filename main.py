@@ -134,6 +134,7 @@ def caps_main(
     model = modeler.vanilla_capsnet(
                 input_shape = input_shape,
                 routings = 3)
+        
     if V:
         print("\nCapsule model created.")
         print_time()
@@ -145,10 +146,11 @@ def caps_main(
     # Step 3. Train model
     if V: print("Start training")
     model.fit(x = X, y = y,
-              batch_size = batch_size,
+              batch_size       = batch_size,
               validation_split = validation_split,
-              epochs = max_epochs,
-              initial_epoch = initial_epoch)
+              epochs           = max_epochs,
+              initial_epoch    = initial_epoch,
+              callbacks        = [early_stop])
     if V:
         print("\nModel fit complete. Starting sampling of test data for evaluation.")
         print_time()
