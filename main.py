@@ -110,6 +110,7 @@ def caps_main(
         batch_size              = 64,
         max_epochs              = 100,
         validation_split        = 0.2,
+        early_stop              = EarlyStopping(),
         model_filename          = None,
         train_dataset           = "train",
         test_dataset            = "test",
