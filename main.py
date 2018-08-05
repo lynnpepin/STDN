@@ -411,6 +411,7 @@ if __name__ == "__main__":
         caps_main(
             batch_size      = batch_size,
             max_epochs      = max_epochs,
+            early_stop              = stop,
             model_filename  = model_filename,
             train_dataset   = train_data,
             test_dataset    = test_data,
