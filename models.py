@@ -41,7 +41,7 @@ class models:
                        activation  = 'relu', name = 'conv1' )(x)
 
         # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
-        primarycaps = PrimaryCap(conv2,
+        primarycaps = PrimaryCap(conv1,
                                  dim_capsule = 8,
                                  n_channels  = 8,
                                  kernel_size = (7,3,3),
