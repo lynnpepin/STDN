@@ -24,7 +24,7 @@ class models:
     # TODO: Test this, make sure it runs on one epoch, make a non-vanilla version
     # Non-vanilla version should intelligently change kernel_size, strides
     def vanilla_capsnet(self,
-                input_shape = (14, 10, 20, 2), # 14 = Window Size; must be small enough!
+                input_shape = (24, 10, 20, 2), # 24 = Window Size; must not be too small
                 routings    = 3,
                 optimizer   = 'adagrad',
                 loss        = 'mse',
@@ -34,37 +34,36 @@ class models:
         # Input layer
         x = Input(shape=input_shape)
         # Layer 1: Just a conventional Conv2D layer
-        conv1 = Conv3D(filters = 128,
-                       kernel_size = 5,
-                       strides = 1,
-                       padding = 'valid',
-                       activation = 'relu', name = 'conv1' )(x)
+        conv1 = Conv3D(filters     = 256,
+                       kernel_size = (7,5,5),
+                       strides     = 1,
+                       padding     = 'valid',
+                       activation  = 'relu', name = 'conv1' )(x)
 
         # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
         primarycaps = PrimaryCap(conv1,
-                                 dim_capsule = 4,
-                                 n_channels  = 8,
-                                 kernel_size = 3,
+                                 dim_capsule = 8,
+                                 n_channels  = 16,
+                                 kernel_size = (7,3,3),
                                  strides = 1,
                                  padding = 'valid')
 
         # Layer 3: Capsule layer. Routing algorithm works here.
         #   num_capsule and dim_capsule are a choice you need to make, by intuition.
-        digitcaps1 = CapsuleLayer(num_capsule = 8,
+        digitcaps1 = CapsuleLayer(num_capsule = 32,
                                   dim_capsule = 16,
                                   routings    = routings,
                                   name = 'dcaps1')(primarycaps)
-        '''
+        # Layer 4
         # Adding extra dcaps layers doesn't greatly increase the size
         digitcaps2 = CapsuleLayer(num_capsule = 16,
-                                  dim_capsule = 32,
+                                  dim_capsule = 64,
                                   routings    = routings,
                                   name = 'dcaps2')(digitcaps1)
-        '''
         
         # Prediction layers:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
-        flatten = Flatten()(digitcaps1)
+        flatten = Flatten()(digitcaps2)
         dense1 = Dense(512, activation='relu', name='dense1')(flatten)
         dense2 = Dense(1024, activation='relu', name='dense2')(dense1)
         dense3 = Dense(512,  activation='relu', name='dense3')(dense2)
@@ -75,7 +74,6 @@ class models:
         model = Model(x, y_out)
         model.compile(optimizer = optimizer, loss = loss, metrics=metrics)
         return model
-        # 3.6m params on input_shape = (14, 10, 20, 2)
         
     
     def stdn(self,
