@@ -50,7 +50,7 @@ class models:
 
         # Layer 3: Capsule layer. Routing algorithm works here.
         #   num_capsule and dim_capsule are a choice you need to make, by intuition.
-        digitcaps1 = CapsuleLayer(num_capsule = 32,
+        digitcaps1 = CapsuleLayer(num_capsule = 16,
                                   dim_capsule = 16,
                                   routings    = routings,
                                   name = 'dcaps1')(primarycaps)
