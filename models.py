@@ -33,15 +33,20 @@ class models:
         
         # Input layer
         x = Input(shape=input_shape)
-        # Layer 1: Just a conventional Conv2D layer
+        # Layer 1: Just conventional Conv2D layers
         conv1 = Conv3D(filters     = 256,
                        kernel_size = (7,5,5),
                        strides     = 1,
                        padding     = 'valid',
                        activation  = 'relu', name = 'conv1' )(x)
+        conv2 = Conv3D(filters     = 256,
+                       kernel_size = (7,3,3),
+                       strides     = 1,
+                       padding     = 'valid',
+                       activation  = 'relu', name = 'conv2' )(conv1)
 
         # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
-        primarycaps = PrimaryCap(conv1,
+        primarycaps = PrimaryCap(conv2,
                                  dim_capsule = 8,
                                  n_channels  = 16,
                                  kernel_size = (7,3,3),

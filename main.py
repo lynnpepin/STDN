@@ -107,7 +107,7 @@ def print_time():
 
 
 def caps_main(
-        batch_size              = 64,
+        batch_size              = 16,
         max_epochs              = 100,
         validation_split        = 0.2,
         early_stop              = EarlyStopping(),
