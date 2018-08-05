@@ -34,38 +34,26 @@ class models:
         # Input layer
         x = Input(shape=input_shape)
         # Layer 1: Just conventional Conv2D layers
-        conv1 = Conv3D(filters     = 256,
+        conv1 = Conv3D(filters     = 128,
                        kernel_size = (7,5,5),
                        strides     = 1,
                        padding     = 'valid',
                        activation  = 'relu', name = 'conv1' )(x)
-        conv2 = Conv3D(filters     = 256,
-                       kernel_size = (7,3,3),
-                       strides     = 1,
-                       padding     = 'valid',
-                       activation  = 'relu', name = 'conv2' )(conv1)
 
         # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
         primarycaps = PrimaryCap(conv2,
                                  dim_capsule = 8,
-                                 n_channels  = 16,
+                                 n_channels  = 8,
                                  kernel_size = (7,3,3),
                                  strides = 1,
                                  padding = 'valid')
 
         # Layer 3: Capsule layer. Routing algorithm works here.
         #   num_capsule and dim_capsule are a choice you need to make, by intuition.
-        digitcaps1 = CapsuleLayer(num_capsule = 16,
+        digitcaps1 = CapsuleLayer(num_capsule = 8,
                                   dim_capsule = 16,
                                   routings    = routings,
                                   name = 'dcaps1')(primarycaps)
-        '''
-        # Layer 4
-        digitcaps2 = CapsuleLayer(num_capsule = 16,
-                                  dim_capsule = 64,
-                                  routings    = routings,
-                                  name = 'dcaps2')(digitcaps1)
-        '''
         
         # Prediction layers:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
