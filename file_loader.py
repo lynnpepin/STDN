@@ -134,34 +134,60 @@ class file_loader:
         return data, flow_data
     
     
+    def _slider(self,AA, wsize, start_buff = 0, end_buff = 0):
+        ''' >>> for x in buffer_slider([0,1,2,3,4,5,6,7,8], 3, 1, 2):
+            ...     print(x)
+            ... 
+            [1, 2, 3]
+            [2, 3, 4]
+            [3, 4, 5] '''
+        end = len(AA) - end_buff
+        start = wsize + start_buff
+        for ii in range(start, end):
+            yield AA[ii-wsize:ii]
+
+    def _targets(self,AA, wsize, start_buff = 0):
+        end = len(AA)
+        start = wsize + start_buff
+        return AA[start:end]
+
+    
+    def sample_3DConv_past(self,
+                           datatype,
+                           window_size = 24,     #  .5 days
+                           gap_size    = 15*24-1): # 6.5 days
+        # From the volume data, gather the past window_size samples of data
+        #   and return it as "X_recent"
+        # the past window_size-1 samples from the past week, plus the 1 sample
+        #   representing the current timeslot from the past week,
+        #   and return it as "X_lastweek".
+        # Also return the targets.
+        
+        buff_size = window_size + gap_size
+        
+        data, _ = self.base_sample(datatype)
+        # The distant past inputs and the recent past inputs
+        X_distant_in = np.array([x for x in self._slider(data, window_size, 0, buff_size)])
+        X_recent_in  = np.array([x for x in self._slider(data, window_size, buff_size, 0)])
+        y_out        = np.array([x for x in self._targets(data, window_size, buff_size)])
+        
+        return X_distant_in, X_recent_in, y_out
+        
+
     def sample_3DConv(self,
                       datatype,
-                      window_size = 15):
+                      window_size = 24):
         # TODO: Test
         # Usage: Returns ((X tuple), (y tuple))
         # A simple sampler for 3DConv based architectures. Works over vdata.]
-        
-        data, flow_data = self.base_sample(datatype)
-        
-        def slider(AA, wsize):
-            # Generates one batch of inputs
-            end = len(AA)
-            for ii in range(wsize,end):
-                yield AA[ii-wsize:ii]
-
-        def targets(AA, wsize):
-            end = len(AA)
-            return AA[wsize:end]
-        
-        X_in  = np.array([x for x in slider(data, window_size)])
-        y_out = np.array([x for x in targets(data, window_size)])
-
-        return X_in, y_out 
-    
+        data, _ = self.base_sample(datatype)
+        X_in  = np.array([x for x in self._slider(data, window_size)])
+        y_out = np.array([x for x in self._targets(data, window_size)])
+        return X_in, y_out
     
     def sample_3DConv_generator(self,
                       datatype,
-                      window_size = 7,
+                      window_size = 2,
                       batch_size = 128):
         # TODO: Test
         # Usage:

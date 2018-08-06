@@ -21,15 +21,83 @@ class models:
     def __init__(self):
         pass
 
-    # TODO: Test this, make sure it runs on one epoch, make a non-vanilla version
-    # Non-vanilla version should intelligently change kernel_size, strides
-    def vanilla_capsnet(self,
-                input_shape = (24, 10, 20, 2), # 24 = Window Size; must not be too small
-                routings    = 3,
-                optimizer   = 'adagrad',
-                loss        = 'mse',
-                metrics     = [],
-                verbose     = True):
+    def dual_capsnet(self,
+            input_shape = (24, 10, 20, 2), # 24 = Window Size; must not be too small
+            routings    = 3,
+            optimizer   = 'adagrad',
+            loss        = 'mse',
+            metrics     = [],
+            verbose     = True):
+        
+        # There are two x-channel inputs to this NN; same input shape.
+        x1 = Input(shape=input_shape)
+        x2 = Input(shape=input_shape)
+        
+        # Track 1
+        conv1 = Conv3D(filters     = 128,
+                       kernel_size = (5,5,5),
+                       strides     = 1,
+                       padding     = 'valid',
+                       activation  = 'relu', name = 'conv1' )(x1)               
+        pcap1 = PrimaryCap(conv1,
+                           dim_capsule = 12,
+                           n_channels  = 8,
+                           kernel_size = (5,3,3),
+                           strides = 1,
+                           padding = 'valid',
+                           name='pcap1')
+        dcap1 = CapsuleLayer(num_capsule = 8,
+                             dim_capsule = 16,
+                             routings    = routings,
+                             name = 'dcap1')(pcap1)
+        # Track 2
+        conv2 = Conv3D(filters     = 128,
+                       kernel_size = (5,5,5),
+                       strides     = 1,
+                       padding     = 'valid',
+                       activation  = 'relu', name = 'conv2' )(x2)               
+        pcap2 = PrimaryCap(conv2,
+                           dim_capsule = 12,
+                           n_channels  = 8,
+                           kernel_size = (5,3,3),
+                           strides = 1,
+                           padding = 'valid',
+                           name    = 'pcap2')
+        dcap2 = CapsuleLayer(num_capsule = 8,
+                             dim_capsule = 16,
+                             routings    = routings,
+                             name = 'dcap2')(pcap2)
+
+        # Concat
+        dcap_merged = Concatenate()([dcap1, dcap2])
+        # Extra dcap layer
+        dcap_merged = CapsuleLayer(num_capsule = 8,
+                                     dim_capsule = 16,
+                                     routings    = routings,
+                                     name = 'dcap_m')(dcap_merged)
+        # Fully connected part
+        flatten = Flatten()(dcap_merged)
+        dense1 = Dense(512, activation='relu', name='dense1')(flatten)
+        dense2 = Dense(1024, activation='relu', name='dense2')(dense1)
+        dense3 = Dense(512,  activation='relu', name='dense3')(dense2)
+
+        dense4 = Dense(512,  activation='relu', name='dense4')(dense3)
+        d_out  = Dense(np.prod(input_shape[1:]), activation='relu', name='dout')(dense4)
+        y_out  = Reshape(target_shape = input_shape[1:])(d_out)
+        
+        model = Model([x1, x2], y_out)
+        model.compile(optimizer = optimizer, loss = loss, metrics=metrics)
+        return model
+
+
+
+    def single_capsnet(self,
+            input_shape = (24, 10, 20, 2), # 24 = Window Size; must not be too small
+            routings    = 3,
+            optimizer   = 'adagrad',
+            loss        = 'mse',
+            metrics     = [],
+            verbose     = True):
         
         # Input layer
         x = Input(shape=input_shape)
