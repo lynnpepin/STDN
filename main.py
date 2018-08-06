@@ -124,7 +124,7 @@ def caps_main(
         save_filename           = None,
         initial_epoch           = 0,
         n                       = 2 ):
-    model_hdf5_path = "./hdf5s/caps"
+    model_hdf5_path = "./hdf5s/"
     sampler = file_loader.file_loader(n=n)
     modeler = models.models()
     
@@ -191,7 +191,7 @@ def caps_main(
         print_time()
     if save_filename is None:
         currTime = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        save_filename = currTime + "_weights.hdf5"
+        save_filename = currTime + "caps_weights.hdf5"
     model.save_weights(model_hdf5_path + save_filename)
     if V: print("Model weights saved to " + model_hdf5_path + save_filename , sep='')
 
