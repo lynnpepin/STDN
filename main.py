@@ -52,6 +52,13 @@ stop = CustomStopper(monitor    = 'val_loss',
                      start_epoch= 40)
 
 
+capsstop = CustomStopper(monitor    = 'val_loss',
+                     min_delta  = 0,
+                     patience   = 10,
+                     verbose    = 0,
+                     mode       = 'min',
+                     start_epoch= 40)
+
 def eval_together(y, pred_y, threshold):
     # Not used
     mask = y > threshold
@@ -117,7 +124,7 @@ def caps_main(
         save_filename           = None,
         initial_epoch           = 0,
         n                       = 2 ):
-    model_hdf5_path = "./hdf5s/"
+    model_hdf5_path = "./hdf5s/caps"
     sampler = file_loader.file_loader(n=n)
     modeler = models.models()
     
@@ -411,7 +418,7 @@ if __name__ == "__main__":
         caps_main(
             batch_size      = batch_size,
             max_epochs      = max_epochs,
-            early_stop              = stop,
+            early_stop      = capsstop,
             model_filename  = model_filename,
             train_dataset   = train_data,
             test_dataset    = test_data,
