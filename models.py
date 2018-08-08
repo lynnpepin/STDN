@@ -254,9 +254,10 @@ class models:
         nbhd_convs = [keras.layers.Multiply()([nbhd_convs[ts], flow_gates[ts]])
                       for ts in range(lstm_seq_len)]
         # TODO: TWEAK GROUP[1] CAPSULE LAYERS HERE
-        flow_gates = [PrimaryCap2D(flow_convs[ts], dim_capsule=8, n_channels=16, kernel_size=3, strides=2, padding='valid', name='pcap_{0}'.format(ts+1))
+        # Rename?
+        nbhd_convs = [PrimaryCap2D(flow_convs[ts], dim_capsule=8, n_channels=16, kernel_size=3, strides=2, padding='valid', name='pcap_{0}'.format(ts+1))
                       for ts in range(lstm_seq_len)]
-        flow_gates = [CapsuleLayer2D(num_capsule=8, dim_capsule=12, routings=routings, name='dcaps_{0}'.format(ts+1))(flow_gates[ts])
+        nbhd_convs = [CapsuleLayer2D(num_capsule=8, dim_capsule=12, routings=routings, name='dcaps_{0}'.format(ts+1))(nbhd_convs[ts])
                       for ts in range(lstm_seq_len)]
         # TODO: Replace flatten?
 
@@ -318,9 +319,9 @@ class models:
         att_nbhd_convs = [[keras.layers.Multiply()([att_nbhd_convs[att][ts], att_flow_gates[att][ts]])
                            for ts in range(att_lstm_seq_len)] for att in range(att_lstm_num)]
         # TODO: TWEAK GROUP[2] CAPSULE LAYERS HERE
-        att_flow_gates = [[PrimaryCap2D(att_flow_gates[att][ts], dim_capsule=8, n_channels=16, kernel_size=3, strides=2, padding='valid', name='pcap_{0}_{1}'.format(att+1, ts+1))
+        att_nbhd_convs = [[PrimaryCap2D(att_nbhd_convs[att][ts], dim_capsule=8, n_channels=16, kernel_size=3, strides=2, padding='valid', name='pcap_{0}_{1}'.format(att+1, ts+1))
                            for ts in range(att_lstm_seq_len)] for att in range(att_lstm_num)]
-        att_flow_gates = [[CapsuleLayer2D(num_capsule=8, dim_capsule=12, routings=routings, name='dcaps_{0}_{1}'.format(att+1, ts+1))(att_flow_gates[att][ts])
+        att_nbhd_convs = [[CapsuleLayer2D(num_capsule=8, dim_capsule=12, routings=routings, name='dcaps_{0}_{1}'.format(att+1, ts+1))(att_nbhd_convs[att][ts])
                            for ts in range(att_lstm_seq_len)] for att in range(att_lstm_num)]
         # TODO: Replace flatten?
 

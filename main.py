@@ -216,7 +216,8 @@ def stdn_main(
         test_dataset            = "test",
         save_filename           = None,
         initial_epoch           = 0,
-        n                       = 2
+        n                       = 2,
+        capsule_mode            = False,
     ):
     """
     Samples raw data (from /data/*.npz files) to create training data for model,
@@ -241,16 +242,28 @@ def stdn_main(
     
     # Step 2. Compile model architecture
     if V: print("Creating model with input shape", x.shape, "/", cnnx[0].shape)
-    model = modeler.stdn(att_lstm_num     = att_lstm_num,           #3
-                         att_lstm_seq_len = long_term_lstm_seq_len, #3
-                         lstm_seq_len     = len(cnnx),              #7
-                         feature_vec_len  = x.shape[-1],            #160
-                         cnn_flat_size    = cnn_flat_size,          #128
-                         nbhd_size        = cnnx[0].shape[1],       #7
-                         nbhd_type        = cnnx[0].shape[-1],      #2
-                         verbose          = V)
+    if capsule_mode:
+        model = modeler.stdcn(att_lstm_num     = att_lstm_num,           #3
+                             att_lstm_seq_len = long_term_lstm_seq_len, #3
+                             lstm_seq_len     = len(cnnx),              #7
+                             feature_vec_len  = x.shape[-1],            #160
+                             cnn_flat_size    = cnn_flat_size,          #128
+                             nbhd_size        = cnnx[0].shape[1],       #7
+                             nbhd_type        = cnnx[0].shape[-1],      #2
+                             verbose          = V)
+    else:
+        model = modeler.stdn(att_lstm_num     = att_lstm_num,           #3
+                             att_lstm_seq_len = long_term_lstm_seq_len, #3
+                             lstm_seq_len     = len(cnnx),              #7
+                             feature_vec_len  = x.shape[-1],            #160
+                             cnn_flat_size    = cnn_flat_size,          #128
+                             nbhd_size        = cnnx[0].shape[1],       #7
+                             nbhd_type        = cnnx[0].shape[-1],      #2
+                             verbose          = V)
     if V:
         print("\nSTDN model created.")
+        if capsule_mode:
+            print("  STDN model: STDCN (STDN with Capsule Layers)")
         print_time()
     if model_filename:
         if V: print("  Loading model weights from", model_filename)
@@ -393,10 +406,12 @@ if __name__ == "__main__":
 
     # Start program
     
-    if arch == 'stdn':
+    if arch == 'stdn' or arch == 'stdcn':
         if V:
             print("\n\n####################")
             print("Starting main.py stdn_main()")
+            if arch == 'stdcn':
+                print("  Using Capsule variant of STDN")
             print_time()
             print("####################\n")
         stdn_main(
@@ -411,9 +426,10 @@ if __name__ == "__main__":
             test_dataset            = test_data,
             save_filename           = save_filename,
             initial_epoch           = initial_epoch,
-            n                       = n_samples_per_hour)
+            n                       = n_samples_per_hour,
+            capsule_mode            = arch=='stdcn')
     
-    elif arch == 'caps' or archs == 'capsule':
+    elif arch == 'caps' or arch == 'capsule':
         if V:
             print("\n\n####################")
             print("Starting main.py caps_main()")
