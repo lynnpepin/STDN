@@ -12,6 +12,8 @@ import ipdb
 import attention
 from capsule_3D_layers import CapsuleLayer, PrimaryCap, CapsuleLayer2D, PrimaryCap2D
 
+from keras.layers.advanced_activations import LeakyReLU
+
 class baselines:
     def __init__(self):
         pass
@@ -106,7 +108,9 @@ class models:
                        kernel_size = (9,5,5),
                        strides     = 1,
                        padding     = 'valid',
-                       activation  = 'relu', name = 'conv1' )(x)
+                       name = 'conv1' )(x)
+        # LReLU activation
+        conv1 = LeakyReLU()(conv1)
 
         # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
         primarycaps = PrimaryCap(conv1,
@@ -135,10 +139,13 @@ class models:
         # Prediction layers:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
         flatten = Flatten()(digitcaps3)
-        dense1 = Dense(1024, activation='relu', name='dense1')(flatten)
-        dense2 = Dense(512, activation='relu', name='dense2')(dense1)
-        dense3 = Dense(512,  activation='relu', name='dense3')(dense2)
-        dense4 = Dense(np.prod(input_shape[1:]),  activation='relu', name='dense4')(dense3)
+        dense1 = Dense(1024, name='dense1')(flatten)
+        dense1 = LeakyReLU()(dense1)
+        dense2 = Dense(512, name='dense2')(dense1)
+        dense2 = LeakyReLU()(dense2)
+        dense3 = Dense(512, name='dense3')(dense2)
+        dense3 = LeakyReLU()(dense3)
+        dense4 = Dense(np.prod(input_shape[1:]), name='dense4')(dense3)
         y_out  = Reshape(target_shape = input_shape[1:])(dense4)
         
         model = Model(x, y_out)
