@@ -92,7 +92,7 @@ class models:
 
 
     def single_capsnet(self,
-            input_shape = (24, 10, 20, 2), # 24 = Window Size; must not be too small
+            input_shape = (48, 10, 20, 2), # 24 = Window Size; must not be too small
             routings    = 3,
             optimizer   = 'adagrad',
             loss        = 'mse',
@@ -102,8 +102,8 @@ class models:
         # Input layer
         x = Input(shape=input_shape)
         # Layer 1: Just conventional Conv2D layers
-        conv1 = Conv3D(filters     = 128,
-                       kernel_size = (7,5,5),
+        conv1 = Conv3D(filters     = 256,
+                       kernel_size = (9,5,5),
                        strides     = 1,
                        padding     = 'valid',
                        activation  = 'relu', name = 'conv1' )(x)
@@ -112,26 +112,34 @@ class models:
         primarycaps = PrimaryCap(conv1,
                                  dim_capsule = 8,
                                  n_channels  = 8,
-                                 kernel_size = (7,3,3),
+                                 kernel_size = (7,5,5),
                                  strides = 1,
                                  padding = 'valid')
 
         # Layer 3: Capsule layer. Routing algorithm works here.
         #   num_capsule and dim_capsule are a choice you need to make, by intuition.
-        digitcaps1 = CapsuleLayer(num_capsule = 8,
-                                  dim_capsule = 16,
+        digitcaps1 = CapsuleLayer(num_capsule = 24,
+                                  dim_capsule = 8,
                                   routings    = routings,
                                   name = 'dcaps1')(primarycaps)
+        digitcaps2 = CapsuleLayer(num_capsule = 24,
+                                  dim_capsule = 12,
+                                  routings    = routings,
+                                  name = 'dcaps2')(digitcaps1)
+        digitcaps3 = CapsuleLayer(num_capsule = 24,
+                                  dim_capsule = 12,
+                                  routings    = routings,
+                                  name = 'dcaps3')(digitcaps2)
+        
         
         # Prediction layers:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
-        flatten = Flatten()(digitcaps1)
-        dense1 = Dense(512, activation='relu', name='dense1')(flatten)
-        dense2 = Dense(1024, activation='relu', name='dense2')(dense1)
+        flatten = Flatten()(digitcaps3)
+        dense1 = Dense(1024, activation='relu', name='dense1')(flatten)
+        dense2 = Dense(512, activation='relu', name='dense2')(dense1)
         dense3 = Dense(512,  activation='relu', name='dense3')(dense2)
-        dense4 = Dense(512,  activation='relu', name='dense4')(dense3)
-        d_out  = Dense(np.prod(input_shape[1:]), activation='relu', name='dout')(dense4)
-        y_out  = Reshape(target_shape = input_shape[1:])(d_out)
+        dense4 = Dense(np.prod(input_shape[1:]),  activation='relu', name='dense4')(dense3)
+        y_out  = Reshape(target_shape = input_shape[1:])(dense4)
         
         model = Model(x, y_out)
         model.compile(optimizer = optimizer, loss = loss, metrics=metrics)

@@ -135,16 +135,18 @@ def caps_main(
     #X, y = sampler.sample_3DConv(datatype = train_dataset,
     #                             window_size = window_size)
     gap_size = 15*12*n-1 # A week + 12 hour window, - 1 sample
-    X1, X2, y = sampler.sample_3DConv_past(datatype = train_dataset,
-                                        window_size = window_size,
-                                        gap_size = gap_size)
+    #X1, X2, y = sampler.sample_3DConv_past(datatype = train_dataset,
+    X, y = sampler.sample_3DConv(datatype = train_dataset,
+                                 window_size = window_size)
+                                 #gap_size = gap_size)
     if V: print_time()
     
     # Step 2. Compile model architecture
-    input_shape = X1[0].shape # E.g. (window_size, 10, 20, 2)
-    assert X1[0].shape == X2[0].shape ##For the new caps net
+    #input_shape = X1[0].shape # E.g. (window_size, 10, 20, 2)
+    #assert X1[0].shape == X2[0].shape ##For the new caps net
+    input_shape = X[0].shape
     if V: print("Creating model with input shape",input_shape)
-    model = modeler.dual_capsnet(
+    model = modeler.single_capsnet(
                 input_shape = input_shape,
                 routings = 3)
     if V:
@@ -157,7 +159,8 @@ def caps_main(
     
     # Step 3. Train model
     if V: print("Start training")
-    model.fit(x = [X1, X2], y = y,
+    #model.fit(x = [X1, X2], y = y,
+    model.fit(x = X, y = y,
               batch_size       = batch_size,
               validation_split = validation_split,
               epochs           = max_epochs,
@@ -168,14 +171,16 @@ def caps_main(
         print_time()
     
     # Step 4. Test model against 'test' dataset.
-    test_X1, test_X2, test_y =  sampler.sample_3DConv_past(datatype = test_dataset,
-                                                   window_size = window_size)
+    #test_X1, test_X2, test_y =  sampler.sample_3DConv_past(datatype = test_dataset,
+    test_X, test_y = sampler.sample_3DConv(datatype = test_dataset,
+                                           window_size = window_size)
     if V:
         print_time()
         print("Starting evaluation.")
     
     # Step 5. Evaluation
-    y_pred = model.predict(x = [test_X1, test_X2])
+    #y_pred = model.predict(x = [test_X1, test_X2])
+    y_pred = model.predict(x = test_X)
     threshold = sampler.threshold / sampler.volume_max
     
     print("  Evaluation threshold:", sampler.threshold, " (normalized to",threshold,")")
@@ -185,7 +190,8 @@ def caps_main(
     (prmse, pmape), (drmse, dmape) = eval_caps(test_y, y_pred, threshold)
     print("  pick-up rmse =",prmse*sampler.volume_max,", pickup mape =",pmape*100,"%")
     print("  dropoff rmse =",drmse*sampler.volume_max," dropoff mape =",dmape*100,"%")
-    MSE = model.evaluate([test_X1, test_X2], test_y)
+    #MSE = model.evaluate([test_X1, test_X2], test_y)
+    MSE = model.evaluate(test_X, test_y)
     print("MSE:", MSE)
     print("  (Normalized MSE:", (MSE)*sampler.volume_max**2, ")")
         
