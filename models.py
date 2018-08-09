@@ -95,6 +95,7 @@ class models:
 
     def single_capsnet(self,
             input_shape = (48, 10, 20, 2), # 24 = Window Size; must not be too small
+            output_shape = (10,20,2),
             routings    = 3,
             optimizer   = 'adagrad',
             loss        = 'mse',
@@ -145,8 +146,8 @@ class models:
         dense2 = LeakyReLU()(dense2)
         dense3 = Dense(512, name='dense3')(dense2)
         dense3 = LeakyReLU()(dense3)
-        dense4 = Dense(np.prod(input_shape[1:]), name='dense4')(dense3)
-        y_out  = Reshape(target_shape = input_shape[1:])(dense4)
+        dense4 = Dense(np.prod(output_shape), name='dense4')(dense3)
+        y_out  = Reshape(target_shape = output_shape)(dense4)
         
         model = Model(x, y_out)
         model.compile(optimizer = optimizer, loss = loss, metrics=metrics)
