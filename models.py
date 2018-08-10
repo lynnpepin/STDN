@@ -104,42 +104,44 @@ class models:
         
         # Input layer
         x = Input(shape=input_shape)
-        # Layer 1: Just conventional Conv2D layers
-        conv1 = Conv3D(filters     = 512,
-                       kernel_size = (9,5,5),
+        # Layer 1: Just conventional Conv3D layers with LeakyReLU activations.
+        conv1 = Conv3D(filters     = 128,
+                       kernel_size = (5,5,5),
                        strides     = 1,
                        padding     = 'valid',
                        name = 'conv1' )(x)
-        # LReLU activation
         conv1 = LeakyReLU()(conv1)
+        conv2 = Conv3D(filters     = 256,
+                       kernel_size = (3,3,3),
+                       strides     = 1,
+                       padding     = 'valid',
+                       name = 'conv2' )(conv1)
+        conv2 = LeakyReLU(conv2)
+        conv3 = Conv3D(filters     = 256,
+                       kernel_size = (3,1,1),
+                       strides     = 1,
+                       padding     = 'valid',
+                       name = 'conv3' )(conv2)
+        conv3 = LeakyReLU(conv3)
 
         # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
-        primarycaps = PrimaryCap(conv1,
-                                 dim_capsule = 8,
-                                 n_channels  = 8,
-                                 kernel_size = (7,5,5),
+        primarycaps = PrimaryCap(conv3,
+                                 dim_capsule = 6,
+                                 n_channels  = 4,
+                                 kernel_size = (3,3,3),
                                  strides = 1,
                                  padding = 'valid')
 
         # Layer 3: Capsule layer. Routing algorithm works here.
         #   num_capsule and dim_capsule are a choice you need to make, by intuition.
-        digitcaps1 = CapsuleLayer(num_capsule = 24,
-                                  dim_capsule = 8,
+        digitcaps1 = CapsuleLayer(num_capsule = 8,
+                                  dim_capsule = 48,
                                   routings    = routings,
                                   name = 'dcaps1')(primarycaps)
-        digitcaps2 = CapsuleLayer(num_capsule = 24,
-                                  dim_capsule = 16,
-                                  routings    = routings,
-                                  name = 'dcaps2')(digitcaps1)
-        digitcaps3 = CapsuleLayer(num_capsule = 24,
-                                  dim_capsule = 24,
-                                  routings    = routings,
-                                  name = 'dcaps3')(digitcaps2)
-        
         
         # Prediction layers:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
-        flatten = Flatten()(digitcaps3)
+        flatten = Flatten()(digitcaps1)
         d = Dense(1024, name='dense1')(flatten)
         d = LeakyReLU()(d)
         d = Dense(2048, name='dense2')(d)
