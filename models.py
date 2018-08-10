@@ -94,7 +94,7 @@ class models:
 
 
     def single_capsnet(self,
-            input_shape = (48, 10, 20, 2), # 24 = Window Size; must not be too small
+            input_shape = (48, 10, 20, 4), # 24 = Window Size; must not be too small
             output_shape = (10,20,2),
             routings    = 3,
             optimizer   = 'adagrad',
@@ -105,7 +105,7 @@ class models:
         # Input layer
         x = Input(shape=input_shape)
         # Layer 1: Just conventional Conv2D layers
-        conv1 = Conv3D(filters     = 256,
+        conv1 = Conv3D(filters     = 512,
                        kernel_size = (9,5,5),
                        strides     = 1,
                        padding     = 'valid',
@@ -128,11 +128,11 @@ class models:
                                   routings    = routings,
                                   name = 'dcaps1')(primarycaps)
         digitcaps2 = CapsuleLayer(num_capsule = 24,
-                                  dim_capsule = 12,
+                                  dim_capsule = 16,
                                   routings    = routings,
                                   name = 'dcaps2')(digitcaps1)
         digitcaps3 = CapsuleLayer(num_capsule = 24,
-                                  dim_capsule = 12,
+                                  dim_capsule = 24,
                                   routings    = routings,
                                   name = 'dcaps3')(digitcaps2)
         
@@ -140,14 +140,18 @@ class models:
         # Prediction layers:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
         flatten = Flatten()(digitcaps3)
-        dense1 = Dense(1024, name='dense1')(flatten)
-        dense1 = LeakyReLU()(dense1)
-        dense2 = Dense(512, name='dense2')(dense1)
-        dense2 = LeakyReLU()(dense2)
-        dense3 = Dense(512, name='dense3')(dense2)
-        dense3 = LeakyReLU()(dense3)
-        dense4 = Dense(np.prod(output_shape), name='dense4')(dense3)
-        y_out  = Reshape(target_shape = output_shape)(dense4)
+        d = Dense(1024, name='dense1')(flatten)
+        d = LeakyReLU()(d)
+        d = Dense(2048, name='dense2')(d)
+        d = LeakyReLU()(d)
+        d = Dense(2048, name='dense3')(d)
+        d = LeakyReLU()(d)
+        d = Dense(512, name='dense4')(d)
+        d = LeakyReLU()(d)
+        d = Dense(512, name='dense5')(d)
+        d = LeakyReLU()(d)
+        d = Dense(np.prod(output_shape), name='dense_out')(d)
+        y_out  = Reshape(target_shape = output_shape)(d)
         
         model = Model(x, y_out)
         model.compile(optimizer = optimizer, loss = loss, metrics=metrics)

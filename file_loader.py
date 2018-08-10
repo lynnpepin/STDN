@@ -134,6 +134,35 @@ class file_loader:
         return data, flow_data
     
     
+    def _flow_nbhd_creator(self, datatype, r=1):
+        # From flow data and a nbhd radius,
+        # Tile (1+2r) by (1+2r) for every (x,y).
+        # Results in an (x*(1+2r)) by (y*(1+2r)) image with 4 channels.
+        _, fdata = self.base_sample(datatype)
+        # fdata shape: (short/long, T, w, h, w, h)
+        _, T, w, h, _, _ = fdata.shape
+        out = np.zeros((T, w*(1+2*r), h*(1+2*r), 4))
+        
+        pad_shape = ((0,0), (r,r), (r,r), (r,r), (r,r))
+        
+        for t in range(T):
+            flow = np.pad(fdata[:,t], pad_shape, 'constant', constant_values=0)
+            # Shape: (2, 10+2r, 20+2r, 10+2r, 20+2r)
+            for x in range(w):
+                for y in range(h):
+                    # x, y bounds.
+                    # +r is to account for the padding.
+                    xl = x - r      + r
+                    xr = x + r + 1  + r
+                    yl = y - r      + r
+                    yr = y + r + 1  + r
+                    out[t, xl:xr, yl:yr, 0] = flow[0, x, y, xl:xr, yl:yr]
+                    out[t, xl:xr, yl:yr, 1] = flow[1, x, y, xl:xr, yl:yr]
+                    out[t, xl:xr, yl:yr, 2] = flow[0, xl:xr, yl:yr, x, y]
+                    out[t, xl:xr, yl:yr, 3] = flow[1, xl:xr, yl:yr, x, y]
+    return out
+        
+    
     def _slider(self,AA, wsize, start_buff = 0, end_buff = 0):
         ''' >>> for x in buffer_slider([0,1,2,3,4,5,6,7,8], 3, 1, 2):
             ...     print(x)
