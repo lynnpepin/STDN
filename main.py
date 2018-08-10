@@ -57,7 +57,7 @@ capsstop = CustomStopper(monitor    = 'val_loss',
                      patience   = 15,
                      verbose    = 0,
                      mode       = 'min',
-                     start_epoch= 50)
+                     start_epoch= 150)
 
 def eval_together(y, pred_y, threshold):
     # Not used
