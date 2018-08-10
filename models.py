@@ -110,22 +110,24 @@ class models:
                        strides     = 1,
                        padding     = 'valid',
                        name = 'conv1' )(x)
-        conv1 = LeakyReLU()(conv1)
+        conv1a = LeakyReLU()(conv1)         #(?, 44, 6, 16, 128)
         conv2 = Conv3D(filters     = 256,
                        kernel_size = (3,3,3),
                        strides     = 1,
                        padding     = 'valid',
-                       name = 'conv2' )(conv1)
-        conv2 = LeakyReLU(conv2)
+                       activation = 'relu',
+                       name = 'conv2' )(conv1a)
+        conv2a = LeakyReLU()(conv2)           #(?, 42, 4, 14, 256)
         conv3 = Conv3D(filters     = 256,
                        kernel_size = (3,1,1),
                        strides     = 1,
                        padding     = 'valid',
-                       name = 'conv3' )(conv2)
-        conv3 = LeakyReLU(conv3)
+                       activation  = 'relu',
+                       name = 'conv3' )(conv2a)
+        conv3a = LeakyReLU()(conv3)
 
         # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
-        primarycaps = PrimaryCap(conv3,
+        primarycaps = PrimaryCap(conv3a,
                                  dim_capsule = 6,
                                  n_channels  = 4,
                                  kernel_size = (3,3,3),
