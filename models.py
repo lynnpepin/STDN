@@ -154,7 +154,7 @@ class models:
         d = LeakyReLU()(d)
         d = Dense(512, name='dense5')(d)
         d = LeakyReLU()(d)
-        d = Dense(np.prod(output_shape), name='dense_out')(d)
+        d = Dense(np.prod(output_shape), name='dense_out', activation='sigmoid')(d)
         y_out  = Reshape(target_shape = output_shape)(d)
         
         model = Model(x, y_out)

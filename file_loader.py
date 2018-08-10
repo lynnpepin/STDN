@@ -2,6 +2,7 @@ import numpy as np
 import pickle
 import json
 from math import ceil
+import datetime
 
 class file_loader:
     def __init__(self, n = 2, config_path = "data.json"):
@@ -132,6 +133,44 @@ class file_loader:
             raise Exception
         
         return data, flow_data
+    
+    def _t_to_time(t = 0, n = 2, sy = 2013, smo = 1, sd = 1, sh = 0, smin = 0):
+        # For man_train_*, t = 0
+        # For man_test_*, t = 944*n
+        # Given a starting timeslot number t,
+        # The number of samples per hour   n,
+        # And the real-world time which
+        # corresponds to t=0               (sy, smo, sd, sh, smin),
+        # Return the time of week (np.array, one-hot-encoding, length 7)
+        # and the time of day (np.array, length 2 uniquely representing the time of day.)
+        
+        # Part 1: Get the current time ("now")
+        assert n in (1, 2, 4)
+        assert t >= 0
+        start_time = datetime.datetime(sy, smo, sd, sh, smin)
+        now = start_time + datetime.timedelta(minutes = 60*t/n)
+        
+        # Part 2: Get the weekday
+        weekday = np.zeros(7)
+        weekday[now.weekday()] = 1
+        
+        # Part 3: Get the time_of_day as a unique pair of elements, range (-1,1)
+        # Time of day, in minutes, is in the range [0, 1440].
+        
+        ## Theory:
+        # We want to map time of day to a value using a function f(tod),
+        # The function should be periodic continuous,
+        #   such that 11:59 PM ≈ 12:00 AM,
+        # and unique, such that, for all todx, tody in [0, 1440],
+        #   f(todx) == f(tody) if and ONLY if todx == tody.
+        # The pair (sin(tod), cos(tod)) meets these requirements, and has 
+        #   the desirable property of being normalized to [-1, 1].
+        
+        # ToD in minutes, normalized from [0, 1440) to [0, 2pi]
+        tod = (now.hour*60 + now.minute)*(np.pi/720)
+        tod = np.array([np.sin(tod), np.cos(tod)]) 
+        
+        
     
     
     def _flow_nbhd_creator(self, datatype, r=1):
