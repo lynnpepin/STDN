@@ -160,7 +160,8 @@ class file_loader:
                     out[t, xl:xr, yl:yr, 1] = flow[1, x, y, xl:xr, yl:yr]
                     out[t, xl:xr, yl:yr, 2] = flow[0, xl:xr, yl:yr, x, y]
                     out[t, xl:xr, yl:yr, 3] = flow[1, xl:xr, yl:yr, x, y]
-    return out
+
+        return out
         
     
     def _slider(self,AA, wsize, start_buff = 0, end_buff = 0):
