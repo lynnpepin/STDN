@@ -94,7 +94,7 @@ class models:
 
 
     def single_capsnet(self,
-            input_shape = (48, 10, 20, 4), # 24 = Window Size; must not be too small
+            input_shape = (96, 10, 20, 2), # 24 = Window Size; must not be too small
             output_shape = (10,20,2),
             routings    = 3,
             optimizer   = 'adagrad',
@@ -106,55 +106,38 @@ class models:
         x = Input(shape=input_shape)
         # Layer 1: Just conventional Conv3D layers with LeakyReLU activations.
         conv1 = Conv3D(filters     = 128,
-                       kernel_size = (5,5,5),
-                       strides     = 1,
-                       padding     = 'valid',
-                       name = 'conv1' )(x)
-        conv1a = LeakyReLU()(conv1)         #(?, 44, 6, 16, 128)
-        conv2 = Conv3D(filters     = 256,
-                       kernel_size = (3,3,3),
-                       strides     = 1,
-                       padding     = 'valid',
-                       activation = 'relu',
-                       name = 'conv2' )(conv1a)
-        conv2a = LeakyReLU()(conv2)           #(?, 42, 4, 14, 256)
-        conv3 = Conv3D(filters     = 256,
-                       kernel_size = (3,1,1),
+                       kernel_size = (7,5,5),
                        strides     = 1,
                        padding     = 'valid',
                        activation  = 'relu',
-                       name = 'conv3' )(conv2a)
-        conv3a = LeakyReLU()(conv3)
+                       name = 'conv1' )(x)
 
         # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
-        primarycaps = PrimaryCap(conv3a,
-                                 dim_capsule = 6,
-                                 n_channels  = 4,
-                                 kernel_size = (3,3,3),
+        primarycaps = PrimaryCap(conv1,
+                                 dim_capsule = 8,
+                                 n_channels  = 8,
+                                 kernel_size = (7,3,3),
                                  strides = 1,
                                  padding = 'valid')
 
         # Layer 3: Capsule layer. Routing algorithm works here.
         #   num_capsule and dim_capsule are a choice you need to make, by intuition.
         digitcaps1 = CapsuleLayer(num_capsule = 8,
-                                  dim_capsule = 48,
+                                  dim_capsule = 16,
                                   routings    = routings,
                                   name = 'dcaps1')(primarycaps)
         
         # Prediction layers:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
         flatten = Flatten()(digitcaps1)
-        d = Dense(1024, name='dense1')(flatten)
+        d = Dense(512, name='dense1')(flatten)
         d = LeakyReLU()(d)
-        d = Dense(2048, name='dense2')(d)
+        d = Dense(1024, name='dense2')(d)
         d = LeakyReLU()(d)
-        d = Dense(2048, name='dense3')(d)
+        d = Dense(512, name='dense3')(d)
         d = LeakyReLU()(d)
         d = Dense(512, name='dense4')(d)
-        d = LeakyReLU()(d)
-        d = Dense(512, name='dense5')(d)
-        d = LeakyReLU()(d)
-        d = Dense(np.prod(output_shape), name='dense_out', activation='sigmoid')(d)
+        d = Dense(np.prod(output_shape), name='dense_out', activation='relu')(d)
         y_out  = Reshape(target_shape = output_shape)(d)
         
         model = Model(x, y_out)
