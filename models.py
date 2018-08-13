@@ -106,7 +106,7 @@ class models:
         x = Input(shape=input_shape)
         # Layer 1: Just conventional Conv3D layers with LeakyReLU activations.
         conv1 = Conv3D(filters     = 128,
-                       kernel_size = (7,5,5),
+                       kernel_size = (5,5,5),
                        strides     = 1,
                        padding     = 'valid',
                        activation  = 'relu',
@@ -114,9 +114,9 @@ class models:
 
         # Layer 2: Conv2D layer with `squash` activation, then reshape to [None, num_capsule, dim_capsule]
         primarycaps = PrimaryCap(conv1,
-                                 dim_capsule = 8,
+                                 dim_capsule = 4,
                                  n_channels  = 8,
-                                 kernel_size = (7,3,3),
+                                 kernel_size = (3,3,3),
                                  strides = 1,
                                  padding = 'valid')
 
