@@ -52,7 +52,7 @@ stop = CustomStopper(monitor    = 'val_loss',
                      start_epoch= 40)
 
 
-capsstop = CustomStopper(monitor    = 'val_loss',
+capsstop = CustomStopper(monitor= 'val_loss',
                      min_delta  = 0,
                      patience   = 10,
                      verbose    = 0,
