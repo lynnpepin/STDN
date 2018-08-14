@@ -105,7 +105,7 @@ class models:
         # Input layer
         x = Input(shape=input_shape)
         # Layer 1: Just conventional Conv3D layers with LeakyReLU activations.
-        conv1 = Conv3D(filters     = 256,
+        conv1 = Conv3D(filters     = 128,
                        kernel_size = (5,5,5),
                        strides     = 1,
                        padding     = 'valid',
