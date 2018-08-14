@@ -105,7 +105,7 @@ class models:
         # Input layer
         x = Input(shape=input_shape)
         # Layer 1: Just conventional Conv3D layers with LeakyReLU activations.
-        conv1 = Conv3D(filters     = 128,
+        conv1 = Conv3D(filters     = 256,
                        kernel_size = (5,5,5),
                        strides     = 1,
                        padding     = 'valid',
@@ -131,13 +131,10 @@ class models:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
         flatten = Flatten()(digitcaps1)
         d = Dense(512, name='dense1', activation='relu')(flatten)
-        d = Dense(2048, name='dense2', activation='relu')(d)
+        d = Dense(1024, name='dense2', activation='relu')(d)
         d = Dense(512, name='dense3', activation='relu')(d)
         #d = LeakyReLU()(d)
         d = Dense(512, name='dense4', activation='relu')(d)
-        d = Dense(1024, activation='relu')(d)
-        d = Dense(512,  activation='relu')(d)
-        d = Dense(512,  activation='relu')(d)
         d = Dense(np.prod(output_shape), name='dense_out', activation='sigmoid')(d)
         y_out  = Reshape(target_shape = output_shape)(d)
         
