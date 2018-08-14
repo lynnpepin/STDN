@@ -54,10 +54,10 @@ stop = CustomStopper(monitor    = 'val_loss',
 
 capsstop = CustomStopper(monitor    = 'val_loss',
                      min_delta  = 0,
-                     patience   = 15,
+                     patience   = 10,
                      verbose    = 0,
                      mode       = 'min',
-                     start_epoch= 150)
+                     start_epoch= 100)
 
 def eval_together(y, pred_y, threshold):
     # Not used
@@ -98,6 +98,7 @@ def eval_lstm(y, pred_y, threshold):
     dropoff_mask    = dropoff_y > threshold     # e.g. a = np.array([3,1,2,7]); mask = a > 2; a[mask] == array([3,7])
     #pickup part
     if np.sum(pickup_mask)!=0:
+
         # mean( |pickup_y - pickup_pred_y| /pickup_y); masked by the same mask
         avg_pickup_mape = np.mean(np.abs(pickup_y[pickup_mask]-pickup_pred_y[pickup_mask])/pickup_y[pickup_mask])
         # sqrt(mean(square(pickup_y - pickup_pred_y)))
@@ -128,27 +129,27 @@ def caps_main(
     sampler = file_loader.file_loader(n=n)
     modeler = models.models()
     
-    window_size = n*48 # Past day
-    gap_size = 7*24*n - window_size - 1
+    window_size = n*48 # Past 2 days
     
     # Step 1. Create training dataset from raw data
     if V: print("Sampling data.")
-    X1, X2, y = sampler.sample_3DConv_past(datatype = train_dataset,
-    #X, y = sampler.sample_3DConv(datatype = train_dataset,
-                                 window_size = window_size,
-                                 gap_size = gap_size)
-    X = np.concatenate((X1, X2), axis=-1)
+    #gap_size = 15*12*n-1 # A week + 12 hour window, - 1 sample
+    #X1, X2, y = sampler.sample_3DConv_past(datatype = train_dataset,
+    X, y = sampler.sample_3DConv(datatype = train_dataset,
+                                 window_size = window_size)
+    #X = np.concatenate((X1, X2), axis=-1)
     
     if V: print_time()
     
     # Step 2. Compile model architecture
+    #input_shape = X1[0].shape # E.g. (window_size, 10, 20, 2)
+    #assert X1[0].shape == X2[0].shape ##For the new caps net
     input_shape = X[0].shape
     output_shape = y[0].shape
     if V: print("Creating model with input shape",input_shape)
     model = modeler.single_capsnet(
                 input_shape = input_shape,
                 routings = 3)
-    
     if V:
         print("\nCapsule model created.")
         print_time()
@@ -159,6 +160,7 @@ def caps_main(
     
     # Step 3. Train model
     if V: print("Start training")
+    #model.fit(x = [X1, X2], y = y,
     model.fit(x = X, y = y,
               batch_size       = batch_size,
               validation_split = validation_split,
@@ -170,10 +172,11 @@ def caps_main(
         print_time()
     
     # Step 4. Test model against 'test' dataset.
-    test_X1, test_X2, test_y =  sampler.sample_3DConv_past(datatype = test_dataset,
-    #test_X, test_y =  sampler.sample_3DConv(datatype = test_dataset,
+    #test_X, test_y =  sampler.sample_3DConv_past(datatype = test_dataset,
+    test_X, test_y =  sampler.sample_3DConv(datatype = test_dataset,
                                            window_size = window_size)
-    test_X = np.concatenate((test_X1, test_X2), axis=-1)
+    #test_X test_y = sampler.sample_3DConv(datatype = test_dataset,
+    #test_X = np.concatenate((test_X1, test_X2), axis=-1)
     if V:
         print_time()
         print("Starting evaluation.")
@@ -209,6 +212,7 @@ def caps_main(
 def stdn_main(
         att_lstm_num            = 3, # Should be dependent on n implicitly in fileloader
         long_term_lstm_seq_len  = 3, # Should be passed dependent on n
+
         short_term_lstm_seq_len = 7, # Should be passed dependent on n
         cnn_nbhd_size           = 3,
         nbhd_size               = 2,
@@ -281,6 +285,7 @@ def stdn_main(
     model.fit(x                = att_cnnx + att_flow + att_x + cnnx + flow + [x,],
               y                = y,
               batch_size       = batch_size,
+
               validation_split = validation_split,
               epochs           = max_epochs,
               callbacks        = [early_stop],
@@ -373,6 +378,7 @@ if __name__ == "__main__":
     V = args.verbose
     model_filename  = None  if args.model   is None else args.model[0]
     max_epochs      = 1     if args.epochs  is None else args.epochs[0]
+
     batch_size      = 64    if args.batch   is None else args.batch[0]
     train_data      = "train" if args.train is None else args.train[0]
     test_data       = "test"  if args.test  is None else args.test[0]
