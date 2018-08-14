@@ -203,7 +203,7 @@ class file_loader:
         return out
         
     
-    def _slider(self,AA, wsize, start_buff = 0, end_buff = 0):
+    def _slider(self, AA, wsize, start_buff = 0, end_buff = 0):
         ''' >>> for x in buffer_slider([0,1,2,3,4,5,6,7,8], 3, 1, 2):
             ...     print(x)
             ... 

@@ -128,27 +128,27 @@ def caps_main(
     sampler = file_loader.file_loader(n=n)
     modeler = models.models()
     
-    window_size = n*48 # Past 2 days
+    window_size = n*48 # Past day
+    gap_size = 7*24*n - window_size - 1
     
     # Step 1. Create training dataset from raw data
     if V: print("Sampling data.")
-    #gap_size = 15*12*n-1 # A week + 12 hour window, - 1 sample
-    #X1, X2, y = sampler.sample_3DConv_past(datatype = train_dataset,
-    X, y = sampler.sample_3DConv(datatype = train_dataset,
-                                 window_size = window_size)
-    #X = np.concatenate((X1, X2), axis=-1)
+    X1, X2, y = sampler.sample_3DConv_past(datatype = train_dataset,
+    #X, y = sampler.sample_3DConv(datatype = train_dataset,
+                                 window_size = window_size,
+                                 gap_size = gap_size)
+    X = np.concatenate((X1, X2), axis=-1)
     
     if V: print_time()
     
     # Step 2. Compile model architecture
-    #input_shape = X1[0].shape # E.g. (window_size, 10, 20, 2)
-    #assert X1[0].shape == X2[0].shape ##For the new caps net
     input_shape = X[0].shape
     output_shape = y[0].shape
     if V: print("Creating model with input shape",input_shape)
     model = modeler.single_capsnet(
                 input_shape = input_shape,
                 routings = 3)
+    
     if V:
         print("\nCapsule model created.")
         print_time()
@@ -159,7 +159,6 @@ def caps_main(
     
     # Step 3. Train model
     if V: print("Start training")
-    #model.fit(x = [X1, X2], y = y,
     model.fit(x = X, y = y,
               batch_size       = batch_size,
               validation_split = validation_split,
@@ -171,11 +170,10 @@ def caps_main(
         print_time()
     
     # Step 4. Test model against 'test' dataset.
-    #test_X, test_y =  sampler.sample_3DConv_past(datatype = test_dataset,
-    test_X, test_y =  sampler.sample_3DConv(datatype = test_dataset,
+    test_X1, test_X2, test_y =  sampler.sample_3DConv_past(datatype = test_dataset,
+    #test_X, test_y =  sampler.sample_3DConv(datatype = test_dataset,
                                            window_size = window_size)
-    #test_X test_y = sampler.sample_3DConv(datatype = test_dataset,
-    #test_X = np.concatenate((test_X1, test_X2), axis=-1)
+    test_X = np.concatenate((test_X1, test_X2), axis=-1)
     if V:
         print_time()
         print("Starting evaluation.")
