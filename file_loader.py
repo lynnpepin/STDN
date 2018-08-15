@@ -134,7 +134,7 @@ class file_loader:
         
         return data, flow_data
     
-    def _t_to_time(t = 0, n = 2, sy = 2013, smo = 1, sd = 1, sh = 0, smin = 0):
+    def _t_to_time(self, t = 0, n = 2, sy = 2013, smo = 1, sd = 1, sh = 0, smin = 0):
         # For man_train_*, t = 0
         # For man_test_*, t = 944*n
         # Given a starting timeslot number t,
@@ -143,6 +143,7 @@ class file_loader:
         # corresponds to t=0               (sy, smo, sd, sh, smin),
         # Return the time of week (np.array, one-hot-encoding, length 7)
         # and the time of day (np.array, length 2 uniquely representing the time of day.)
+        # These are represented in a single, 1-D array.
         
         # Part 1: Get the current time ("now")
         assert n in (1, 2, 4)
@@ -152,7 +153,7 @@ class file_loader:
         
         # Part 2: Get the weekday
         weekday = np.zeros(7)
-        weekday[now.weekday()] = 1
+        weekday[now.weekday()] = 1.0
         
         # Part 3: Get the time_of_day as a unique pair of elements, range (-1,1)
         # Time of day, in minutes, is in the range [0, 1440].
@@ -169,6 +170,9 @@ class file_loader:
         # ToD in minutes, normalized from [0, 1440) to [0, 2pi]
         tod = (now.hour*60 + now.minute)*(np.pi/720)
         tod = np.array([np.sin(tod), np.cos(tod)]) 
+        
+        # Returns a 1d array of len 9
+        return np.concatenate((weekday, tod))
         
         
     
