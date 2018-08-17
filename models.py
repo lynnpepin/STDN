@@ -124,7 +124,9 @@ class models:
                                   dim_capsule = 16,
                                   routings    = routings,
                                   name = 'dcaps1')(primarycaps)
-                                  
+
+        '''
+        # This simply caused problems. But why?
         # New input layer: Takes in the current day of the week and the time of day as a size-9 vector
         time_vec = Input(shape=(9,))
         # Small neural-network before feeding it into the larger one.
@@ -133,19 +135,21 @@ class models:
         td = Dense(256, activation='relu')(td)
         td = Dense(128, activation='relu')(td)
         td = Dense(128, activation='relu')(td)
+        '''
         
         # Prediction layers:
         # Should have shape input_shape[1:]. e.g. (7, 10, 20, 2) --> (10, 20, 2)
         flatten = Flatten()(digitcaps1)
         d = Dense(512, name='dense1', activation='relu')(flatten)
-        d = Concatenate()([d, td]) # Combine with the small time NN
-        d = Dense(1024, name='dense2', activation='relu')(d)
+        #d = Concatenate()([d, td]) # Combine with the small time NN
+        d = Dense(1025, name='dense2', activation='relu')(d)
         d = Dense(512, name='dense3', activation='relu')(d)
         d = Dense(512, name='dense4', activation='relu')(d)
         d = Dense(np.prod(output_shape), name='dense_out', activation='sigmoid')(d)
         y_out  = Reshape(target_shape = output_shape)(d)
         
-        model = Model([x, time_vec], y_out)
+        model = Model(x, y_out)
+        #model = Model([x, time_vec], y_out)
         model.compile(optimizer = optimizer, loss = loss, metrics=metrics)
         return model
 
