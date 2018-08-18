@@ -97,12 +97,12 @@ class file_loader:
                 # Presumably, at 243 (where training starts) there is 0 samples.
             
             if dataset == 'train' or dataset == 'tiny':
-                data = data[:subsetsize, :, :, :]
-                flow_data = flow_data[:,:subsetsize,:,:,:,:]
+                data = data[-subsetsize:, :, :, :]
+                flow_data = flow_data[:,-subsetsize:,:,:,:,:]
             if dataset == 'test':
-                data = data[subsetsize:, :, :, :]
+                data = data[:-subsetsize, :, :, :]
+                flow_data = flow_data[:,:-subsetsize,:,:,:,:]
 
-                flow_data = flow_data[:,subsetsize:,:,:,:,:]
             elif dataset == 'test' or dataset == 'tiny2':
                 data = data[-subsetsize:, :, :, :]
                 flow_data = flow_data[:,-subsetsize:,:,:,:,:]
