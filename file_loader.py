@@ -101,8 +101,8 @@ class file_loader:
                 flow_data = flow_data[:,:subsetsize,:,:,:,:]
             if dataset == 'test':
                 data = data[subsetsize:, :, :, :]
-
                 flow_data = flow_data[:,subsetsize:,:,:,:,:]
+            
             elif dataset == 'test' or dataset == 'tiny2':
                 data = data[-subsetsize:, :, :, :]
                 flow_data = flow_data[:,-subsetsize:,:,:,:,:]
