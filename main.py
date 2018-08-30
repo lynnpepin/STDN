@@ -1,11 +1,8 @@
-
 import argparse
-import models   # models
-
+import models
 import file_loader
 import pickle
 import numpy as np
-
 from sklearn.metrics import mean_squared_error
 import sys
 import json
@@ -18,18 +15,12 @@ from keras.models import Model, Sequential, load_model
 from keras.layers import Dense, Activation, concatenate, Input, Conv2D, Reshape, Flatten, Dropout, BatchNormalization, Concatenate
 from keras.optimizers import Adam, RMSprop
 from keras.callbacks import EarlyStopping, Callback, ModelCheckpoint
-
-print("Part 4")
 import datetime
-#import ipdb    #ipdb
 import gc
-print("Part 5")
-
 import attention
 from attention import Attention
 from math import floor
-print("Part 6")
-'''
+
 class CustomStopper(keras.callbacks.EarlyStopping):
     def __init__(self,
                  monitor    = 'val_loss',
@@ -473,4 +464,3 @@ if __name__ == "__main__":
         print("All done!")
         print_time()
         print("####################\n\n")
-'''
