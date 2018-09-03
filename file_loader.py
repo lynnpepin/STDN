@@ -109,19 +109,19 @@ class file_loader:
             
             # Train dataset values:
             #           vdata   fdata
-            # n = 4:    693     59/117
-            # n = 2:    1331    98/218
-            # n = 1:    2604    166/433
+            # n = 4:    480     79
+            # n = 2:    945     143
+            # n = 1:    1810    285
             
             if datasetn == 4:
-                self.volume_max = 693
-                self.flow_max = 117
+                self.volume_max = 480
+                self.flow_max = 79
             elif datasetn == 2:
-                self.volume_max = 1331
-                self.flow_max = 218
+                self.volume_max = 945
+                self.flow_max = 143
             elif datasetn == 1:
-                self.volume_max = 2604
-                self.flow_max = 433
+                self.volume_max = 1810
+                self.flow_max = 285
             
             data = data / self.volume_max
             flow_data = flow_data / self.flow_max
