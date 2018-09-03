@@ -97,12 +97,12 @@ class file_loader:
                 # Presumably, at 243 (where training starts) there is 0 samples.
             
             if dataset == 'train' or dataset == 'tiny':
-                data = data[:subsetsize, :, :, :]
-                flow_data = flow_data[:,:subsetsize,:,:,:,:]
+                data = data[-subsetsize:, :, :, :]
+                flow_data = flow_data[:,-subsetsize:,:,:,:,:]
             if dataset == 'test':
-                data = data[subsetsize:, :, :, :]
-                flow_data = flow_data[:,subsetsize:,:,:,:,:]
-            
+                data = data[:-subsetsize, :, :, :]
+                flow_data = flow_data[:,:-subsetsize,:,:,:,:]
+
             elif dataset == 'test' or dataset == 'tiny2':
                 data = data[-subsetsize:, :, :, :]
                 flow_data = flow_data[:,-subsetsize:,:,:,:,:]
@@ -345,6 +345,7 @@ class file_loader:
         #code.interact(local=locals())
         
         print("  Sampling starting at timeslot",time_start)
+        print("  Ending sampling at timeslot", time_end)
         for t in range(time_start, time_end):
             if t%100 == 0:
                 print("  Now sampling at {0} timeslots.".format(t))

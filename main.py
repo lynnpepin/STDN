@@ -16,7 +16,6 @@ from keras.layers import Dense, Activation, concatenate, Input, Conv2D, Reshape,
 from keras.optimizers import Adam, RMSprop
 from keras.callbacks import EarlyStopping, Callback, ModelCheckpoint
 import datetime
-import ipdb
 import gc
 import attention
 from attention import Attention
@@ -140,8 +139,6 @@ def caps_main(
     X, y = sampler.sample_3DConv(datatype = train_dataset,
                                  window_size = window_size)
     
-    # TODO: 944 is magic number corresponding to Manhattan dataset only!!
-    time_X = np.array([sampler._t_to_time(t = t, n = 2) for t in range(window_size, 944*n)])
     if V: print_time()
     
     # Step 2. Compile model architecture
@@ -163,8 +160,7 @@ def caps_main(
     
     # Step 3. Train model
     if V: print("Start training")
-    model.fit(x = [X, time_X], y = y,   # Time
-    #model.fit(x = X, y = y,
+    model.fit(x = X, y = y,
               batch_size       = batch_size,
               validation_split = validation_split,
               epochs           = max_epochs,
@@ -178,10 +174,7 @@ def caps_main(
     #test_X, test_y =  sampler.sample_3DConv_past(datatype = test_dataset,
     test_X, test_y =  sampler.sample_3DConv(datatype = test_dataset,
                                            window_size = window_size)
-    # TODO: Like above, 944 is magic number corresponding to Manhattan dataset only
-    test_time_X = np.array([sampler._t_to_time(t=t, n=2) for t in range(window_size + 944*n, 472*3*n)])
-    test_X = [test_X, test_time_X]  # Time
-    #test_X = np.concatenate((test_X1, test_X2), axis=-1)
+                                           
     if V:
         print_time()
         print("Starting evaluation.")
